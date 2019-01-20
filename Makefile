@@ -1,6 +1,6 @@
 NAME=ls
 
-SRC=srcs/check.c
+SRC=srcs/check.c\
 
 INCLUDES=includes
 

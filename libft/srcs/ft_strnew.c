@@ -15,15 +15,14 @@
 char	*ft_strnew(size_t size)
 {
 	char	*arr;
-	size_t	i;
 
 	if (size >= 9223372036854775807)
 		return (NULL);
-	i = 0;
-	arr = (char*)malloc(sizeof(char) * (size + 1));
+	arr = (char*)malloc(sizeof(char) * size + 1);
 	if (!arr)
 		return (NULL);
-	while (i <= size)
-		arr[i++] = '\0';
+	arr[size] = '\0';
+	while (size--)
+		arr[size] = '\0';
 	return (arr);
 }
