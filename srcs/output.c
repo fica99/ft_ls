@@ -19,7 +19,11 @@ void	output(char **d_names)
 	i = -1;
 	while (d_names[++i])
 	{
-		ft_putstr(d_names[i]);
-		ft_putchar('\n');
+		if (d_names[i][0] != '.')
+		{
+			ft_putstr(d_names[i]);
+			ft_putchar(' ');
+		}
 	}
+	ft_putchar('\n');
 }
