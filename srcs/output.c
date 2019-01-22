@@ -1,27 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.h                                            :+:      :+:    :+:   */
+/*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:18 by aashara-         ###   ########.fr       */
+/*   Created: 2019/01/22 14:42:23 by aashara-          #+#    #+#             */
+/*   Updated: 2019/01/22 14:42:24 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_LS_H
-# define FT_LS_H
+#include "ft_ls.h"
 
-# include "libft.h"
-# include <sys/types.h>
-# include <stdlib.h>
-# include <dirent.h>
-# include <errno.h>
-# include <string.h>
+void	output(char **d_names)
+{
+	short int	i;
 
-void	check_open(DIR *dir);
-void	check_close(int nb);
-char	**reading(DIR *dir);
-void	output(char **d_names);
-#endif
+	i = -1;
+	while (d_names[++i])
+	{
+		ft_putstr(d_names[i]);
+		ft_putchar('\n');
+	}
+}

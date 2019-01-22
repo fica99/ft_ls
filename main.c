@@ -22,6 +22,7 @@ int	main(int argc, char **argv)
 	else
 		check_open(dir = opendir(argv[1]));
 	d_names = reading(dir);
+	output(d_names);
 	check_close(closedir(dir));
 	return (0);
 }

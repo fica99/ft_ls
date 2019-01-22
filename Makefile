@@ -13,7 +13,8 @@
 NAME=ls
 
 SRC=srcs/check.c\
-	srcs/reading.c
+	srcs/reading.c\
+	srcs/output.c
 
 INCLUDES=includes
 

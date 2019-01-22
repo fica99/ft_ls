@@ -26,7 +26,7 @@ char	**reading(DIR *dir)
 		arr = (char **)malloc(sizeof(char *) * (i + 2));
 		arr[i] = ft_strdup(file->d_name);
 		j = i++;
-		while (--j > 0)
+		while (--j >= 0)
 		{
 			arr[j] = ft_strdup(d_names[j]);
 			ft_memdel((void **)&d_names[j]);
