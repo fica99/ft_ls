@@ -14,8 +14,8 @@
 
 int	main(int argc, char **argv)
 {
-	DIR				*dir;
-	char			**d_names;
+	DIR		*dir;
+	char	**d_names;
 
 	if (argc == 1)
 		check_open(dir = opendir("."));

@@ -20,6 +20,7 @@
 
 # define LLONG_MAX 9223372036854775807
 # define ULLONG_MAX 18446744073709551615ULL
+
 typedef struct	s_list
 {
 	void			*content;
