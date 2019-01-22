@@ -20,8 +20,11 @@
 # include <errno.h>
 # include <string.h>
 
-void	check_open(DIR *dir);
-void	check_close(int nb);
-char	**reading(DIR *dir);
-void	output(char **d_names);
+void		check_open(DIR *dir);
+void		check_close(int nb);
+char		**reading(DIR *dir);
+void		output(char **d_names);
+char		**sort_names(char	**d_names);
+short int	check_files(char **d_names);
+void		change_names(char **d_names, short int i);
 #endif

@@ -36,5 +36,33 @@ char	**reading(DIR *dir)
 		d_names = arr;
 	}
 	d_names[i] = NULL;
+	return (sort_names(d_names));
+}
+
+void	change_names(char **d_names, short int i)
+{
+	char	*arr;
+
+	arr = d_names[i];
+	d_names[i] = d_names[i + 1];
+	d_names[i + 1] = arr;
+}
+
+char	**sort_names(char **d_names)
+{
+	short int	i;
+	short int	j;
+
+	i = 0;
+	j = check_files(d_names);
+	while (i < j - 1)
+	{
+		if (ft_strcmp(d_names[i], d_names[i + 1]) > 0)
+		{
+			change_names(d_names, i);
+			i = -1;
+		}
+		i++;
+	}
 	return (d_names);
 }

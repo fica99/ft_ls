@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void	check_open(DIR *dir)
+void		check_open(DIR *dir)
 {
 	if (dir == NULL)
 	{
@@ -23,7 +23,7 @@ void	check_open(DIR *dir)
 	}
 }
 
-void	check_close(int nb)
+void		check_close(int nb)
 {
 	if (nb == -1)
 	{
@@ -32,4 +32,14 @@ void	check_close(int nb)
 		ft_putchar('\n');
 		exit(-1);
 	}
+}
+
+short int	check_files(char **d_names)
+{
+	short int	i;
+
+	i = 0;
+	while (d_names[i])
+		i++;
+	return (i);
 }
