@@ -16,6 +16,6 @@ int	main(int argc, char **argv)
 {
 	char	**d_names;
 
-	output(d_names = opening(argc, argv));
+	opening(argc, argv);
 	return (0);
 }
