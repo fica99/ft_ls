@@ -44,7 +44,7 @@ void	open_few_d(char **argv)
 	j = 0;
 	while (argv[j])
 	{
-		while (argv[j][0] == '-' || ft_strcmp(argv[j],name) == 0)
+		while (argv[j][0] == '-' || ft_strcmp(argv[j], name) == 0)
 			j++;
 		ft_putstr(argv[j]);
 		ft_putstr(":\n");
