@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void 	opening(int argc, char **argv)
+void	opening(int argc, char **argv)
 {
 	short int	i;
 	DIR			*dir;
@@ -21,13 +21,7 @@ void 	opening(int argc, char **argv)
 	i = 1;
 	while (argv[i] && argv[i][0] == '-')
 		i++;
-	/*ft_putstr("i: ");
-	ft_putnbr(i);
-	ft_putchar('\n');
-	ft_putstr("argc: ");
-	ft_putnbr(argc);
-	ft_putchar('\n');*/ 
-	if (argc == 1 || argc - i == 0 )
+	if (argc == 1 || argc - i == 0)
 		check_open(dir = opendir("."));
 	else
 		check_open(dir = opendir(argv[--argc]));
