@@ -37,12 +37,14 @@ void	open_few_d(char **argv)
 	short int	j;
 	DIR			*dir;
 	char		**d_names;
+	char		*name;
 
+	name = argv[0];
 	argv = sort_names(argv);
 	j = 0;
 	while (argv[j])
 	{
-		while (ft_isalpha(argv[j][0]) == 0)
+		while (argv[j][0] == '-' || ft_strcmp(argv[j],name) == 0)
 			j++;
 		ft_putstr(argv[j]);
 		ft_putstr(":\n");
