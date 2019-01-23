@@ -25,9 +25,35 @@ void	opening(int argc, char **argv)
 		check_open(dir = opendir("."));
 	else if (argc - i == 1)
 		check_open(dir = opendir(argv[--argc]));
+	else
+		open_few_d(argv);
 	d_names = reading(dir);
 	check_close(closedir(dir));
 	output(d_names);
+}
+
+void	open_few_d(char **argv)
+{
+	short int	j;
+	DIR			*dir;
+	char		**d_names;
+
+	argv = sort_names(argv);
+	j = 0;
+	while (argv[j])
+	{
+		while (ft_isalpha(argv[j][0]) == 0)
+			j++;
+		ft_putstr(argv[j]);
+		ft_putstr(":\n");
+		check_open(dir = opendir(argv[j]));
+		d_names = reading(dir);
+		check_close(closedir(dir));
+		output(d_names);
+		if (argv[++j])
+			ft_putchar('\n');
+	}
+	exit(0);
 }
 
 char	**reading(DIR *dir)

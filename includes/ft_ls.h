@@ -28,4 +28,5 @@ char		**sort_names(char	**d_names);
 short int	check_files(char **d_names);
 void		change_names(char **d_names, short int i);
 void		opening(int argc, char **argv);
+void		open_few_d(char **argv);
 #endif
