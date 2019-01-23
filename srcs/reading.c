@@ -12,6 +12,36 @@
 
 #include "ft_ls.h"
 
+char 	**opening(int argc, char **argv)
+{
+	short int	i;
+	DIR			*dir;
+	char		**d_names;
+
+	i = 1;
+	while (argv[i] && (argv[i][0] == '-'))
+		i++;
+	/* ft_putstr("i: ");
+	ft_putnbr(i);
+	ft_putchar('\n');
+	ft_putstr("argc: ");
+	ft_putnbr(argc);
+		ft_putchar('\n'); */
+	if (argc == 1 || i == argc)
+		check_open(dir = opendir("."));
+	else
+		check_open(dir = opendir(argv[i]));
+	d_names = reading(dir);
+	check_close(closedir(dir));
+	if (argc - (++i) >= 1)
+	{
+		ft_putstr(argv[i]);
+		ft_putstr(":\n");
+		return (opening(argc - i, &argv[i]));
+	}
+	return (d_names);
+}
+
 char	**reading(DIR *dir)
 {
 	char			**d_names;

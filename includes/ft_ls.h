@@ -27,4 +27,5 @@ void		output(char **d_names);
 char		**sort_names(char	**d_names);
 short int	check_files(char **d_names);
 void		change_names(char **d_names, short int i);
+char 	    **opening(int argc, char **argv);
 #endif
