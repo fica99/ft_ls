@@ -31,8 +31,6 @@ char	**reading(DIR *dir)
 			arr[j] = ft_strdup(d_names[j]);
 			ft_memdel((void **)&d_names[j]);
 		}
-		if (d_names)
-			ft_memdel((void **)d_names);
 		d_names = arr;
 	}
 	d_names[i] = NULL;

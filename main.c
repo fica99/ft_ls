@@ -16,12 +16,15 @@ int	main(int argc, char **argv)
 {
 	DIR			*dir;
 	char		**d_names;
+	short int	i;
 
-	
-	if (argc == 1)
+	i = 1;
+	while (argv[i] && (argv[i][0] == '-'))
+		i++;
+	if (argc == 1 || i == argc)
 		check_open(dir = opendir("."));
 	else
-		check_open(dir = opendir(argv[1]));
+		check_open(dir = opendir(argv[i]));
 	d_names = reading(dir);
 	output(d_names);
 	check_close(closedir(dir));
