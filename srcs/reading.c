@@ -23,7 +23,7 @@ void	opening(int argc, char **argv)
 		i++;
 	if (argc == 1 || argc - i == 0)
 		check_open(dir = opendir("."));
-	else
+	else if (argc - i == 1)
 		check_open(dir = opendir(argv[--argc]));
 	d_names = reading(dir);
 	check_close(closedir(dir));
