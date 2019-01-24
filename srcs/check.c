@@ -43,3 +43,26 @@ short int	check_files(char **d_names)
 		i++;
 	return (i);
 }
+
+short int	check_name_len(char **d_names, short int j)
+{
+	short int	i;
+	short int	sum;
+
+	i = -1;
+	sum = 0;
+	while (++i < j)
+		sum += ft_strlen(d_names[i]);
+	return (sum);
+}
+
+short int	count_names(char **d_names)
+{
+	short int	j;
+
+
+	j = 0;
+	while (d_names[j])
+		j++;
+	return (j);
+}

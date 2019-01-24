@@ -29,7 +29,7 @@ void	opening(int argc, char **argv)
 		open_few_d(argv);
 	d_names = reading(dir);
 	check_close(closedir(dir));
-	output(d_names);
+	output(d_names, i);
 }
 
 void	open_few_d(char **argv)
@@ -51,7 +51,7 @@ void	open_few_d(char **argv)
 		check_open(dir = opendir(argv[j]));
 		d_names = reading(dir);
 		check_close(closedir(dir));
-		output(d_names);
+		output(d_names, 1);
 		if (argv[++j])
 			ft_putchar('\n');
 	}
