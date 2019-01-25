@@ -49,20 +49,26 @@ short int	check_name_len(char **d_names, short int j)
 	short int	i;
 	short int	sum;
 
-	i = -1;
+	i = 0;
 	sum = 0;
-	while (++i < j)
-		sum += ft_strlen(d_names[i]);
+	while (d_names[i][0] == '.')
+		i++;
+	while (i < j)
+		sum += ft_strlen(d_names[i++]) + 2;
 	return (sum);
 }
 
 short int	count_names(char **d_names)
 {
 	short int	j;
-
+	short int	d;
 
 	j = 0;
+	d = 0;
+	while (d_names[d][0] == '.')
+		d++;
+	j = d;
 	while (d_names[j])
 		j++;
-	return (j);
+	return (j - d);
 }

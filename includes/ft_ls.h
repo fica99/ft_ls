@@ -32,4 +32,6 @@ void		opening(int argc, char **argv);
 void		open_few_d(char **argv);
 short int   check_name_len(char **d_names, short int j);
 short int	count_names(char **d_names);
+void		output_long(char **d_names, short int number_names, struct winsize w);
+void		output_small(char **d_names);
 #endif
