@@ -15,7 +15,6 @@
 void	output(char **d_names, short int j)
 {
 	short int		number_names;
-	short int		number_columns;
 	struct winsize	w;
 
 	number_names = count_names(d_names);
@@ -23,30 +22,23 @@ void	output(char **d_names, short int j)
 	if (w.ws_col >= names_len(d_names, number_names) && j == 1)
 		output_short(d_names);
 	else if (w.ws_col < names_len(d_names, number_names) && j == 1)
-	{
-		number_columns = number_names;
-		while (w.ws_col < names_len(d_names, number_columns))
-			number_columns = number_columns / 2;
-		output_l(d_names, number_names, number_columns);
-	}
+		output_l(d_names, number_names, w);
 }
 
-void	output_l(char **d_names, short int n_n, short int n_c)
+void	output_l(char **d_names, short int n_n, struct winsize w)
 {
 	short int	number_raws;
 	short int	len;
 	short int	len_word;
 	short int	j;
-	short int	i;
 	short int	k;
 	short int	d;
 
-	i = 0;
 	number_raws = n_n / n_c;
 	if (n_n % n_c != 0)
 		number_raws++;
-	while (d_names[i][0] == '.')
-		i++;
+	while (**d_names == '.')
+		*d_names++;
 	d = 0;
 	k = 0;
 	while (k <= number_raws)
@@ -55,8 +47,8 @@ void	output_l(char **d_names, short int n_n, short int n_c)
 		while (d < n_n)
 		{
 			len = longest_word(d_names, number_raws, j);
-			ft_putstr(d_names[d + i]);
-			len_word = ft_strlen(d_names[d + i]);
+			ft_putstr(d_names[d]);
+			len_word = ft_strlen(d_names[d]);
 			while (len + 2 > len_word)
 			{
 				ft_putchar(' ');
