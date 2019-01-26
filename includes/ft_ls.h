@@ -30,9 +30,9 @@ short int	check_files(char **d_names);
 void		change_names(char **d_names, short int i);
 void		opening(int argc, char **argv);
 void		open_few_d(char **argv);
-short int   names_len(char **d_names, short int j);
+short int   names_len(char **d_names, short int start, short int end);
 short int	count_names(char **d_names);
 void		output_l(char **d_names, short int n_n, struct winsize w);
 void		output_short(char **d_names);
-short int   longest_word(char  **d_names, short int n_r, short int n_c);
+short int   longest_word(char  **d_names, short int n_n, short int n_r, short int n_c);
 #endif

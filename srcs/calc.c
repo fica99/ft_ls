@@ -1,16 +1,14 @@
 #include "ft_ls.h"
 
-short int	names_len(char **d_names, short int j)
+short int	names_len(char **d_names, short int start, short int end)
 {
-	short int	i;
 	short int	sum;
 
-	i = -1;
 	sum = 0;
 	while (**d_names == '.')
 		*d_names++;
-	while (++i < j)
-		sum += ft_strlen(d_names[i]) + 2;
+	while (start < end)
+		sum += ft_strlen(d_names[start++]) + 2;
 	return (sum);
 }
 
@@ -26,7 +24,7 @@ short int	count_names(char **d_names)
 	return (j);
 }
 
-short int   longest_word(char  **d_names, short int n_r, short int n_c)
+short int   longest_word(char  **d_names, short int n_n, short int n_r, short int n_c)
 {
     short int   j;
     short int   i;
@@ -43,6 +41,8 @@ short int   longest_word(char  **d_names, short int n_r, short int n_c)
         k += n_r;
     while (++j < n_r)
     {
+        if (j >= n_n)
+            break;
         if (ft_strlen(d_names[k]) > len)
             len = ft_strlen(d_names[k]);
         k++;

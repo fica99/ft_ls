@@ -19,35 +19,61 @@ void	output(char **d_names, short int j)
 
 	number_names = count_names(d_names);
     ioctl(0, TIOCGWINSZ, &w);
-	if (w.ws_col >= names_len(d_names, number_names) && j == 1)
+	if (w.ws_col >= names_len(d_names, 0, number_names) && j == 1)
 		output_short(d_names);
-	else if (w.ws_col < names_len(d_names, number_names) && j == 1)
+	else if (w.ws_col < names_len(d_names, 0, number_names) && j == 1)
 		output_l(d_names, number_names, w);
 }
 
 void	output_l(char **d_names, short int n_n, struct winsize w)
 {
 	short int	number_raws;
+	short int	number_columns;
 	short int	len;
 	short int	len_word;
 	short int	j;
 	short int	k;
 	short int	d;
+	short int	end;
+	short int	start;
+	short int	p;
 
-	number_raws = n_n / n_c;
-	if (n_n % n_c != 0)
-		number_raws++;
+	number_columns = n_n;
 	while (**d_names == '.')
 		*d_names++;
+	while (w.ws_col < names_len(d_names, 0, number_columns))
+	{
+		if (number_columns % 2 == 0)
+			number_columns /= 2;
+		else
+			number_columns = number_columns / 2 + 1;
+	}
+	start = 0;
+	end = number_columns;
+	while (end < n_n)
+	{
+		p = 1;
+		if (w.ws_col < names_len(d_names, start, end))
+			p = 0;
+		start += number_columns;
+		end += number_columns;
+		if (p == 0)
+		{
+			start = 0;
+			end = --number_columns;
+		}
+	}
+	number_raws = n_n / number_columns;
+	if (n_n % number_columns != 0)
+		number_raws++;
 	d = 0;
 	k = 0;
-	while (k <= number_raws)
+	while (k < number_raws)
 	{
 		j = 0;
 		while (d < n_n)
 		{
-			len = longest_word(d_names, number_raws, j);
-			ft_putstr(d_names[d]);
+			len = longest_word(d_names, n_n, number_raws, j);
 			len_word = ft_strlen(d_names[d]);
 			while (len + 2 > len_word)
 			{
