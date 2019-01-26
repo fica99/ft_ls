@@ -44,7 +44,7 @@ short int	check_files(char **d_names)
 	return (i);
 }
 
-short int	check_name_len(char **d_names, short int j)
+short int	names_len(char **d_names, short int j)
 {
 	short int	i;
 	short int	sum;

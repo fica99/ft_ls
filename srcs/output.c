@@ -15,30 +15,32 @@
 void	output(char **d_names, short int j)
 {
 	short int		number_names;
+	short int		number_columns;
 	struct winsize	w;
 
 	number_names = count_names(d_names);
     ioctl(0, TIOCGWINSZ, &w);
-	if (w.ws_col >= check_name_len(d_names, number_names) && j == 1)
-		output_small(d_names);
-	else if (w.ws_col < check_name_len(d_names, number_names) && j == 1)
-		output_long(d_names, number_names, w);
+	if (w.ws_col >= names_len(d_names, number_names) && j == 1)
+		output_short(d_names);
+	else if (w.ws_col < names_len(d_names, number_names) && j == 1)
+	{
+		number_columns = number_names;
+		while (w.ws_col < names_len(d_names, number_columns))
+			number_columns = number_columns / 2;
+		output_l(d_names, number_names, number_columns, w);
+	}
 }
 
-void	output_long(char **d_names, short int number_names, struct winsize w)
+void	output_l(char **d_names, short int n_n, short int n_c, struct winsize w)
 {
-	short int	number_columns;
 	short int	number_raws;
 	short int	i;
 	short int	k;
 	short int	d;
 
-	number_columns = number_names;
 	i = 0;
-	while (w.ws_col < check_name_len(d_names, number_columns))
-		number_columns = number_columns / 2;
-	number_raws = number_names / number_columns;
-	if (number_names % number_columns != 0)
+	number_raws = n_n / n_c;
+	if (n_n % n_c != 0)
 		number_raws++;
 	while (d_names[i][0] == '.')
 		i++;
@@ -46,21 +48,18 @@ void	output_long(char **d_names, short int number_names, struct winsize w)
 	k = 0;
 	while (k <= number_raws)
 	{
-		while (d < number_names)
+		while (d < n_n)
 		{
 			ft_putstr(d_names[d + i]);
 			ft_putstr("  ");
-			d = d + number_raws;
+			d += number_raws;
 		}
-		k++;
 		ft_putchar('\n');
-		d = 0;
-		while (d < k)
-			d++;
+		d = ++k;
 	}
 }
 
-void	output_small(char **d_names)
+void	output_short(char **d_names)
 {
 	short int	i;
 

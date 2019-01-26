@@ -30,8 +30,8 @@ short int	check_files(char **d_names);
 void		change_names(char **d_names, short int i);
 void		opening(int argc, char **argv);
 void		open_few_d(char **argv);
-short int   check_name_len(char **d_names, short int j);
+short int   names_len(char **d_names, short int j);
 short int	count_names(char **d_names);
-void		output_long(char **d_names, short int number_names, struct winsize w);
-void		output_small(char **d_names);
+void		output_l(char **d_names, short int n_n, short int n_c, struct winsize w);
+void		output_short(char **d_names);
 #endif
