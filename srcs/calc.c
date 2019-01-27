@@ -8,7 +8,7 @@ short int	names_len(char **d_names, short int start, short int end)
 	while (**d_names == '.')
 		*d_names++;
 	while (start < end)
-		sum += ft_strlen(d_names[start++]) + 2;
+		sum += ft_strlen(d_names[start++]) + 3;
 	return (sum);
 }
 
