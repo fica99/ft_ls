@@ -41,7 +41,7 @@ short int   longest_word(char  **d_names, short int n_n, short int n_r, short in
         k += n_r;
     while (++j < n_r)
     {
-        if (j >= n_n)
+        if (k >= n_n)
             break;
         if (ft_strlen(d_names[k]) > len)
             len = ft_strlen(d_names[k]);
