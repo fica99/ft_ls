@@ -18,7 +18,7 @@ short int	count_names(char **d_names)
 
 	j = 0;
 	while (**d_names == '.')
-		*d_names++;
+    	*d_names++;
 	while (d_names[j])
 		j++;
 	return (j);
@@ -31,8 +31,6 @@ short int   longest_word(char  **d_names, short int n_n, short int n_r, short in
     short int   len;
     short int   k;
 
-    while (**d_names == '.')
-        *d_names++;
     j = -1;
     len = 0;
     k = 0;

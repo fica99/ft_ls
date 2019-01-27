@@ -61,8 +61,6 @@ void	output_l(char **d_names, short int n_n, struct winsize w)
 	}
 	while (number_raws * number_columns > n_n)
 		number_columns--;
-	if (number_columns * number_raws != n_n)
-		number_columns++;
 	d = 0;
 	k = 0;
 	while (k < number_raws)
