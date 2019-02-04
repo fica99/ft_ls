@@ -12,27 +12,47 @@
 
 #include "ft_ls.h"
 
-void	opening(int argc, char **argv)
+t_request	opening(int argc, char **argv)
 {
 	short int	i;
+	short int	j;
 	DIR			*dir;
-	char		**d_names;
+	t_request	*request;
 
 	i = 1;
 	while (argv[i] && argv[i][0] == '-')
+	{
+		j = 0;
+		while (argv[i][++j])
+			{
+				if (argv[i][j] == 'a')
+					request->a = 1; 
+				if (argv[i][j] == 'l')
+					request->l = 1; 
+				if (argv[i][j] == 'r')
+					request->r = 1; 
+				if (argv[i][j] == 't')
+					request->t = 1;
+				if (argv[i][j] == 'R')
+					request->r_big = 1;  
+			}
 		i++;
+	}
 	if (argc == 1 || argc - i == 0)
 		check_open(dir = opendir("."));
 	else if (argc - i == 1)
 		check_open(dir = opendir(argv[--argc]));
 	else
-		open_few_d(argv);
-	d_names = reading(dir);
-	check_close(closedir(dir));
-	output(d_names, i);
+		request = open_few_d(argv);
+	if (request == NULL)
+	{
+		d_names = reading(dir);
+		check_close(closedir(dir));
+		output(d_names, i);
+	}
 }
 
-void	open_few_d(char **argv)
+t_request	open_few_d(char **argv)
 {
 	short int	j;
 	DIR			*dir;
@@ -81,32 +101,4 @@ char	**reading(DIR *dir)
 	}
 	d_names[i] = NULL;
 	return (sort_names(d_names));
-}
-
-void	change_names(char **d_names, short int i)
-{
-	char	*arr;
-
-	arr = d_names[i];
-	d_names[i] = d_names[i + 1];
-	d_names[i + 1] = arr;
-}
-
-char	**sort_names(char **d_names)
-{
-	short int	i;
-	short int	j;
-
-	i = 0;
-	j = check_files(d_names);
-	while (i < j - 1)
-	{
-		if (ft_strcmp(d_names[i], d_names[i + 1]) > 0)
-		{
-			change_names(d_names, i);
-			i = -1;
-		}
-		i++;
-	}
-	return (d_names);
 }

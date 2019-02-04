@@ -14,8 +14,8 @@
 
 int	main(int argc, char **argv)
 {
-	char	**d_names;
-
-	opening(argc, argv);
+	t_request	request;
+	
+	request = opening(argc, argv);
 	return (0);
 }

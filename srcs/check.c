@@ -16,9 +16,7 @@ void		check_open(DIR *dir)
 {
 	if (dir == NULL)
 	{
-		ft_putstr("ls: ");
-		ft_putstr(strerror(errno));
-		ft_putchar('\n');
+		printf("ls: %s\n", strerror(errno));
 		exit(-1);
 	}
 }
@@ -27,14 +25,12 @@ void		check_close(int nb)
 {
 	if (nb == -1)
 	{
-		ft_putstr("ls: ");
-		ft_putstr(strerror(errno));
-		ft_putchar('\n');
+		printf("ls: %s\n", strerror(errno));
 		exit(-1);
 	}
 }
 
-short int	check_files(char **d_names)
+short int	double_arr_len(char **d_names)
 {
 	short int	i;
 

@@ -20,19 +20,30 @@
 # include <dirent.h>
 # include <errno.h>
 # include <string.h>
+# include <stdio.h>
 
-void		check_open(DIR *dir);
-void		check_close(int nb);
-char		**reading(DIR *dir);
-void		output(char **d_names, short int j);
-char		**sort_names(char	**d_names);
-short int	check_files(char **d_names);
-void		change_names(char **d_names, short int i);
-void		opening(int argc, char **argv);
-void		open_few_d(char **argv);
-short int   names_len(char **d_names, short int start, short int end);
-short int	count_names(char **d_names);
-void		output_l(char **d_names, short int n_n, struct winsize w);
-void		output_short(char **d_names);
-short int   longest_word(char  **d_names, short int n_n, short int n_r, short int n_c);
+typedef struct	s_dir
+{
+	char			*name;
+	char			**f_names;
+	struct s_dir	*next;
+}				t_dir;
+
+typedef struct	s_request
+{
+	t_dir		*names;
+	char		l : 1;
+	char		r_big : 1;
+	char		a : 1;
+	char		r : 1;
+	char		t : 1;
+}				t_request;
+
+t_request		opening(int argc, char **argv);
+void			check_open(DIR *dir);
+void			check_close(int nb);
+t_request		open_few_d(char **argv);
+char			**sort_names(char **d_names);
+void			change_names(char **d_names, short int i);
+short int		double_arr_len(char **d_names);
 #endif

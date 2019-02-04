@@ -47,3 +47,31 @@ short int   longest_word(char  **d_names, short int n_n, short int n_r, short in
     }
     return (len);
 }
+
+void	change_names(char **d_names, short int i)
+{
+	char	*arr;
+
+	arr = d_names[i];
+	d_names[i] = d_names[i + 1];
+	d_names[i + 1] = arr;
+}
+
+char	**sort_names(char **d_names)
+{
+	short int	i;
+	short int	j;
+
+	i = 0;
+	j = double_arr_len(d_names);
+	while (i < j - 1)
+	{
+		if (ft_strcmp(d_names[i], d_names[i + 1]) > 0)
+		{
+			change_names(d_names, i);
+			i = -1;
+		}
+		i++;
+	}
+	return (d_names);
+}
