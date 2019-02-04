@@ -31,7 +31,7 @@ typedef struct	s_dir
 
 typedef struct	s_request
 {
-	t_dir		*names;
+	t_dir		*directories;
 	char		l : 1;
 	char		r_big : 1;
 	char		a : 1;
@@ -39,10 +39,10 @@ typedef struct	s_request
 	char		t : 1;
 }				t_request;
 
-t_request		opening(int argc, char **argv);
+t_request		*opening(int argc, char **argv);
 void			check_open(DIR *dir);
 void			check_close(int nb);
-t_request		open_few_d(char **argv);
+t_request		*open_few_d(char **argv);
 char			**sort_names(char **d_names);
 void			change_names(char **d_names, short int i);
 short int		double_arr_len(char **d_names);

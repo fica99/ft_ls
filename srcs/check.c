@@ -29,13 +29,3 @@ void		check_close(int nb)
 		exit(-1);
 	}
 }
-
-short int	double_arr_len(char **d_names)
-{
-	short int	i;
-
-	i = 0;
-	while (d_names[i])
-		i++;
-	return (i);
-}

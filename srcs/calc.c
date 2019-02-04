@@ -48,7 +48,7 @@ short int   longest_word(char  **d_names, short int n_n, short int n_r, short in
     return (len);
 }
 
-void	change_names(char **d_names, short int i)
+void		change_names(char **d_names, short int i)
 {
 	char	*arr;
 
@@ -57,7 +57,7 @@ void	change_names(char **d_names, short int i)
 	d_names[i + 1] = arr;
 }
 
-char	**sort_names(char **d_names)
+char		**sort_names(char **d_names)
 {
 	short int	i;
 	short int	j;
@@ -74,4 +74,14 @@ char	**sort_names(char **d_names)
 		i++;
 	}
 	return (d_names);
+}
+
+short int	double_arr_len(char **d_names)
+{
+	short int	i;
+
+	i = 0;
+	while (d_names[i])
+		i++;
+	return (i);
 }

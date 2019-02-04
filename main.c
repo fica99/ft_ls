@@ -14,7 +14,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_request	request;
+	t_request	*request;
 	
 	request = opening(argc, argv);
 	return (0);
