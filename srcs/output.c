@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+/*#include "ft_ls.h"
 
 void	output(char **d_names, short int j)
 {
@@ -100,4 +100,4 @@ void	output_short(char **d_names)
 			}
 		}
 		ft_putchar('\n');
-}
+}*/

@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-short int	names_len(char **d_names, short int start, short int end)
+/*short int	names_len(char **d_names, short int start, short int end)
 {
 	short int	sum;
 
@@ -46,7 +46,7 @@ short int   longest_word(char  **d_names, short int n_n, short int n_r, short in
         k++;
     }
     return (len);
-}
+}*/
 
 void		change_names(char **d_names, short int i)
 {

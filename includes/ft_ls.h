@@ -31,18 +31,18 @@ typedef struct	s_dir
 
 typedef struct	s_request
 {
-	t_dir		*directories;
-	char		l : 1;
-	char		r_big : 1;
-	char		a : 1;
-	char		r : 1;
-	char		t : 1;
+	t_dir			*directories;
+	unsigned char	t : 1;
+	unsigned char	l : 1;
+	unsigned char	r_big : 1;
+	unsigned char	a : 1;
+	unsigned char	r : 1;
 }				t_request;
 
 t_request		*opening(int argc, char **argv);
 void			check_open(DIR *dir);
 void			check_close(int nb);
-t_request		*open_few_d(char **argv);
+t_dir			*open_few_d(char **argv);
 char			**sort_names(char **d_names);
 void			change_names(char **d_names, short int i);
 short int		double_arr_len(char **d_names);
