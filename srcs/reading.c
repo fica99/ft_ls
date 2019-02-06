@@ -15,7 +15,6 @@
 t_dir	*opening(int argc, char **argv)
 {
 	short int	i;
-	DIR			*dir;
 	t_dir		*request;
 
 	i = 1;
@@ -109,6 +108,8 @@ char	**reading(DIR *dir)
 		{
 			arr[j] = ft_strdup(d_names[j]);
 			ft_memdel((void **)&d_names[j]);
+			if (j == 0)
+				free(d_names);
 		}
 		d_names = arr;
 	}
