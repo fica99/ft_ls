@@ -21,15 +21,15 @@ int	main(int argc, char **argv)
 	request = request->f_names;
 	while (request)
 	{
-			ft_putstr(request->name);
-			ft_putchar('\n');
-			dir = request->f_names;
-			while (dir)
-			{
-				ft_putstr(dir->name);
-				dir = dir->next;
-			}
-			ft_putstr("\n\n");
+		ft_putstr(request->name);
+		ft_putchar('\n');
+		dir = request->f_names;
+		while (dir)
+		{
+			ft_putstr(dir->name);
+			dir = dir->next;
+		}
+		ft_putstr("\n\n");
 		request = request->next;
 	}
 	return (0);

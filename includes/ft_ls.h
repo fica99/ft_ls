@@ -27,6 +27,7 @@ typedef struct	s_dir
 	char			*name;
 	struct s_dir	*f_names;
 	struct s_dir	*next;
+	short int		level;
 	unsigned char	t : 1;
 	unsigned char	l : 1;
 	unsigned char	r_big : 1;
@@ -36,12 +37,11 @@ typedef struct	s_dir
 
 t_dir		*opening(int argc, char **argv);
 t_dir		*read_flags(char **argv, short int *i);
-void			check_open(DIR *dir);
-void			check_close(int nb);
-t_dir			*open_dir(char **argv);
-char			**sort_names(char **d_names);
-void			change_names(char **d_names, short int i);
-short int		double_arr_len(char **d_names);
-t_dir			*make_list(char **arr);
-char			**reading(DIR *dir);
+void		check_open(DIR *dir);
+void		check_close(int nb);
+char		**sort_names(char **d_names);
+void		change_names(char **d_names, short int i);
+short int	double_arr_len(char **d_names);
+t_dir		*make_list(char **arr, short int level);
+char		**reading(DIR *dir);
 #endif

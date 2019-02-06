@@ -25,7 +25,7 @@ t_dir	*opening(int argc, char **argv)
 		argv[double_arr_len(argv) + 1] = NULL;
 		argv[double_arr_len(argv)] = ".";
 	}
-	request->f_names = open_dir(argv);
+	request->f_names = make_list((argv = sort_names(argv)), 1);
 	return (request);
 }
 
@@ -53,51 +53,11 @@ t_dir	*read_flags(char **argv, short int *i)
 			}
 		(*i)++;
 	}
+	request->level = 0;
 	return (request);
 }
 
-t_dir		*open_dir(char **argv)
-{
-	short int	j;
-	t_dir		*dir;
-	t_dir		*head;
-	DIR			*folder;
-	char		*name;
-	short int	i;
-
-	name = argv[0];
-	argv = sort_names(argv);
-	j = 0;
-	dir = (t_dir*)malloc(sizeof(t_dir));
-	head = dir;
-	while (argv[j])
-	{
-		while (argv[j] && (argv[j][0] == '-' || ft_strcmp(argv[j], name) == 0))
-			j++;
-		//ft_putnbr(j);
-		if (!(argv[j]))
-			break;
-	//	if (j != 0 && argv[j - 1][0] != '-' && ft_strcmp(argv[j - 1], name) != 0)
-	//	{
-			
-	//	}
-		dir->name = argv[j];
-	//		ft_putstr(argv[j]);
-	//	ft_putstr("\n\n");
-		check_open(folder = opendir(argv[j]));
-		dir->f_names = make_list(reading(folder));
-		check_close(closedir(folder));
-		if (argv[++j] && argv[j][0] != '-' && ft_strcmp(argv[j], name) != 0)
-		{
-			dir->next = (t_dir*)malloc(sizeof(t_dir));
-			dir = dir->next;
-		}
-	}
-	dir->next = NULL;
-	return (head);
-}
-
-t_dir	*make_list(char **arr)
+t_dir	*make_list(char **arr, short int level)
 {
 	t_dir		*head;
 	t_dir		*dir;
@@ -109,19 +69,23 @@ t_dir	*make_list(char **arr)
 	i = -1;
 	while (arr[++i])
 	{
-		if (arr[i][0] != '.')
+		if (arr[i][0] != '-' && ft_strcmp(arr[i], "./ls") != 0)
 		{
 			if (i != 0)
 			{
 				dir->next = (t_dir*)malloc(sizeof(t_dir));
 				dir = dir->next;
 			}
+			dir->level = level;
 			dir->name = arr[i];
-			//check_open(folder = opendir(arr[i]));
-			//dir->f_names = make_list(reading(folder));
-			//check_close(closedir(folder));
+			if (level == 1)
+			{
+				check_open(folder = opendir(arr[i]));
+				dir->f_names = make_list(reading(folder), ++level);
+				check_close(closedir(folder));
+			}
+			dir->next = NULL;
 		}
-		dir->next = NULL;
 	}
 	return (head);
 }
