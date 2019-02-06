@@ -16,6 +16,7 @@ t_dir	*opening(int argc, char **argv)
 {
 	short int	i;
 	t_dir		*request;
+	char		*name;
 
 	i = 1;
 	request = (t_dir*)malloc(sizeof(t_dir));
@@ -26,7 +27,8 @@ t_dir	*opening(int argc, char **argv)
 		argv[double_arr_len(argv) + 1] = NULL;
 		argv[double_arr_len(argv)] = ".";
 	}
-	request->f_names = make_list((argv = sort_names(argv)), 1);
+	name = argv[0];
+	request->f_names = make_list((argv = sort_names(argv)), 1, name);
 	return (request);
 }
 
@@ -57,7 +59,7 @@ t_flags	*read_flags(char **argv, short int *i)
 	return (flags);
 }
 
-t_dir	*make_list(char **arr, short int level)
+t_dir	*make_list(char **arr, short int level, char *name)
 {
 	t_dir		*head;
 	t_dir		*dir;
@@ -69,7 +71,7 @@ t_dir	*make_list(char **arr, short int level)
 	i = -1;
 	while (arr[++i])
 	{
-		if (arr[i][0] != '-' && ft_strcmp(arr[i], "./ls") != 0)
+		if (arr[i][0] != '-' && ft_strcmp(arr[i], name) != 0)
 		{
 			if (i != 0)
 			{
@@ -81,7 +83,7 @@ t_dir	*make_list(char **arr, short int level)
 			if (level == 1)
 			{
 				check_open(folder = opendir(arr[i]));
-				dir->f_names = make_list(reading(folder), ++level);
+				dir->f_names = make_list(reading(folder), ++level, name);
 				check_close(closedir(folder));
 			}
 			dir->next = NULL;

@@ -47,6 +47,6 @@ void		check_close(int nb);
 char		**sort_names(char **d_names);
 void		change_names(char **d_names, short int i);
 short int	double_arr_len(char **d_names);
-t_dir		*make_list(char **arr, short int level);
+t_dir		*make_list(char **arr, short int level, char *name);
 char		**reading(DIR *dir);
 #endif
