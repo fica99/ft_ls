@@ -28,15 +28,20 @@ typedef struct	s_dir
 	struct s_dir	*f_names;
 	struct s_dir	*next;
 	short int		level;
+	struct s_flags	*flags;
+}				t_dir;
+
+typedef struct	s_flags
+{
 	unsigned char	t : 1;
 	unsigned char	l : 1;
 	unsigned char	r_big : 1;
 	unsigned char	a : 1;
 	unsigned char	r : 1;
-}				t_dir;
+}				t_flags;
 
 t_dir		*opening(int argc, char **argv);
-t_dir		*read_flags(char **argv, short int *i);
+t_flags		*read_flags(char **argv, short int *i);
 void		check_open(DIR *dir);
 void		check_close(int nb);
 char		**sort_names(char **d_names);

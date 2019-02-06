@@ -19,7 +19,9 @@ t_dir	*opening(int argc, char **argv)
 	t_dir		*request;
 
 	i = 1;
-	request = read_flags(argv, &i);
+	request = (t_dir*)malloc(sizeof(t_dir));
+	request->level = 0;
+	request->flags = read_flags(argv, &i);
 	if (argc - i == 0)
 	{
 		argv[double_arr_len(argv) + 1] = NULL;
@@ -29,32 +31,31 @@ t_dir	*opening(int argc, char **argv)
 	return (request);
 }
 
-t_dir	*read_flags(char **argv, short int *i)
+t_flags	*read_flags(char **argv, short int *i)
 {
-	t_dir		*request;
+	t_flags		*flags;
 	short int	j;
 
-	request = (t_dir*)malloc(sizeof(t_dir));
+	flags = (t_flags*)malloc(sizeof(t_flags));
 	while (argv[*i] && argv[*i][0] == '-')
 	{
 		j = 0;
 		while (argv[*i][++j])
 			{
 				if (argv[*i][j] == 'a')
-					request->a = 1;
+					flags->a = 1;
 				else if (argv[*i][j] == 'l')
-					request->l = 1; 
+					flags->l = 1; 
 				else if (argv[*i][j] == 'r')
-					request->r = 1; 
+					flags->r = 1; 
 				else if (argv[*i][j] == 't')
-					request->t = 1;
+					flags->t = 1;
 				else if (argv[*i][j] == 'R')
-					request->r_big = 1;  
+					flags->r_big = 1;  
 			}
 		(*i)++;
 	}
-	request->level = 0;
-	return (request);
+	return (flags);
 }
 
 t_dir	*make_list(char **arr, short int level)
