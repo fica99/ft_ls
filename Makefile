@@ -14,7 +14,6 @@ NAME=ls
 
 SRC=srcs/check.c\
 	srcs/reading.c\
-	srcs/output.c\
 	srcs/calc.c
 	
 INCLUDES=includes

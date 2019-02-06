@@ -14,8 +14,23 @@
 
 int	main(int argc, char **argv)
 {
-	t_request	*request;
+	t_dir	*request;
+	t_dir	*dir;
 	
 	request = opening(argc, argv);
+	request = request->f_names;
+	while (request)
+	{
+			ft_putstr(request->name);
+			ft_putchar('\n');
+			dir = request->f_names;
+			while (dir)
+			{
+				ft_putstr(dir->name);
+				dir = dir->next;
+			}
+			ft_putstr("\n\n");
+		request = request->next;
+	}
 	return (0);
 }

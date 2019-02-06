@@ -25,26 +25,23 @@
 typedef struct	s_dir
 {
 	char			*name;
-	char			**f_names;
+	struct s_dir	*f_names;
 	struct s_dir	*next;
-}				t_dir;
-
-typedef struct	s_request
-{
-	t_dir			*directories;
 	unsigned char	t : 1;
 	unsigned char	l : 1;
 	unsigned char	r_big : 1;
 	unsigned char	a : 1;
 	unsigned char	r : 1;
-}				t_request;
+}				t_dir;
 
-t_request		*opening(int argc, char **argv);
+t_dir		*opening(int argc, char **argv);
+t_dir		*read_flags(char **argv, short int *i);
 void			check_open(DIR *dir);
 void			check_close(int nb);
-t_dir			*open_few_d(char **argv);
+t_dir			*open_dir(char **argv);
 char			**sort_names(char **d_names);
 void			change_names(char **d_names, short int i);
 short int		double_arr_len(char **d_names);
+t_dir			*make_list(char **arr);
 char			**reading(DIR *dir);
 #endif

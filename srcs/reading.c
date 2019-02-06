@@ -12,43 +12,51 @@
 
 #include "ft_ls.h"
 
-t_request	*opening(int argc, char **argv)
+t_dir	*opening(int argc, char **argv)
 {
 	short int	i;
-	short int	j;
 	DIR			*dir;
-	t_request	*request;
+	t_dir		*request;
 
 	i = 1;
-	request = (t_request*)malloc(sizeof(request));
-	while (argv[i] && argv[i][0] == '-')
-	{
-		j = 0;
-		while (argv[i][++j])
-			{
-				if (argv[i][j] == 'a')
-					request->a = 1;
-				else if (argv[i][j] == 'l')
-					request->l = 1; 
-				else if (argv[i][j] == 'r')
-					request->r = 1; 
-				else if (argv[i][j] == 't')
-					request->t = 1;
-				else if (argv[i][j] == 'R')
-					request->r_big = 1;  
-			}
-		i++;
-	}
-	if (argc == 1 || argc - i == 0)
+	request = read_flags(argv, &i);
+	if (argc - i == 0)
 	{
 		argv[double_arr_len(argv) + 1] = NULL;
 		argv[double_arr_len(argv)] = ".";
 	}
-	request->directories = open_few_d(argv);
+	request->f_names = open_dir(argv);
 	return (request);
 }
 
-t_dir		*open_few_d(char **argv)
+t_dir	*read_flags(char **argv, short int *i)
+{
+	t_dir		*request;
+	short int	j;
+
+	request = (t_dir*)malloc(sizeof(t_dir));
+	while (argv[*i] && argv[*i][0] == '-')
+	{
+		j = 0;
+		while (argv[*i][++j])
+			{
+				if (argv[*i][j] == 'a')
+					request->a = 1;
+				else if (argv[*i][j] == 'l')
+					request->l = 1; 
+				else if (argv[*i][j] == 'r')
+					request->r = 1; 
+				else if (argv[*i][j] == 't')
+					request->t = 1;
+				else if (argv[*i][j] == 'R')
+					request->r_big = 1;  
+			}
+		(*i)++;
+	}
+	return (request);
+}
+
+t_dir		*open_dir(char **argv)
 {
 	short int	j;
 	t_dir		*dir;
@@ -59,38 +67,61 @@ t_dir		*open_few_d(char **argv)
 
 	name = argv[0];
 	argv = sort_names(argv);
-	j = -1;
+	j = 0;
 	dir = (t_dir*)malloc(sizeof(t_dir));
 	head = dir;
-	while (argv[++j])
+	while (argv[j])
 	{
-		if (j != 0)
+		while (argv[j] && (argv[j][0] == '-' || ft_strcmp(argv[j], name) == 0))
+			j++;
+		//ft_putnbr(j);
+		if (!(argv[j]))
+			break;
+	//	if (j != 0 && argv[j - 1][0] != '-' && ft_strcmp(argv[j - 1], name) != 0)
+	//	{
+			
+	//	}
+		dir->name = argv[j];
+	//		ft_putstr(argv[j]);
+	//	ft_putstr("\n\n");
+		check_open(folder = opendir(argv[j]));
+		dir->f_names = make_list(reading(folder));
+		check_close(closedir(folder));
+		if (argv[++j] && argv[j][0] != '-' && ft_strcmp(argv[j], name) != 0)
 		{
 			dir->next = (t_dir*)malloc(sizeof(t_dir));
 			dir = dir->next;
 		}
-		while (argv[j] && (argv[j][0] == '-' || ft_strcmp(argv[j], name) == 0))
-			j++;
-		if (j >= double_arr_len(argv))
-		{
-			free(dir);
-			dir = NULL;
-			break;
-		}
-		dir->name = argv[j];
-		check_open(folder = opendir(argv[j]));
-		dir->f_names = reading(folder);
-		check_close(closedir(folder));
-		dir->next = NULL;
-	}	
-	while (head)
+	}
+	dir->next = NULL;
+	return (head);
+}
+
+t_dir	*make_list(char **arr)
+{
+	t_dir		*head;
+	t_dir		*dir;
+	DIR			*folder;
+	short int	i;
+
+	dir = (t_dir*)malloc(sizeof(t_dir));
+	head = dir;
+	i = -1;
+	while (arr[++i])
 	{
-		ft_putstr(head->name);
-		i = -1;
-		while (++i < double_arr_len(head->f_names))
-			ft_putstr(head->f_names[i]);
-	
-		head = head->next;
+		if (arr[i][0] != '.')
+		{
+			if (i != 0)
+			{
+				dir->next = (t_dir*)malloc(sizeof(t_dir));
+				dir = dir->next;
+			}
+			dir->name = arr[i];
+			//check_open(folder = opendir(arr[i]));
+			//dir->f_names = make_list(reading(folder));
+			//check_close(closedir(folder));
+		}
+		dir->next = NULL;
 	}
 	return (head);
 }
