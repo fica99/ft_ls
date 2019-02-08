@@ -6,7 +6,7 @@
 /*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:18 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/08 22:25:21 by ggrimes          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,11 @@ char		**sort_names(char **d_names);
 void		change_names(char **d_names, short int i);
 short int	double_arr_len(char **d_names);
 t_dir		*make_list(char **arr, short int level, char *name);
-char		**reading(DIR *dir);
+t_dir		*reading(t_dir *list, short int level);
+
+//sort_list
+t_dir       *sort_tree_list(t_dir *list, t_dir *(*sort)(t_dir *));
+t_dir		*sort_one_list(t_dir   *list);
+t_dir       *swap_list(t_dir *cur, t_dir *next);
+
 #endif
