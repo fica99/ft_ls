@@ -30,7 +30,7 @@ void		check_close(int nb)
 	}
 }
 
-char		check_file_type(mode_t	st_mode)
+char		check_file_type(mode_t st_mode)
 {
 	if (S_ISLNK(st_mode))
 		return (DT_LNK);
@@ -59,6 +59,13 @@ t_dir		*ft_list(void)
 	list->next = NULL;
 	list->flags = NULL;
 	list->err = 0;
+	list->gid_name = NULL;
+	list->uid_name = NULL;
+	list->level = 0;
+	list->total = 0;
+	list->time_mod = 0;
+	list->a_time = 0;
+	list->f_type = 0;
 	return (list);
 }
 

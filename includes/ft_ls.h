@@ -17,6 +17,8 @@
 # include <sys/types.h>
 # include <sys/ioctl.h>
 # include <sys/stat.h>
+# include <pwd.h>
+# include <grp.h>
 # include <unistd.h>
 # include <stdlib.h>
 # include <dirent.h>
@@ -33,13 +35,17 @@ typedef struct	s_dir
 	struct s_dir	*f_names;
 	struct s_dir	*next;
 	short int		level;
+	short int		total;
 	struct s_flags	*flags;
 	uint8_t			f_type; /* unsigned char */
 	off_t			size; /* long int */
-	uint8_t			err; /* errno (используй perror)*/
-	time_t			time; /* int количество секунд, прошедших с 00:00:00 1 января 1970 года времени UTC. (при выводе используй time or ctime) */
+	uint8_t			err; /* errno (strerror)*/
+	time_t			time_mod;
+	time_t			a_time; /* int количество секунд, прошедших с 00:00:00 1 января 1970 года времени UTC. (при выводе используй time or ctime) */
 	nlink_t			nlink; /*int*/
-	char			mode[9];
+	mode_t			mode;
+	char			*uid_name;
+	char			*gid_name;
 }				t_dir;
 
 typedef struct	s_flags
@@ -53,18 +59,18 @@ typedef struct	s_flags
 	uint8_t	f;
 	uint8_t	g;
 	uint8_t	d;
+	uint8_t	s_big;
 }				t_flags;
 
 typedef struct	s_prt
 {
 	int max;
-	int count;
-	int elem;
-	int elems;
-	int cur_chr;
-	int elem_in_line;
-	int len;
-}				t_prt;
+	int cnt_elems;
+	int cols;
+	int rows;
+	int cur_row;
+	int cur_col;
+}               t_prt;
 
 t_dir			*opening(int argc, char **argv);
 t_flags			*read_flags(char **argv, short int *i);
@@ -85,9 +91,15 @@ t_dir			*find_flag(t_dir *request);
 t_dir			*flaging_l(t_dir *request);
 t_dir			*flag_l(t_dir *request);
 t_dir			*reading_l(t_dir *request);
-void    		print(t_dir *request);
-t_prt           get_print_prm(t_dir *request);
-void            print_lvl(t_dir *request, int col_len);
-void            print_elem(char *str, int elem_size);
-int             print_end_elem(int elem_lost, int elems_brk);
+t_dir			*sort_list_rev(t_dir *list);
+t_dir			*sort_list_time(t_dir *list);
+t_dir			*sort_list_atime(t_dir *list);
+t_dir			*sort_list_size(t_dir *list);
+//print
+void            print(t_dir *request);
+void            print_cols(t_dir *request, int ws_col);
+t_prt           get_print_prm(t_dir *request, int ws_col);
+void            print_elem(char *str, t_prt pprm);
+t_dir           *next_elem(t_dir *request, t_prt pprm);
+void            print_line(t_dir  *request, t_prt pprm);
 #endif

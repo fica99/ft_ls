@@ -20,7 +20,6 @@ t_dir		*opening(int argc, char **argv)
 
 	i = 1;
 	request = ft_list();
-	request->level = 0;
 	request->flags = read_flags(argv, &i);
 	if (argc - i == 0)
 	{
@@ -31,11 +30,14 @@ t_dir		*opening(int argc, char **argv)
 	list = request->f_names;
 	while (list)
 	{
+		if (request->flags && (request->flags)->d)
+			break ;
 		list->f_names = reading(list, 2);
 		list = list->next;
 	}
-	if (request->flags)
-		return (find_flag(request));
+	if (request->flags && ((!(request->flags)->a) || (!(request->flags)->f) ||
+	(!(request->flags)->g) || (!(request->flags)->d)))
+		request = find_flag(request);
 	return (request);
 }
 
@@ -46,6 +48,16 @@ t_flags		*read_flags(char **argv, short int *i)
 
 	if (!(flags = (t_flags*)malloc(sizeof(t_flags))))
 		exit(-1);
+	flags->d = 0;
+	flags->a = 0;
+	flags->f = 0;
+	flags->g = 0;
+	flags->l = 0;
+	flags->r = 0;
+	flags->r_big = 0;
+	flags->u = 0;
+	flags->t = 0;
+	flags->s_big = 0;
 	while (argv[*i] && argv[*i][0] == '-')
 	{
 		j = 0;

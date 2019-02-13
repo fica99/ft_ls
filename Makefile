@@ -17,7 +17,9 @@ SRC=srcs/check.c\
 	srcs/sort_list.c\
 	srcs/flags.c\
 	srcs/flags2.c\
-	
+	srcs/sort_list2.c\
+	srcs/output.c\
+
 INCLUDES=includes
 
 LIB=libft
@@ -26,7 +28,7 @@ all: $(NAME)
 
 $(NAME):
 			@make re -C $(LIB)
-			@gcc -g -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
+			@gcc -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
 
 clean:
 			@make clean -C $(LIB)

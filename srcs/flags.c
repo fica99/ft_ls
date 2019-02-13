@@ -32,31 +32,53 @@ void	check_flag(t_flags *flags, char flag)
 		(flags)->g = 1;
 	else if (flag == 'd')
 		(flags)->d = 1;
+	else if (flag == 'S')
+		(flags)->s_big = 1;
+/*	if (flag == 'f' && ((flags->l) || (flags->t)))
+	{
+		flags->l = 0;
+		flags->t = 0;
+	}*/
 }
 
 t_dir	*find_flag(t_dir *request)
 {
+	t_dir	*head;
 	t_flags	*flags;
 
+	head = request;
 	flags = request->flags;
 	if (flags->r_big)
-		request = flaging_r_big(request);
+		request->f_names = flaging_r_big(request->f_names);
 	if (flags->l)
 		request->f_names = flaging_l(request->f_names);
-	return (request);
+	if (flags->r)
+		request->f_names = sort_tree_list(request->f_names, sort_list_rev);
+	if (flags->t || flags->u || flags->s_big)
+	{
+		if (!(flags->l))
+			request->f_names = flaging_l(request->f_names);
+		if (flags->t)
+			request->f_names = sort_tree_list(request->f_names, sort_list_time);
+		if (flags->u)
+			request->f_names = sort_tree_list(request->f_names, sort_list_atime);
+		if (flags->s_big)
+			request->f_names = sort_tree_list(request->f_names, sort_list_size);
+	}
+	return (head);
 }
 
 t_dir	*flaging_r_big(t_dir *request)
 {
 	t_dir	*dir;
 
-	dir = request->f_names;
-	while (dir)
+	dir = request;
+	while (request)
 	{
-		dir->f_names = flag_r_big(dir->f_names);
-		dir = dir->next;
+		request->f_names = flag_r_big(request->f_names);
+		request = request->next;
 	}
-	return (request);
+	return (dir);
 }
 
 t_dir	*flag_r_big(t_dir *request)
