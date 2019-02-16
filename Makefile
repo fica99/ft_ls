@@ -20,6 +20,7 @@ SRC=srcs/check.c\
 	srcs/sort_list2.c\
 	srcs/output.c\
 	srcs/print_one_level.c\
+	srcs/print_rows.c\
 
 INCLUDES=includes
 
