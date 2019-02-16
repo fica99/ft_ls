@@ -12,9 +12,9 @@
 
 #include <ft_ls.h>
 
-void                print(t_dir *request)
+void	print(t_dir *request)
 {
-    struct winsize  size;
+	struct winsize	size;
 	t_flags			*flags;
 	t_dir			*dir;
 
@@ -75,6 +75,8 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, t_flag
 				ft_putstr(request->path + 2);
 				ft_putstr(":\n");
 			}
+			if (request->err)
+				strerror(request->err);
 			f(request->f_names, size, flags);
 			print_all_rek(request->f_names, size, f, flags);
 		}
