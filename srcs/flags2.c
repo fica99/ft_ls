@@ -31,8 +31,6 @@ t_dir	*flag_l(t_dir *request)
 {
 	t_dir	*head;
 
-	if (!(request->next))
-		return (request);
 	head = request;
 	while (request)
 	{

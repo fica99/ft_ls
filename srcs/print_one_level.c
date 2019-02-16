@@ -18,7 +18,7 @@ t_prt                get_print_prm(t_dir *request, ushort ws_col)
         request = (*request).next;
     }
     pprm.cols = pprm.cnt_elems;
-    while((pprm.max + 2) * pprm.cols > ws_col)
+    while((pprm.max + 1) * pprm.cols > ws_col)
         pprm.cols--;
     f_rows = pprm.cnt_elems / pprm.cols;
     r_rows = (pprm.cnt_elems % pprm.cols > 0) ? 1 : 0;
@@ -59,7 +59,7 @@ void           print_line(t_dir  *request, t_prt pprm)
         if (pprm.cur_col == pprm.cols)
            ft_putchar('\n');
         else
-            ft_putstr("  ");
+            ft_putchar(' ');
         request = next_elem(request, pprm);
 		if (!request && pprm.cur_col != pprm.cols)
 				ft_putchar('\n');
