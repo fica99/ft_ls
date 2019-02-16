@@ -54,7 +54,7 @@ t_dir	*find_flag(t_dir *request)
 		request->f_names = flaging_l(request->f_names);
 	if (flags->r)
 		request->f_names = sort_tree_list(request->f_names, sort_list_rev);
-	if (flags->t || flags->u || flags->s_big)
+	if (flags->t || flags->u || flags->s_big || flags->g)
 	{
 		if (!(flags->l))
 			request->f_names = flaging_l(request->f_names);

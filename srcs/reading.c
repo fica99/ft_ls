@@ -14,9 +14,9 @@
 
 t_dir		*opening(int argc, char **argv)
 {
-	short int	i;
-	t_dir		*request;
-	t_dir		*list;
+	uint8_t	i;
+	t_dir	*request;
+	t_dir	*list;
 
 	i = 1;
 	request = ft_list();
@@ -35,16 +35,17 @@ t_dir		*opening(int argc, char **argv)
 		list->f_names = reading(list, 2);
 		list = list->next;
 	}
-	if (request->flags && ((!(request->flags)->a) || (!(request->flags)->f) ||
-	(!(request->flags)->g) || (!(request->flags)->d)))
+	if (request->flags && ((request->flags)->r_big || (request->flags)->l ||
+	(request->flags)->r || (request->flags)->t || (request->flags)->s_big ||
+	(request->flags)->g || (request->flags)->u))
 		request = find_flag(request);
 	return (request);
 }
 
-t_flags		*read_flags(char **argv, short int *i)
+t_flags		*read_flags(char **argv, uint8_t *i)
 {
 	t_flags		*flags;
-	short int	j;
+	uint8_t		j;
 
 	if (!(flags = (t_flags*)malloc(sizeof(t_flags))))
 		exit(-1);
@@ -70,11 +71,11 @@ t_flags		*read_flags(char **argv, short int *i)
 	return (flags);
 }
 
-t_dir		*make_list(char **arr, short int level)
+t_dir		*make_list(char **arr, uint8_t level)
 {
 	t_dir		*head;
 	t_dir		*dir;
-	short int	i;
+	uint8_t		i;
 
 	dir = ft_list();
 	head = dir;

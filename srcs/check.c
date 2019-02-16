@@ -30,7 +30,7 @@ void		check_close(int nb)
 	}
 }
 
-char		check_file_type(mode_t st_mode)
+uint8_t		check_file_type(mode_t st_mode)
 {
 	if (S_ISLNK(st_mode))
 		return (DT_LNK);
@@ -59,6 +59,7 @@ t_dir		*ft_list(void)
 	list->next = NULL;
 	list->flags = NULL;
 	list->err = 0;
+	list->size = 0;
 	list->gid_name = NULL;
 	list->uid_name = NULL;
 	list->level = 0;
@@ -66,12 +67,16 @@ t_dir		*ft_list(void)
 	list->time_mod = 0;
 	list->a_time = 0;
 	list->f_type = 0;
+	list->nlink = 0;
+	list->name = NULL;
+	list->path = NULL;
+	list->mode = 0;
 	return (list);
 }
 
-short int	double_arr_len(char **d_names)
+uint8_t	double_arr_len(char **d_names)
 {
-	short int	i;
+	uint8_t	i;
 
 	i = 0;
 	while (d_names[i])
