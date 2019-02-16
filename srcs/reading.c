@@ -30,13 +30,13 @@ t_dir		*opening(int argc, char **argv)
 	list = request->f_names;
 	while (list)
 	{
-		if (request->flags && (request->flags)->d)
+		if ((request->flags)->d)
 			break ;
-		list->f_names = reading(list, 2);
+		list->f_names = reading(list, 2, request->flags);
 		list = list->next;
 	}
-	if (request->flags && ((request->flags)->r_big || (request->flags)->l ||
-	(request->flags)->r || (request->flags)->t || (request->flags)->s_big ||
+	if (((request->flags)->r_big || (request->flags)->l || (request->flags)->r
+	|| (request->flags)->t || (request->flags)->s_big ||
 	(request->flags)->g || (request->flags)->u))
 		request = find_flag(request);
 	return (request);
@@ -66,8 +66,6 @@ t_flags		*read_flags(char **argv, uint8_t *i)
 			check_flag(flags, argv[*i][j]);
 		(*i)++;
 	}
-	if ((*i) == 1)
-		ft_memdel((void**)&flags);
 	return (flags);
 }
 
@@ -97,7 +95,7 @@ t_dir		*make_list(char **arr, uint8_t level)
 	return (head);
 }
 
-t_dir		*reading(t_dir *list, short int level)
+t_dir		*reading(t_dir *list, short int level, t_flags *flags)
 {
 	t_dir			*head;
 	t_dir			*d;
@@ -112,6 +110,8 @@ t_dir		*reading(t_dir *list, short int level)
 	i = -1;
 	while ((file = readdir(folder)) != NULL)
 	{
+		if (!(flags->a)  && !(flags->f) && (file->d_name)[0] == '.')
+			continue ;
 		if (++i != 0)
 		{
 			d->next = ft_list();
@@ -120,7 +120,6 @@ t_dir		*reading(t_dir *list, short int level)
 		d->name = ft_strdup(file->d_name);
 		d->path = ft_strjoin(ft_strjoin(list->path, "/"), d->name);
 		d->level = level;
-		d->f_type = file->d_type;
 	}
 	check_close(closedir(folder));
 	return (head);

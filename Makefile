@@ -19,6 +19,7 @@ SRC=srcs/check.c\
 	srcs/flags2.c\
 	srcs/sort_list2.c\
 	srcs/output.c\
+	srcs/print_one_level.c\
 
 INCLUDES=includes
 

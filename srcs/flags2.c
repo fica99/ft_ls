@@ -53,14 +53,12 @@ t_dir	*reading_l(t_dir *request)
 		request->err = errno;
 		return (file);
 	}
-	if (request->level == 1)
-		request->f_type = check_file_type(buf.st_mode);
 	request->size = buf.st_size;
 	request->time_mod = buf.st_mtime;
 	request->a_time = buf.st_atime;
 	request->nlink = buf.st_nlink;
-	request->uid_name = ft_strdup(getpwuid(buf.st_uid)->pw_name);
-	request->gid_name = ft_strdup(getgrgid(buf.st_gid)->gr_name);
+	request->uid = buf.st_uid;
+	request->gid = buf.st_gid;
 	request->mode = buf.st_mode;
 	request->total = buf.st_blksize;
 	return (file);

@@ -38,15 +38,15 @@ typedef struct	s_dir
 	uint8_t			level;
 	short int		total;
 	struct s_flags	*flags;
-	uint8_t			f_type; /* unsigned char */
 	off_t			size; /* long int */
 	uint8_t			err; /* errno (strerror)*/
 	time_t			time_mod;
 	time_t			a_time; /* int количество секунд, прошедших с 00:00:00 1 января 1970 года времени UTC. (при выводе используй time or ctime) */
 	nlink_t			nlink; /*int*/
 	mode_t			mode;
-	char			*uid_name;
-	char			*gid_name;
+	uid_t			uid;
+	gid_t			gid;
+	uint8_t			files;
 }				t_dir;
 
 typedef struct	s_flags
@@ -63,7 +63,7 @@ typedef struct	s_flags
 	uint8_t	s_big;
 }				t_flags;
 
-typedef struct  s_prt_c
+typedef struct  s_prt
 {
 	uint8_t	max;
 	ushort	cnt_elems;
@@ -71,32 +71,31 @@ typedef struct  s_prt_c
 	ushort	rows;
 	ushort	cur_row;
 	ushort	cur_col;
-}               t_prt_c;
+}               t_prt;
 
 typedef struct  s_prt_r
 {
-    ushort      total;
-    u_int8_t    max_nlink;
-    u_int8_t    max_size;
-    ushort      max_uid;
-    ushort      max_gid;
+	ushort      total;
+	u_int8_t    max_nlink;
+	u_int8_t    max_size;
+	ushort      max_uid;
+	ushort      max_gid;
 }               t_prt_r;
 
 t_dir			*opening(int argc, char **argv);
 t_flags			*read_flags(char **argv, uint8_t *i);
 char			check_open(DIR *dir, t_dir **list);
 void			check_close(int nb);
-uint8_t			check_file_type(mode_t	st_mode);
 t_dir			*make_list(char **arr, uint8_t	level);
-t_dir			*reading(t_dir *list, short int level);
+t_dir			*reading(t_dir *list, short int level, t_flags *flags);
 void			check_flag(t_flags *flags, char flag);
 uint8_t			double_arr_len(char **d_names);
 t_dir			*sort_tree_list(t_dir *list, t_dir *(*sort)(t_dir *));
 t_dir			*sort_one_list(t_dir *list);
 t_dir			*swap_list(t_dir *cur, t_dir *next);
 t_dir			*ft_list(void);
-t_dir			*flag_r_big(t_dir *request);
-t_dir			*flaging_r_big(t_dir *request);
+t_dir			*flag_r_big(t_dir *request, t_flags *flags);
+t_dir			*flaging_r_big(t_dir *request, t_flags *flags);
 t_dir			*find_flag(t_dir *request);
 t_dir			*flaging_l(t_dir *request);
 t_dir			*flag_l(t_dir *request);
@@ -108,11 +107,13 @@ t_dir			*sort_list_size(t_dir *list);
 t_dir			*sort_list_f_d(t_dir *list);
 void            print(t_dir *request);
 void            print_cols(t_dir *request, ushort ws_col, t_flags *flags);
-t_prt_c         get_print_prm_c(t_dir *request, ushort ws_col, t_flags *flags);
+t_prt           get_print_prm(t_dir *request, ushort ws_col);
 void            print_elem(char *str, uint8_t max);
-t_dir           *next_elem(t_dir *request, t_prt_c pprm);
-void            print_line(t_dir  *request, t_prt_c pprm, t_flags *flags);
-void			print_all_rek(t_dir *request, ushort size, t_flags *flags);
+t_dir           *next_elem(t_dir *request, t_prt pprm);
+void            print_line(t_dir  *request, t_prt pprm);
+void			print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, t_flags *), t_flags *flags);
+t_dir			*print_files(t_dir *request, ushort size);
+t_dir			*sort_list_point(t_dir *list);
 t_dir	        *print_files(t_dir *request, ushort ws_col);
 void            print_rows(t_dir *request, ushort ws_cols, t_flags *flags);
 t_prt_r         get_print_prm_r(t_dir *request, ushort ws_col, t_flags *flags);

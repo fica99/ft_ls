@@ -30,25 +30,6 @@ void		check_close(int nb)
 	}
 }
 
-uint8_t		check_file_type(mode_t st_mode)
-{
-	if (S_ISLNK(st_mode))
-		return (DT_LNK);
-	else if (S_ISREG(st_mode))
-		return (DT_REG);
-	else if (S_ISDIR(st_mode))
-		return (DT_DIR);
-	else if (S_ISCHR(st_mode))
-		return (DT_CHR);
-	else if (S_ISBLK(st_mode))
-		return (DT_BLK);
-	else if (S_ISFIFO(st_mode))
-		return (DT_FIFO);
-	else if (S_ISSOCK(st_mode))
-		return (DT_SOCK);
-	return (DT_UNKNOWN);
-}
-
 t_dir		*ft_list(void)
 {
 	t_dir	*list;
@@ -60,17 +41,17 @@ t_dir		*ft_list(void)
 	list->flags = NULL;
 	list->err = 0;
 	list->size = 0;
-	list->gid_name = NULL;
-	list->uid_name = NULL;
+	list->gid = 0;
+	list->uid = 0;
 	list->level = 0;
 	list->total = 0;
 	list->time_mod = 0;
 	list->a_time = 0;
-	list->f_type = 0;
 	list->nlink = 0;
 	list->name = NULL;
 	list->path = NULL;
 	list->mode = 0;
+	list->files = 0;
 	return (list);
 }
 

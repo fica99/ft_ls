@@ -37,9 +37,9 @@ t_prt_r         get_print_prm_r(t_dir *request, ushort ws_col, t_flags *flags)
             pprm.max_nlink = bit;
         if ((bit = get_bit((*request).size)) > pprm.max_size)
             pprm.max_size = bit;
-        if ((len = ft_strlen((*(*request).uid).pw_name)) > pprm.max_uid)
+        if ((len = ft_strlen((*getpwuid((*request).uid)).pw_name)) > pprm.max_uid)
             pprm.max_uid = len;
-        if ((len = ft_strlen((*(*request).uid).gr_name) > pprm.max_gid)
+        if ((len = ft_strlen((*getgrgid((*request).gid)).gr_name)) > pprm.max_gid)
             pprm.max_gid = len;
         request = (*request).next;
     }
@@ -60,7 +60,7 @@ uint8_t get_bit(int nlink)
 
 void    print_line_rows(t_dir   *request, t_flags *flags, ushort ws_cols, t_prt_r pprm)
 {
-    print_type((*request).f_type);
+    print_type((*request).mode);
     print_mode_bits((*request).mode);
     print_number((long int)(*request).nlink, (long int)pprm.max_nlink);
     print_gu_ids(request, pprm, flags);
@@ -75,7 +75,7 @@ void    print_type(mode_t mode)
     if (S_ISLNK(mode))
         ft_putchar('l');
     else if (S_ISREG(mode))
-        ft_putchar('_');
+        ft_putchar('-');
     else if (S_ISDIR(mode))
         ft_putchar('d');
     else if (S_ISCHR(mode))
@@ -155,10 +155,10 @@ void    print_gu_ids(t_dir *request, t_prt_r pprm, t_flags *flags)
 {
     if (!(*flags).g)
     {
-        print_elem(getpwuid((*(*request).uid).pw_name), pprm.max_uid);
+        print_elem((*getpwuid((*request).uid)).pw_name, pprm.max_uid);
         ft_putstr("  ");
     }
-    print_elem(getpwuid((*(*request).uid).gr_name), pprm.max_gid);
+    print_elem((*getgrgid((*request).gid)).gr_name, pprm.max_gid);
     ft_putstr("  ");
 }
 

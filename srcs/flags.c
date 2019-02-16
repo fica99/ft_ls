@@ -34,11 +34,6 @@ void	check_flag(t_flags *flags, char flag)
 		(flags)->d = 1;
 	else if (flag == 'S')
 		(flags)->s_big = 1;
-/*	if (flag == 'f' && ((flags->l) || (flags->t)))
-	{
-		flags->l = 0;
-		flags->t = 0;
-	}*/
 }
 
 t_dir	*find_flag(t_dir *request)
@@ -49,7 +44,7 @@ t_dir	*find_flag(t_dir *request)
 	head = request;
 	flags = request->flags;
 	if (flags->r_big)
-		request->f_names = flaging_r_big(request->f_names);
+		request->f_names = flaging_r_big(request->f_names, flags);
 	if (flags->l)
 		request->f_names = flaging_l(request->f_names);
 	if (flags->r)
@@ -68,20 +63,20 @@ t_dir	*find_flag(t_dir *request)
 	return (head);
 }
 
-t_dir	*flaging_r_big(t_dir *request)
+t_dir	*flaging_r_big(t_dir *request, t_flags *flags)
 {
 	t_dir	*dir;
 
 	dir = request;
 	while (request)
 	{
-		request->f_names = flag_r_big(request->f_names);
+		request->f_names = flag_r_big(request->f_names, flags);
 		request = request->next;
 	}
 	return (dir);
 }
 
-t_dir	*flag_r_big(t_dir *request)
+t_dir	*flag_r_big(t_dir *request, t_flags *flags)
 {
 	t_dir	*head;
 
@@ -91,8 +86,8 @@ t_dir	*flag_r_big(t_dir *request)
 		if ((ft_strcmp(request->name, ".") != 0) &&
 			(ft_strcmp(request->name, "..") != 0))
 		{
-			request->f_names = reading(request, (request->level) + 1);
-			request->f_names = flag_r_big(request->f_names);
+			request->f_names = reading(request, (request->level) + 1, flags);
+			request->f_names = flag_r_big(request->f_names, flags);
 		}
 		request = request->next;
 	}
