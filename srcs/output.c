@@ -18,19 +18,27 @@ void	print(t_dir *request)
 	t_flags			*flags;
 	t_dir			*dir;
 
+	if (!request)
+	{
+		perror("ft_ls");
+		exit(-1);
+	}
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
-        printf("TIOCGWINSZ error");
+	{
+        ft_putstr("TIOCGWINSZ error");
+		exit (-1);
+	}
 	flags = (*request).flags;
 	request = request->f_names;
-	if (flags->d)
+	if (!(flags->d))
 	{
-		print_cols(request, size.ws_col, NULL);
-		exit (1);
+		request = sort_list_f_d(request);
+		dir = print_files(request, size.ws_col);
+		if (dir != request)
+			dir->files = 1;
 	}
-	request = sort_list_f_d(request);
-	dir = print_files(request, size.ws_col);
-	if (dir != request)
-		dir->files = 1;
+	else
+		dir = request;	
 	print_all_rek(dir, size.ws_col, ((*flags).l) ? print_rows : print_cols, flags);
 }
 
@@ -40,11 +48,13 @@ t_dir	*print_files(t_dir *request, ushort size)
 	t_dir			*dir;
 
 
+	if (!request)
+		exit(-1);
 	files = request;
 	dir = request;
 	while (request)
 	{
-		if (!request->f_names && (request->next)->f_names)
+		if (!request->f_names && request->next && (request->next)->f_names)
 		{
 			dir = request->next;
 			request->next = NULL;
@@ -66,20 +76,26 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, t_flag
 	i = -1;
 	while(request)
 	{
-		if (request->f_names)
+		if (!flags->d)
 		{
-			if (++i != 0 || request->files || request->next || request->level != 1)
-    		{
-				if (i != 0 || request->level != 1)
-					ft_putchar('\n');
-				ft_putstr(request->path + 2);
-				ft_putstr(":\n");
+			if (request->f_names)
+			{
+				if (++i != 0 || request->files || request->next || request->level != 1)
+    			{
+					if (i != 0 || request->level != 1)
+						ft_putchar('\n');
+					ft_putstr(request->path + 2);
+					ft_putstr(":\n");
+				}
+				f(request->f_names, size, flags);
+				print_all_rek(request->f_names, size, f, flags);
 			}
-			if (request->err)
-				strerror(request->err);
-			f(request->f_names, size, flags);
-			print_all_rek(request->f_names, size, f, flags);
 		}
+		else
+		{
+			f(request, size, flags);
+			exit (1);
+		}		
 		request = request->next;
 	}
 }

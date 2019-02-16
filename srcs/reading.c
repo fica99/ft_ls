@@ -31,8 +31,9 @@ t_dir		*opening(int argc, char **argv)
 	while (list)
 	{
 		if ((request->flags)->d)
-			break ;
-		list->f_names = reading(list, 2, request->flags);
+			break ;	
+		if (!(list->f_names = reading(list, 2, request->flags)))
+			list->name = NULL;
 		list = list->next;
 	}
 	if (((request->flags)->r_big || (request->flags)->l || (request->flags)->r
@@ -48,7 +49,10 @@ t_flags		*read_flags(char **argv, uint8_t *i)
 	uint8_t		j;
 
 	if (!(flags = (t_flags*)malloc(sizeof(t_flags))))
+	{
+		perror("ft_ls");
 		exit(-1);
+	}
 	flags->d = 0;
 	flags->a = 0;
 	flags->f = 0;
@@ -103,7 +107,7 @@ t_dir		*reading(t_dir *list, short int level, t_flags *flags)
 	DIR				*folder;
 	short int		i;
 
-	if (!(check_open(folder = opendir(list->path), &list)))
+	if (!(check_open(folder = opendir(list->path),list->name)))
 		return (NULL);
 	d = ft_list();
 	head = d;

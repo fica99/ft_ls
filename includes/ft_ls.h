@@ -39,7 +39,6 @@ typedef struct	s_dir
 	short int		total;
 	struct s_flags	*flags;
 	off_t			size; /* long int */
-	uint8_t			err; /* errno (strerror)*/
 	time_t			time_mod;
 	time_t			a_time; /* int количество секунд, прошедших с 00:00:00 1 января 1970 года времени UTC. (при выводе используй time or ctime) */
 	nlink_t			nlink; /*int*/
@@ -84,7 +83,7 @@ typedef struct  s_prt_r
 
 t_dir			*opening(int argc, char **argv);
 t_flags			*read_flags(char **argv, uint8_t *i);
-char			check_open(DIR *dir, t_dir **list);
+char			check_open(DIR *dir, char *name);
 void			check_close(int nb);
 t_dir			*make_list(char **arr, uint8_t	level);
 t_dir			*reading(t_dir *list, short int level, t_flags *flags);

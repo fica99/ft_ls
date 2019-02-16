@@ -48,7 +48,8 @@ t_dir	*reading_l(t_dir *request)
 	file = request;
 	if (lstat(request->path, &buf) == -1)
 	{
-		request->err = errno;
+		ft_putstr("ls: ");
+		strerror(errno);
 		return (file);
 	}
 	request->size = buf.st_size;
