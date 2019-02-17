@@ -34,6 +34,13 @@ void	check_flag(t_flags *flags, char flag)
 		(flags)->d = 1;
 	else if (flag == 'S')
 		(flags)->s_big = 1;
+	else
+	{
+		ft_putstr("ft_ls: invalid option -- '");
+		ft_putchar(flag);
+		ft_putstr("'\n");
+		exit (-1);
+	}
 }
 
 t_dir	*find_flag(t_dir *request)
