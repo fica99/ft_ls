@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-char		check_open(DIR *dir,char *name)
+char	check_open(DIR *dir, char *name)
 {
 	if (dir == NULL && errno != ENOTDIR)
 	{
@@ -24,7 +24,7 @@ char		check_open(DIR *dir,char *name)
 	return (0);
 }
 
-void		check_close(int nb)
+void	check_close(int nb)
 {
 	if (nb == -1)
 	{
@@ -33,7 +33,7 @@ void		check_close(int nb)
 	}
 }
 
-t_dir		*ft_list(void)
+t_dir	*ft_list(void)
 {
 	t_dir	*list;
 
@@ -72,7 +72,7 @@ uint8_t	double_arr_len(char **d_names)
 	return (i);
 }
 
-t_dir		*swap_list(t_dir *cur, t_dir *next)
+t_dir	*swap_list(t_dir *cur, t_dir *next)
 {
 	(*cur).next = (*next).next;
 	(*next).next = cur;

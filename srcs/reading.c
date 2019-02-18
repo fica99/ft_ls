@@ -66,7 +66,7 @@ t_dir		*reading(t_dir *list, short int level, t_flags *flags)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (!(check_open(folder = opendir(list->path), list->name)))
+	if (!(check_open(folder = opendir(list->path), list->path + 2)))
 		return (NULL);
 	d = ft_list();
 	head = d;

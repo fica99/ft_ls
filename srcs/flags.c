@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-t_flags		*read_flags(char **argv, uint8_t *i)
+t_flags	*read_flags(char **argv, uint8_t *i)
 {
 	t_flags		*flags;
 	uint8_t		j;
@@ -51,40 +51,34 @@ void	check_flag(t_flags *flags, char flag)
 	else if (flag == 'S')
 		(flags)->s_big = 1;
 	else
-	{
-		ft_putstr("ft_ls: illegal option -- '");
-		ft_putchar(flag);
-		ft_putstr("'\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
-		exit(-1);
-	}
+		print_usage(flag);
 }
 
 t_dir	*find_flag(t_dir *request)
 {
 	t_dir	*head;
-	t_flags	*flags;
+	t_flags	*f;
 
 	head = request;
-	flags = request->flags;
-	if (flags->r_big)
-		request->f_names = flaging_r_big(request->f_names, flags);
-	if (flags->l)
+	f = request->flags;
+	if (f->r_big)
+		request->f_names = flaging_r_big(request->f_names, f);
+	if (f->l)
 		request->f_names = flaging_l(request->f_names);
-	if (flags->r)
+	if (f->r)
 		request->f_names = sort_tree(request->f_names, sort_list_rev);
-	if (flags->t || flags->u || flags->s_big || flags->g)
+	if (f->t || f->u || f->s_big || f->g)
 	{
-		if (!(flags->l))
+		if (!(f->l))
 			request->f_names = flaging_l(request->f_names);
-		if (flags->t)
+		if (f->t)
 			request->f_names = sort_tree(request->f_names, sort_list_time);
-		if (flags->u)
+		if (f->u)
 			request->f_names = sort_tree(request->f_names, sort_list_atime);
-		if (flags->s_big)
+		if (f->s_big)
 			request->f_names = sort_tree(request->f_names, sort_list_size);
 	}
-	if ((!(flags->t) && !(flags->r) && !(flags->u) && !(flags->f)
-	&& !(flags->s_big)))
+	if ((!(f->t) && !(f->r) && !(f->u) && !(f->f) && !(f->s_big)))
 		request->f_names = sort_tree(request->f_names, sort_one_list);
 	return (head);
 }
@@ -93,6 +87,8 @@ t_dir	*flaging_r_big(t_dir *request, t_flags *flags)
 {
 	t_dir	*dir;
 
+	if (!request)
+		return (NULL);
 	dir = request;
 	while (request)
 	{
@@ -106,6 +102,8 @@ t_dir	*flag_r_big(t_dir *request, t_flags *flags)
 {
 	t_dir	*head;
 
+	if (!request)
+		return (NULL);
 	head = request;
 	while (request)
 	{

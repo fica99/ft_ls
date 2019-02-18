@@ -65,7 +65,7 @@ t_dir	*reading_l(t_dir *request)
 t_flags	*flags_init(void)
 {
 	t_flags	*flags;
-	
+
 	if (!(flags = (t_flags*)malloc(sizeof(t_flags))))
 	{
 		perror("ft_ls");
@@ -82,4 +82,12 @@ t_flags	*flags_init(void)
 	flags->t = 0;
 	flags->s_big = 0;
 	return (flags);
+}
+
+void	print_usage(char c)
+{
+	ft_putstr("ft_ls: illegal option -- '");
+	ft_putchar(c);
+	ft_putstr("'\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
+	exit(-1);
 }
