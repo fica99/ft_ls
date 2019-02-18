@@ -71,3 +71,10 @@ uint8_t	double_arr_len(char **d_names)
 		i++;
 	return (i);
 }
+
+t_dir		*swap_list(t_dir *cur, t_dir *next)
+{
+	(*cur).next = (*next).next;
+	(*next).next = cur;
+	return (next);
+}

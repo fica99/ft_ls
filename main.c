@@ -18,10 +18,6 @@ int	main(int argc, char **argv)
 	t_flags	*flags;
 
 	request = opening(argc, argv);
-	flags = request->flags;
-	if ((!(flags->t) && !(flags->r) && !(flags->u) && !(flags->f)
-	&& !(flags->s_big)))
-		request->f_names = sort_tree_list(request->f_names, sort_one_list);
 	print(request);
 	return (0);
 }

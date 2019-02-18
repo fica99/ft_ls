@@ -48,8 +48,7 @@ t_dir	*reading_l(t_dir *request)
 	file = request;
 	if (lstat(request->path, &buf) == -1)
 	{
-		ft_putstr("ls: ");
-		strerror(errno);
+		perror("ft_ls: ");
 		return (file);
 	}
 	request->size = buf.st_size;
@@ -61,4 +60,26 @@ t_dir	*reading_l(t_dir *request)
 	request->mode = buf.st_mode;
 	request->total = buf.st_blksize;
 	return (file);
+}
+
+t_flags	*flags_init(void)
+{
+	t_flags	*flags;
+	
+	if (!(flags = (t_flags*)malloc(sizeof(t_flags))))
+	{
+		perror("ft_ls");
+		exit(-1);
+	}
+	flags->d = 0;
+	flags->a = 0;
+	flags->f = 0;
+	flags->g = 0;
+	flags->l = 0;
+	flags->r = 0;
+	flags->r_big = 0;
+	flags->u = 0;
+	flags->t = 0;
+	flags->s_big = 0;
+	return (flags);
 }

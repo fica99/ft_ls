@@ -85,11 +85,11 @@ t_dir			*opening(int argc, char **argv);
 t_flags			*read_flags(char **argv, uint8_t *i);
 char			check_open(DIR *dir, char *name);
 void			check_close(int nb);
-t_dir			*make_list(char **arr, uint8_t	level);
+t_dir			*make_list(char **arr, uint8_t level, uint8_t *i);
 t_dir			*reading(t_dir *list, short int level, t_flags *flags);
 void			check_flag(t_flags *flags, char flag);
 uint8_t			double_arr_len(char **d_names);
-t_dir			*sort_tree_list(t_dir *list, t_dir *(*sort)(t_dir *));
+t_dir			*sort_tree(t_dir *list, t_dir *(*sort)(t_dir *));
 t_dir			*sort_one_list(t_dir *list);
 t_dir			*swap_list(t_dir *cur, t_dir *next);
 t_dir			*ft_list(void);
@@ -126,4 +126,5 @@ void            cheak_oth(mode_t mode, char *str);
 void            print_number(long int num, long int max);
 void            print_gu_ids(t_dir *request, t_prt_r pprm, t_flags *flags);
 void            print_time(time_t time);
+t_flags			*flags_init(void)
 #endif

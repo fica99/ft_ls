@@ -12,40 +12,13 @@
 
 #include "ft_ls.h"
 
-t_dir		*sort_list_atime(t_dir *list)
-{
-	t_dir	*head;
-	t_dir	*pre;
-
-	if (!list)
-		exit(-1);
-	if (!(*list).next)
-		return (list);
-	head = list;
-	while (list && (*list).next)
-	{
-		if (list->a_time < (list->next)->a_time)
-		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
-			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
-			continue ;
-		}
-		pre = list;
-		list = list->next;
-	}
-	return (head);
-}
-
 t_dir		*sort_list_size(t_dir *list)
 {
 	t_dir	*head;
 	t_dir	*pre;
 
 	if (!list)
-		exit(-1);
+		return (NULL);
 	if (!(*list).next)
 		return (list);
 	head = list;
@@ -72,40 +45,13 @@ t_dir		*sort_list_f_d(t_dir *list)
 	t_dir	*pre;
 
 	if (!list)
-		exit(-1);
+		return (NULL);
 	if (!(*list).next)
 		return (list);
 	head = list;
 	while (list && (*list).next)
 	{
 		if ((*list).f_names && !(*((*list).next)).f_names)
-		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
-			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
-			continue ;
-		}
-		pre = list;
-		list = list->next;
-	}
-	return (head);
-}
-
-t_dir		*sort_list_point(t_dir *list)
-{
-	t_dir	*head;
-	t_dir	*pre;
-
-	if (!list)
-		exit(-1);
-	if (!(*list).next)
-		return (list);
-	head = list;
-	while (list && (*list).next)
-	{
-		if ((list->name)[0] != '.' && ((list->next)->name)[0] == '.' && list->level != 1)
 		{
 			if (list == head)
 				head = swap_list(list, (*list).next);
