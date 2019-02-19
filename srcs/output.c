@@ -94,12 +94,9 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, t_flag
 t_dir           *next_elem(t_dir *request, t_prt pprm)
 {
     ushort	i;
-    ushort	offset;
 
     i = 0;
-   offset = (pprm.cur_col + ((pprm.rows - 1) * pprm.cols)
-            <= pprm.cnt_elems) ? pprm.rows : pprm.rows - 1;
-    while (++i <= offset && request)
+    while (++i <= pprm.rows && request)
         request = (*request).next;
     return (request);
 }
