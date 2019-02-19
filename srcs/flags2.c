@@ -31,8 +31,6 @@ t_dir	*flag_l(t_dir *request)
 {
 	t_dir	*head;
 
-	if (!(request->next))
-		return (request);
 	head = request;
 	while (request)
 	{
@@ -50,7 +48,7 @@ t_dir	*reading_l(t_dir *request)
 	file = request;
 	if (lstat(request->path, &buf) == -1)
 	{
-		request->err = errno;
+		perror("ft_ls: ");
 		return (file);
 	}
 	request->size = buf.st_size;
@@ -62,4 +60,12 @@ t_dir	*reading_l(t_dir *request)
 	request->mode = buf.st_mode;
 	request->total = buf.st_blksize;
 	return (file);
+}
+
+void	print_usage(char c)
+{
+	ft_putstr("ft_ls: illegal option -- ");
+	ft_putchar(c);
+	ft_putstr("\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
+	exit(-1);
 }

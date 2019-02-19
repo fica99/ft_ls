@@ -12,39 +12,43 @@
 
 #include <ft_ls.h>
 
-void                print(t_dir *request)
+void	print(t_dir *request)
 {
-    struct winsize  size;
-	t_flags			*flags;
+	struct winsize	size;
+	ushort			flags;
 	t_dir			*dir;
 
-    if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
-        printf("TIOCGWINSZ error");
+	if (!request || ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
+		exit(-1);
 	flags = (*request).flags;
 	request = request->f_names;
-	if (flags->d)
+	if (is_flags(flags, 'd'))
 	{
-		print_cols(request, size.ws_col, NULL);
-		exit (1);
+		if (is_flags(flags, 'l') || is_flags(flags, 'g'))
+			print_rows(request, size.ws_col, flags);
+		else
+			print_cols(request, size.ws_col, flags);
+		exit(0);
 	}
 	request = sort_list_f_d(request);
 	dir = print_files(request, size.ws_col);
 	if (dir != request)
-		dir->files = 1;
-	print_all_rek(dir, size.ws_col, ((*flags).l) ? print_rows : print_cols, flags);
+		flags = add_flag(flags, 1);
+	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l')) ? print_rows : print_cols, flags);
 }
 
 t_dir	*print_files(t_dir *request, ushort size)
 {
-	t_dir			*files;
-	t_dir			*dir;
+	t_dir	*files;
+	t_dir	*dir;
 
-
+	if (!request)
+		return (NULL);
 	files = request;
 	dir = request;
 	while (request)
 	{
-		if (!request->f_names && (request->next)->f_names)
+		if (!request->f_names && request->next && (request->next)->f_names)
 		{
 			dir = request->next;
 			request->next = NULL;
@@ -52,32 +56,28 @@ t_dir	*print_files(t_dir *request, ushort size)
 		request = request->next;
 	}
 	if (files != dir)
-	{
-		print_cols(files, size, NULL);
-		ft_putchar('\n');
-	}
+		print_cols(files, size, 0);
 	return (dir);
 }
 
-void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, t_flags *), t_flags *flags)
+void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, ushort), ushort flags)
 {
-	uint8_t	i;
-
-	i = -1;
 	while(request)
 	{
 		if (request->f_names)
 		{
-			if (++i != 0 || request->files || request->next || request->level != 1)
-    		{
-				if (i != 0 || request->level != 1)
-					ft_putchar('\n');
-				ft_putstr(request->path + 2);
-				ft_putstr(":\n");
-			}
 			f(request->f_names, size, flags);
+			ft_putstr("\n\n\n\n");
 			print_all_rek(request->f_names, size, f, flags);
 		}
+		//if (is_flags(flags, 1) || request->next)
+		//{
+		//	ft_putchar('\n');
+	//		ft_putstr(request->path + 2);
+	//		ft_putstr(":\n");
+	//	}
+	//	flags = add_flag(flags, 1);
+		//if (request->f_names
 		request = request->next;
 	}
 }
@@ -85,12 +85,9 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, t_flag
 t_dir           *next_elem(t_dir *request, t_prt pprm)
 {
     ushort	i;
-    ushort	offset;
 
     i = 0;
-    offset = (pprm.cur_col + ((pprm.rows - 1) * pprm.cols)
-            <= pprm.cnt_elems) ? pprm.rows : pprm.rows - 1;
-    while (++i <= offset && request)
+    while (++i <= pprm.rows && request)
         request = (*request).next;
     return (request);
 }

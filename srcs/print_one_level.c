@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_one_level.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
+/*   Updated: 2019/02/18 14:59:45 by aashara-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 t_prt                get_print_prm(t_dir *request, ushort ws_col)
@@ -18,7 +30,7 @@ t_prt                get_print_prm(t_dir *request, ushort ws_col)
         request = (*request).next;
     }
     pprm.cols = pprm.cnt_elems;
-    while((pprm.max + 2) * pprm.cols > ws_col)
+    while((pprm.max + 1) * pprm.cols > ws_col)
         pprm.cols--;
     f_rows = pprm.cnt_elems / pprm.cols;
     r_rows = (pprm.cnt_elems % pprm.cols > 0) ? 1 : 0;
@@ -26,11 +38,11 @@ t_prt                get_print_prm(t_dir *request, ushort ws_col)
     return (pprm);
 }
 
-void                print_cols(t_dir *request, ushort ws_col, t_flags *flags)
+void                print_cols(t_dir *request, ushort ws_col, ushort flags)
 {
     t_prt           pprm;
 
-    flags = NULL;
+    flags = 0;
     pprm = get_print_prm(request, ws_col);
     pprm.cur_row = 0;
     while (++pprm.cur_row <= pprm.rows)
@@ -56,12 +68,10 @@ void           print_line(t_dir  *request, t_prt pprm)
     while (++pprm.cur_col <= pprm.cols && request)
     {
        	print_elem((*request).name, pprm.max);
-        if (pprm.cur_col == pprm.cols)
+        if (pprm.cur_col == pprm.cols || !request)
            ft_putchar('\n');
         else
-            ft_putstr("  ");
+            ft_putchar(' ');
         request = next_elem(request, pprm);
-		if (!request && pprm.cur_col != pprm.cols)
-				ft_putchar('\n');
     }
 }
