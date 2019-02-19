@@ -18,16 +18,8 @@ void	print(t_dir *request)
 	t_flags			*flags;
 	t_dir			*dir;
 
-	if (!request)
-	{
-		perror("ft_ls");
+	if (!request || ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
 		exit(-1);
-	}
-    if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
-	{
-        ft_putstr("TIOCGWINSZ error");
-		exit (-1);
-	}
 	flags = (*request).flags;
 	request = request->f_names;
 	if (!(flags->d))
@@ -44,12 +36,11 @@ void	print(t_dir *request)
 
 t_dir	*print_files(t_dir *request, ushort size)
 {
-	t_dir			*files;
-	t_dir			*dir;
-
+	t_dir	*files;
+	t_dir	*dir;
 
 	if (!request)
-		exit(-1);
+		return (NULL);;
 	files = request;
 	dir = request;
 	while (request)
@@ -106,7 +97,7 @@ t_dir           *next_elem(t_dir *request, t_prt pprm)
     ushort	offset;
 
     i = 0;
-    offset = (pprm.cur_col + ((pprm.rows - 1) * pprm.cols)
+   offset = (pprm.cur_col + ((pprm.rows - 1) * pprm.cols)
             <= pprm.cnt_elems) ? pprm.rows : pprm.rows - 1;
     while (++i <= offset && request)
         request = (*request).next;

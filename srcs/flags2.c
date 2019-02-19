@@ -86,8 +86,8 @@ t_flags	*flags_init(void)
 
 void	print_usage(char c)
 {
-	ft_putstr("ft_ls: illegal option -- '");
+	ft_putstr("ft_ls: illegal option -- ");
 	ft_putchar(c);
-	ft_putstr("'\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
+	ft_putstr("\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
 	exit(-1);
 }

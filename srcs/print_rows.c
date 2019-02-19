@@ -73,7 +73,7 @@ void	print_line_rows(t_dir   *request, t_flags *flags, ushort ws_cols, t_prt_r p
 	print_number((long int)(*request).nlink, (long int)pprm.max_nlink);
 	print_gu_ids(request, pprm, flags);
 	print_number((long int)(*request).size, (long int)pprm.max_size);
-	print_time((*request).a_time);
+	print_time((*request).time_mod);
 	ft_putstr((*request).name);
 	ft_putchar('\n');
 }

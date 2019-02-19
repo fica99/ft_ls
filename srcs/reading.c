@@ -42,6 +42,7 @@ t_dir		*make_list(char **arr, uint8_t level, uint8_t *i)
 {
 	t_dir		*head;
 	t_dir		*dir;
+	struct stat	buf;
 
 	dir = ft_list();
 	head = dir;
