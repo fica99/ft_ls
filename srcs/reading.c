@@ -79,7 +79,10 @@ t_dir		*reading(t_dir *list, ushort flags)
 			d = d->next;
 		}
 		d->name = ft_strdup(file->d_name);
-		d->path = ft_strjoin(ft_strjoin(list->path, "/"), d->name);
+		if (list->path[ft_strlen(list->path) - 1] == '/')
+			d->path = ft_strjoin(list->path, d->name);
+		else
+			d->path = ft_strjoin(ft_strjoin(list->path, "/"), d->name);
 	}
 	check_close(closedir(folder));
 	return (head);

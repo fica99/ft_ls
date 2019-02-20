@@ -52,7 +52,7 @@ t_dir	*print_files(t_dir *request, ushort size)
 		{
 			dir = request->next;
 			request->next = NULL;
-		}	
+		}
 		request = request->next;
 	}
 	if (files != dir)
@@ -66,18 +66,17 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, ushort
 	{
 		if (request->f_names)
 		{
+			if (request->next || is_flags(flags, 1))
+			{
+				if (is_flags(flags, 1))
+					ft_putchar('\n');
+				ft_putstr(request->path + 2);
+				ft_putstr(":\n");
+			}
 			f(request->f_names, size, flags);
-			ft_putstr("\n\n\n\n");
+			flags = add_flag(flags, 1);
 			print_all_rek(request->f_names, size, f, flags);
 		}
-		//if (is_flags(flags, 1) || request->next)
-		//{
-		//	ft_putchar('\n');
-	//		ft_putstr(request->path + 2);
-	//		ft_putstr(":\n");
-	//	}
-	//	flags = add_flag(flags, 1);
-		//if (request->f_names
 		request = request->next;
 	}
 }

@@ -25,7 +25,7 @@ t_prt                get_print_prm(t_dir *request, ushort ws_col)
     {
         len = ft_strlen((*request).name);
 		if (len > pprm.max)
-       		pprm.max = len;
+			pprm.max = len;
     	pprm.cnt_elems++;
         request = (*request).next;
     }
@@ -55,7 +55,7 @@ void                print_cols(t_dir *request, ushort ws_col, ushort flags)
 void            print_elem(char *str, uint8_t max)
 {
 	uint8_t	str_len;
-	
+
 	str_len = ft_strlen(str);
     ft_putstr(str);
     while (++str_len <= max)
@@ -68,10 +68,12 @@ void           print_line(t_dir  *request, t_prt pprm)
     while (++pprm.cur_col <= pprm.cols && request)
     {
        	print_elem((*request).name, pprm.max);
-        if (pprm.cur_col == pprm.cols || !request)
-           ft_putchar('\n');
+        if (pprm.cur_col == pprm.cols)
+			ft_putchar('\n');
         else
             ft_putchar(' ');
         request = next_elem(request, pprm);
+        if (!request && pprm.cur_col != pprm.cols)
+            ft_putchar('\n');
     }
 }
