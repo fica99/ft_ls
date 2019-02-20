@@ -15,8 +15,6 @@
 t_prt                get_print_prm(t_dir *request, ushort ws_col)
 {
 	uint8_t	len;
-	ushort	f_rows;
-	ushort	r_rows;
     t_prt	pprm;
 
     pprm.max = 0;
@@ -30,11 +28,11 @@ t_prt                get_print_prm(t_dir *request, ushort ws_col)
         request = (*request).next;
     }
     pprm.cols = pprm.cnt_elems;
-    while((pprm.max + 1) * pprm.cols > ws_col)
-        pprm.cols--;
-    f_rows = pprm.cnt_elems / pprm.cols;
-    r_rows = (pprm.cnt_elems % pprm.cols > 0) ? 1 : 0;
-    pprm.rows = f_rows + r_rows;
+    pprm.rows = 1;
+    while(((pprm.max + 1) * pprm.cnt_elems) / pprm.rows > ws_col)
+    	pprm.rows++;
+    pprm.cols = (pprm.cnt_elems % pprm.rows == 0) ? pprm.cnt_elems / pprm.rows
+    		: (pprm.cnt_elems / pprm.rows) + 1;
     return (pprm);
 }
 
