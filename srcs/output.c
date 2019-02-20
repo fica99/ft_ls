@@ -34,7 +34,7 @@ void	print(t_dir *request)
 	dir = print_files(request, size.ws_col);
 	if (dir != request)
 		flags = add_flag(flags, 1);
-	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l')) ? print_rows : print_cols, flags);
+	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l') || is_flags(flags, 'g')) ? print_rows : print_cols, flags);
 }
 
 t_dir	*print_files(t_dir *request, ushort size)
@@ -90,3 +90,4 @@ t_dir           *next_elem(t_dir *request, t_prt pprm)
         request = (*request).next;
     return (request);
 }
+

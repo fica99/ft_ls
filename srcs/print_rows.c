@@ -16,18 +16,20 @@ void	print_rows(t_dir *request, ushort ws_cols, ushort flags)
 {
 	t_prt_r	pprm;
 
-	pprm = get_print_prm_r(request, ws_cols);
+	ws_cols = 0;
+	pprm = get_print_prm_r(request);
 	ft_putstr("total ");
-	ft_putnbr((int)pprm.total / 1024);
+	pprm.total += (is_flags(flags, 'a')) ? -4096 : 4096;
+	ft_putnbr((int)pprm.total / 512);
 	ft_putchar('\n');
 	while (request)
 	{
-		print_line_rows(request, flags, ws_cols, pprm);
+		print_line_rows(request, flags, pprm);
 		request = request->next;
 	}
 }
 
-t_prt_r	get_print_prm_r(t_dir *request, ushort ws_col)
+t_prt_r	get_print_prm_r(t_dir *request)
 {
 	ushort		len;
 	t_prt_r		pprm;
@@ -66,7 +68,7 @@ uint8_t	get_bit(int nlink)
 	return (bit);
 }
 
-void	print_line_rows(t_dir   *request, ushort flags, ushort ws_cols, t_prt_r pprm)
+void	print_line_rows(t_dir   *request, ushort flags, t_prt_r pprm)
 {
 	print_type((*request).mode);
 	print_mode_bits((*request).mode);

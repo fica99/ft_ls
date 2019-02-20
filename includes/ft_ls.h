@@ -59,7 +59,7 @@ typedef struct	s_prt
 
 typedef struct	s_prt_r
 {
-	ushort		total;
+	long		total;
 	u_int8_t	max_nlink;
 	u_int8_t	max_size;
 	ushort		max_uid;
@@ -98,9 +98,9 @@ void			print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, usho
 t_dir			*print_files(t_dir *request, ushort size);
 t_dir			*print_files(t_dir *request, ushort ws_col);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
-t_prt_r			get_print_prm_r(t_dir *request, ushort ws_col);
+t_prt_r			get_print_prm_r(t_dir *request);
 uint8_t			get_bit(int nlink);
-void			print_line_rows(t_dir *request, ushort flags, ushort ws_cols, t_prt_r pprm);
+void			print_line_rows(t_dir *request, ushort flags, t_prt_r pprm);
 void			print_type(mode_t mode);
 void			print_mode_bits(mode_t mode);
 void			cheak_usr(mode_t mode, char *str);
