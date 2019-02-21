@@ -27,14 +27,7 @@ t_dir		*opening(int argc, char **argv)
 		argv[double_arr_len(argv)] = ".";
 	}
 	request->f_names = make_list(argv, &i);
-	list = request->f_names;
-	while (list)
-	{
-		if (is_flags(request->flags, 'd'))
-			break ;
-		list->f_names = reading(list, request->flags);
-		list = list->next;
-	}
+	request = read_request(request);
 	return (find_flag(request));
 }
 
@@ -65,7 +58,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (!(check_open(folder = opendir(list->path), list->path + 2)))
+	if (!(check_open(folder = opendir(list->path), list->path + 2, &list)))
 		return (NULL);
 	d = ft_list();
 	head = d;
@@ -85,5 +78,40 @@ t_dir		*reading(t_dir *list, ushort flags)
 			d->path = ft_strjoin(ft_strjoin(list->path, "/"), d->name);
 	}
 	check_close(closedir(folder));
+	return (head);
+}
+
+t_dir		*read_request(t_dir *list)
+{
+	t_dir	*head;
+	t_dir	*err;
+
+	head = list;
+	list = list->f_names;
+	err = NULL;
+	while (list)
+	{
+		if (is_flags(head->flags, 'd'))
+			break ;
+		list->f_names = reading(list, head->flags);
+		if (is_flags(list->flags, 2))
+		{
+			if (!err)
+			{
+				head->f_names = list->next;
+				ft_memdel((void**)&list);
+				list = head->f_names;
+			}
+			else
+			{
+				err->next = list->next;
+				ft_memdel((void**)&list);
+				list = err->next;
+			}
+			continue ;
+		}
+		err = list;
+		list = list->next;
+	}
 	return (head);
 }

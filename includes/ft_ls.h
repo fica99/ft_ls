@@ -44,7 +44,6 @@ typedef struct	s_dir
 	mode_t			mode;
 	uid_t			uid;
 	gid_t			gid;
-	uint8_t			is_print;
 }				t_dir;
 
 typedef struct	s_prt
@@ -68,9 +67,10 @@ typedef struct	s_prt_r
 
 t_dir			*opening(int argc, char **argv);
 ushort			read_flags(char **argv, uint8_t *i);
-char			check_open(DIR *dir, char *name);
+char			check_open(DIR *dir, char *name, t_dir **list);
 void			check_close(int nb);
 t_dir			*make_list(char **arr, uint8_t *i);
+t_dir			*read_request(t_dir *list);
 t_dir			*reading(t_dir *list, ushort flags);
 uint8_t			double_arr_len(char **d_names);
 t_dir			*sort_tree(t_dir *list, t_dir *(*sort)(t_dir *));

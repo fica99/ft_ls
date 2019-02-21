@@ -65,7 +65,9 @@ void           print_line(t_dir  *request, t_prt pprm)
     pprm.cur_col = 0;
     while (++pprm.cur_col <= pprm.cols && request)
     {
+		ft_putstr("\033[32;1m");
        	print_elem((*request).name, pprm.max);
+		ft_putstr("\033[0m");
         if (pprm.cur_col == pprm.cols)
 			ft_putchar('\n');
         else

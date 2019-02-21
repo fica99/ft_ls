@@ -90,4 +90,3 @@ t_dir           *next_elem(t_dir *request, t_prt pprm)
         request = (*request).next;
     return (request);
 }
-
