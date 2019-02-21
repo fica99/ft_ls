@@ -12,10 +12,10 @@
 
 #include "ft_ls.h"
 
-t_prt                get_print_prm(t_dir *request, ushort ws_col)
+t_prt_cols                get_print_prm_c(t_dir *request, ushort ws_col)
 {
 	uint8_t	len;
-    t_prt	pprm;
+    t_prt_cols	pprm;
 
     pprm.max = 0;
     pprm.cnt_elems = 0;
@@ -38,10 +38,10 @@ t_prt                get_print_prm(t_dir *request, ushort ws_col)
 
 void                print_cols(t_dir *request, ushort ws_col, ushort flags)
 {
-    t_prt           pprm;
+    t_prt_cols           pprm;
 
     flags = 0;
-    pprm = get_print_prm(request, ws_col);
+    pprm = get_print_prm_c(request, ws_col);
     pprm.cur_row = 0;
     while (++pprm.cur_row <= pprm.rows)
     {
@@ -60,7 +60,7 @@ void            print_elem(char *str, uint8_t max)
         ft_putchar(' ');
 }
 
-void           print_line(t_dir  *request, t_prt pprm)
+void           print_line(t_dir  *request, t_prt_cols pprm)
 {
     pprm.cur_col = 0;
     while (++pprm.cur_col <= pprm.cols && request)

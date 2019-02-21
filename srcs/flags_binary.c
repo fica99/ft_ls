@@ -30,6 +30,8 @@ ushort add_flag(ushort flags, char flag)
         return (flags | 1024);
     if (flag == 2)
         return (flags | 2048);
+    if (flag == '@')
+        return (flags | 4096);
 	print_usage(flag);
     return (0);
 }
@@ -59,6 +61,8 @@ ushort is_flags(ushort flags, char flag)
     if (flag == 1 && (flags & 1024) == 1024)
         return (1);
     if (flag == 2 && (flags & 2048) == 2048)
+        return (1);
+    if (flag == '@' && (flags & 4096) == 4096)
         return (1);
     return (0);
 }

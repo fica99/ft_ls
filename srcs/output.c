@@ -18,16 +18,16 @@ void	print(t_dir *request)
 	ushort			flags;
 	t_dir			*dir;
 
-	if (!request || ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
-		exit(-1);
+	/*if (!request || ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
+		exit(-1);*/
 	flags = (*request).flags;
 	request = request->f_names;
 	if (is_flags(flags, 'd'))
 	{
 		if (is_flags(flags, 'l') || is_flags(flags, 'g'))
-			print_rows(request, size.ws_col, flags);
+			print_rows(request, 85, flags);
 		else
-			print_cols(request, size.ws_col, flags);
+			print_cols(request, 85, flags);
 		exit(0);
 	}
 	request = sort_list_f_d(request);
@@ -81,7 +81,7 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, ushort
 	}
 }
 
-t_dir           *next_elem(t_dir *request, t_prt pprm)
+t_dir           *next_elem(t_dir *request, t_prt_cols pprm)
 {
     ushort	i;
 
