@@ -27,7 +27,8 @@ t_dir		*opening(int argc, char **argv)
 		argv[double_arr_len(argv)] = ".";
 	}
 	request->f_names = make_list(argv, &i);
-	request = read_request(request);
+	if (!(is_flags(request->flags, 'd')))
+		request = read_request(request);
 	return (find_flag(request));
 }
 
@@ -58,13 +59,14 @@ t_dir		*reading(t_dir *list, ushort flags)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (!(check_open(folder = opendir(list->path), list->path + 2, &list)))
+	if (!(check_open(folder = opendir(list->path), &list)))
 		return (NULL);
 	d = ft_list();
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
-		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f')) && (file->d_name)[0] == '.')
+		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
+			&& (file->d_name)[0] == '.')
 			continue ;
 		if (d->name)
 		{
@@ -72,10 +74,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 			d = d->next;
 		}
 		d->name = ft_strdup(file->d_name);
-		if (list->path[ft_strlen(list->path) - 1] == '/')
-			d->path = ft_strjoin(list->path, d->name);
-		else
-			d->path = ft_strjoin(ft_strjoin(list->path, "/"), d->name);
+		d->path = check_path(list->path, file->d_name, d);
 	}
 	check_close(closedir(folder));
 	return (head);
@@ -83,35 +82,21 @@ t_dir		*reading(t_dir *list, ushort flags)
 
 t_dir		*read_request(t_dir *list)
 {
-	t_dir	*head;
+	t_dir	*file;
 	t_dir	*err;
 
-	head = list;
-	list = list->f_names;
+	file = list->f_names;
 	err = NULL;
-	while (list)
+	while (file)
 	{
-		if (is_flags(head->flags, 'd'))
-			break ;
-		list->f_names = reading(list, head->flags);
-		if (is_flags(list->flags, 2))
+		file->f_names = reading(file, list->flags);
+		if (!is_flags(file->flags, 2))
 		{
-			if (!err)
-			{
-				head->f_names = list->next;
-				ft_memdel((void**)&list);
-				list = head->f_names;
-			}
-			else
-			{
-				err->next = list->next;
-				ft_memdel((void**)&list);
-				list = err->next;
-			}
-			continue ;
+			err = file;
+			file = file->next;
+			continue;
 		}
-		err = list;
-		list = list->next;
+		file = check_err(err, &list, file);
 	}
-	return (head);
+	return (list);
 }

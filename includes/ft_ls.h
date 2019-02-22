@@ -28,7 +28,7 @@
 # include <stdint.h>
 # include <limits.h>
 # include <time.h>
-#include <sys/xattr.h>
+# include <sys/xattr.h>
 
 typedef struct	s_dir
 {
@@ -68,8 +68,10 @@ typedef struct	s_prt_rows
 
 t_dir			*opening(int argc, char **argv);
 ushort			read_flags(char **argv, uint8_t *i);
-char			check_open(DIR *dir, char *name, t_dir **list);
+char			check_open(DIR *dir, t_dir **list);
 void			check_close(int nb);
+char			*check_path(char *path, char *name, t_dir *d);
+t_dir			*check_err(t_dir *err, t_dir **list, t_dir *elem);
 t_dir			*make_list(char **arr, uint8_t *i);
 t_dir			*read_request(t_dir *list);
 t_dir			*reading(t_dir *list, ushort flags);
@@ -94,8 +96,9 @@ void			print_cols(t_dir *request, ushort ws_col, ushort flags);
 t_prt_cols		get_print_prm_c(t_dir *request, ushort ws_col);
 void			print_elem(char *str, uint8_t max);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
-void			print_line(t_dir  *request, t_prt_cols pprm);
-void			print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, ushort), ushort flags);
+void			print_line(t_dir *request, t_prt_cols pprm);
+void			print_all_rek(t_dir *request, ushort size,
+				void (f)(t_dir *, ushort, ushort), ushort flags);
 t_dir			*print_files(t_dir *request, ushort size);
 t_dir			*print_files(t_dir *request, ushort ws_col);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
@@ -112,10 +115,8 @@ void			print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags);
 void			print_time(time_t time);
 void			print_link(t_dir *request);
 void			print_usage(char c);
-//print attributes
 void			print_label_attr(t_dir *request, ushort flags);
 void			print_attr_full(t_dir *request, ushort flags);
-//flags
-ushort 			add_flag(ushort flags, char flag);
-ushort 			is_flags(ushort flags, char flag);
+ushort			add_flag(ushort flags, char flag);
+ushort			is_flags(ushort flags, char flag);
 #endif

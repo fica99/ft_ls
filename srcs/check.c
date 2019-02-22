@@ -12,12 +12,12 @@
 
 #include "ft_ls.h"
 
-char	check_open(DIR *dir, char *name, t_dir **list)
+char	check_open(DIR *dir, t_dir **list)
 {
 	if (dir == NULL && errno != ENOTDIR)
 	{
 		ft_putstr("ft_ls: ");
-		perror(name);
+		perror((*list)->path + 2);
 		(*list)->flags = add_flag((*list)->flags, 2);
 	}
 	else if (dir)

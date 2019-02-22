@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_ls.h>
+#include "ft_ls.h"
 
-void	print_rows(t_dir *request, ushort ws_cols, ushort flags)
+void		print_rows(t_dir *request, ushort ws_cols, ushort flags)
 {
 	t_prt_rows	pprm;
 
@@ -32,7 +32,7 @@ void	print_rows(t_dir *request, ushort ws_cols, ushort flags)
 t_prt_rows	get_print_prm_r(t_dir *request)
 {
 	ushort		len;
-	t_prt_rows		pprm;
+	t_prt_rows	pprm;
 	u_int8_t	bit;
 
 	pprm.total = 0;
@@ -56,7 +56,7 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 	return (pprm);
 }
 
-uint8_t	get_bit(int nlink)
+uint8_t		get_bit(int nlink)
 {
 	uint8_t	bit;
 
@@ -68,7 +68,7 @@ uint8_t	get_bit(int nlink)
 	return (bit);
 }
 
-void	print_line_rows(t_dir   *request, ushort flags, t_prt_rows pprm)
+void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 {
 	ft_putchar(get_type((*request).mode));
 	print_mode_bits((*request).mode);
@@ -84,7 +84,7 @@ void	print_line_rows(t_dir   *request, ushort flags, t_prt_rows pprm)
 	print_attr_full(request, flags);
 }
 
-char	get_type(mode_t mode)
+char		get_type(mode_t mode)
 {
 	if (S_ISLNK(mode))
 		return ('l');
@@ -104,7 +104,7 @@ char	get_type(mode_t mode)
 		return ('?');
 }
 
-void	print_mode_bits(mode_t mode)
+void		print_mode_bits(mode_t mode)
 {
 	char str[] = "rwxrwxrwx";
 
@@ -114,10 +114,10 @@ void	print_mode_bits(mode_t mode)
 	ft_putstr(str);
 }
 
-void	cheak_usr(mode_t mode, char *str)
+void		cheak_usr(mode_t mode, char *str)
 {
 	if ((S_IRWXU & mode) != S_IRWXU)
- 	{
+	{
 		if ((S_IRUSR & mode) != S_IRUSR)
 			str[0] = '-';
 		if ((S_IWUSR & mode) != S_IWUSR)
@@ -127,7 +127,7 @@ void	cheak_usr(mode_t mode, char *str)
 	}
 }
 
-void	cheak_grp(mode_t mode, char *str)
+void		cheak_grp(mode_t mode, char *str)
 {
 	if ((S_IRWXG & mode) != S_IRWXG)
 	{
@@ -140,7 +140,7 @@ void	cheak_grp(mode_t mode, char *str)
 	}
 }
 
-void	cheak_oth(mode_t mode, char *str)
+void		cheak_oth(mode_t mode, char *str)
 {
 	if ((S_IRWXO & mode) != S_IRWXO)
 	{
@@ -155,7 +155,7 @@ void	cheak_oth(mode_t mode, char *str)
 
 void		print_label_attr(t_dir *request, ushort flags)
 {
-	ssize_t		size_list;
+	ssize_t	size_list;
 
 	size_list = listxattr((*request).path + 2, NULL, 0, 0); // обработать ошибки
 	if (is_flags(flags, '@') && size_list)
@@ -168,10 +168,10 @@ void		print_attr_full(t_dir *request, ushort flags)
 {
 	char		list[100];
 	ssize_t		size_list;
-	u_int8_t 	i;
+	u_int8_t	i;
 	u_int8_t	len;
-	u_int8_t 	size_val;
-	char 		value[50];
+	u_int8_t	size_val;
+	char		value[50];
 
 	size_list = listxattr((*request).path + 2, list, 100, 0); // обработать ошибки
 	if (is_flags(flags, '@') && size_list)
@@ -191,7 +191,7 @@ void		print_attr_full(t_dir *request, ushort flags)
 	}
 }
 
-void	print_number(long int num, long int max)
+void		print_number(long int num, long int max)
 {
 	long int	i;
 
@@ -202,7 +202,7 @@ void	print_number(long int num, long int max)
 	ft_putchar(' ');
 }
 
-void	print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
+void		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
 {
 	if (!is_flags(flags, 'g'))
 	{
@@ -213,7 +213,7 @@ void	print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
 	ft_putstr("  ");
 }
 
-void	print_time(time_t time)
+void		print_time(time_t time)
 {
     char	*str_time;
 
@@ -223,7 +223,7 @@ void	print_time(time_t time)
 	ft_putchar(' ');
 }
 
-void	print_link(t_dir *request)
+void		print_link(t_dir *request)
 {
 	char buf[100];
 	size_t size;

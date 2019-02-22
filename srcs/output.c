@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_ls.h>
+#include "ft_ls.h"
 
 void	print(t_dir *request)
 {
@@ -18,8 +18,8 @@ void	print(t_dir *request)
 	ushort			flags;
 	t_dir			*dir;
 
-	/*if (!request || ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
-		exit(-1);*/
+	if (!request || ioctl(0, TIOCGWINSZ, (char*)&size) < 0)
+		exit(-1);
 	flags = (*request).flags;
 	request = request->f_names;
 	if (is_flags(flags, 'd'))
@@ -34,7 +34,8 @@ void	print(t_dir *request)
 	dir = print_files(request, size.ws_col);
 	if (dir != request)
 		flags = add_flag(flags, 1);
-	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l') || is_flags(flags, 'g')) ? print_rows : print_cols, flags);
+	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l') ||
+		is_flags(flags, 'g')) ? print_rows : print_cols, flags);
 }
 
 t_dir	*print_files(t_dir *request, ushort size)
@@ -60,9 +61,10 @@ t_dir	*print_files(t_dir *request, ushort size)
 	return (dir);
 }
 
-void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, ushort), ushort flags)
+void	print_all_rek(t_dir *request, ushort size,
+		void (f)(t_dir *, ushort, ushort), ushort flags)
 {
-	while(request)
+	while (request)
 	{
 		if (request->f_names)
 		{
@@ -81,12 +83,12 @@ void	print_all_rek(t_dir *request, ushort size, void (f)(t_dir *, ushort, ushort
 	}
 }
 
-t_dir           *next_elem(t_dir *request, t_prt_cols pprm)
+t_dir	*next_elem(t_dir *request, t_prt_cols pprm)
 {
-    ushort	i;
+	ushort	i;
 
-    i = 0;
-    while (++i <= pprm.rows && request)
-        request = (*request).next;
-    return (request);
+	i = 0;
+	while (++i <= pprm.rows && request)
+		request = (*request).next;
+	return (request);
 }
