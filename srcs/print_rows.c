@@ -19,7 +19,7 @@ void		print_rows(t_dir *request, ushort ws_cols, ushort flags)
 	ws_cols = 0;
 	pprm = get_print_prm_r(request);
 	ft_putstr("total ");
-	ft_putnbr((int)pprm.total / 512);
+	ft_putnbr(pprm.total);
 	ft_putchar('\n');
 	while (request)
 	{
