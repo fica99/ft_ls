@@ -56,8 +56,14 @@ t_dir	*print_files(t_dir *request, ushort size)
 		}
 		request = request->next;
 	}
-	if (files != dir)
-		print_cols(files, size, 0);
+	if (files == dir)
+	{
+		if (!(dir->f_names))
+			dir = NULL;
+		else
+			return (dir);
+	}
+	print_cols(files, size, 0);
 	return (dir);
 }
 

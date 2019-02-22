@@ -40,6 +40,8 @@ void		print_cols(t_dir *request, ushort ws_col, ushort flags)
 {
 	t_prt_cols	pprm;
 
+	if (!request)
+		exit(-1);
 	flags = 0;
 	pprm = get_print_prm_c(request, ws_col);
 	pprm.cur_row = 0;

@@ -67,7 +67,10 @@ t_dir		*reading(t_dir *list, ushort flags)
 	{
 		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
 			&& (file->d_name)[0] == '.')
+		{
+			d->total += 4096;
 			continue ;
+		}
 		if (d->name)
 		{
 			d->next = ft_list();
