@@ -13,6 +13,7 @@
 NAME=ft_ls
 
 SRC=srcs/check.c\
+	srcs/check2.c\
 	srcs/reading.c\
 	srcs/sort_list.c\
 	srcs/flags.c\

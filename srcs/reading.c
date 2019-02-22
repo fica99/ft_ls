@@ -27,14 +27,8 @@ t_dir		*opening(int argc, char **argv)
 		argv[double_arr_len(argv)] = ".";
 	}
 	request->f_names = make_list(argv, &i);
-	list = request->f_names;
-	while (list)
-	{
-		if (is_flags(request->flags, 'd'))
-			break ;
-		list->f_names = reading(list, request->flags);
-		list = list->next;
-	}
+	if (!(is_flags(request->flags, 'd')))
+		request = read_request(request);
 	return (find_flag(request));
 }
 
@@ -65,22 +59,47 @@ t_dir		*reading(t_dir *list, ushort flags)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (!(check_open(folder = opendir(list->path), list->path + 2)))
+	if (!(check_open(folder = opendir(list->path), &list)))
 		return (NULL);
 	d = ft_list();
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
-		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f')) && (file->d_name)[0] == '.')
+		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
+			&& (file->d_name)[0] == '.')
+		{
+			d->total += 4096;
 			continue ;
+		}
 		if (d->name)
 		{
 			d->next = ft_list();
 			d = d->next;
 		}
 		d->name = ft_strdup(file->d_name);
-		d->path = ft_strjoin(ft_strjoin(list->path, "/"), d->name);
+		d->path = check_path(list->path, file->d_name, d);
 	}
 	check_close(closedir(folder));
 	return (head);
+}
+
+t_dir		*read_request(t_dir *list)
+{
+	t_dir	*file;
+	t_dir	*err;
+
+	file = list->f_names;
+	err = NULL;
+	while (file)
+	{
+		file->f_names = reading(file, list->flags);
+		if (!is_flags(file->flags, 2))
+		{
+			err = file;
+			file = file->next;
+			continue;
+		}
+		file = check_err(err, &list, file);
+	}
+	return (list);
 }

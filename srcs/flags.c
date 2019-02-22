@@ -39,7 +39,8 @@ t_dir	*find_flag(t_dir *request)
 		request->f_names = flaging_l(request->f_names);
 	if (is_flags(f, 'r'))
 		request->f_names = sort_tree(request->f_names, sort_list_rev);
-	if (is_flags(f, 't') || is_flags(f, 'u') || is_flags(f, 'S') || is_flags(f, 'g'))
+	if (is_flags(f, 't') || is_flags(f, 'u')
+		|| is_flags(f, 'S') || is_flags(f, 'g'))
 	{
 		if (!(is_flags(f, 'l')))
 			request->f_names = flaging_l(request->f_names);

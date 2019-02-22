@@ -58,7 +58,7 @@ t_dir	*reading_l(t_dir *request)
 	request->uid = buf.st_uid;
 	request->gid = buf.st_gid;
 	request->mode = buf.st_mode;
-	request->total = buf.st_blksize;
+	request->total = buf.st_blocks;
 	return (file);
 }
 

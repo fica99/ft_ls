@@ -10,27 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <ft_ls.h>
+#include "ft_ls.h"
 
-void	print_rows(t_dir *request, ushort ws_cols, ushort flags)
+void		print_rows(t_dir *request, ushort ws_cols, ushort flags)
 {
-	t_prt_r	pprm;
+	t_prt_rows	pprm;
 
-	pprm = get_print_prm_r(request, ws_cols);
+	ws_cols = 0;
+	pprm = get_print_prm_r(request);
 	ft_putstr("total ");
-	ft_putnbr((int)pprm.total / 1024);
+	ft_putnbr(pprm.total);
 	ft_putchar('\n');
 	while (request)
 	{
-		print_line_rows(request, flags, ws_cols, pprm);
+		print_line_rows(request, flags, pprm);
 		request = request->next;
 	}
 }
 
-t_prt_r	get_print_prm_r(t_dir *request, ushort ws_col)
+t_prt_rows	get_print_prm_r(t_dir *request)
 {
 	ushort		len;
-	t_prt_r		pprm;
+	t_prt_rows	pprm;
 	u_int8_t	bit;
 
 	pprm.total = 0;
@@ -54,7 +55,7 @@ t_prt_r	get_print_prm_r(t_dir *request, ushort ws_col)
 	return (pprm);
 }
 
-uint8_t	get_bit(int nlink)
+uint8_t		get_bit(int nlink)
 {
 	uint8_t	bit;
 
@@ -66,39 +67,43 @@ uint8_t	get_bit(int nlink)
 	return (bit);
 }
 
-void	print_line_rows(t_dir   *request, ushort flags, ushort ws_cols, t_prt_r pprm)
+void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 {
-	print_type((*request).mode);
+	ft_putchar(get_type((*request).mode));
 	print_mode_bits((*request).mode);
+	print_label_attr(request, flags);
 	print_number((long int)(*request).nlink, (long int)pprm.max_nlink);
 	print_gu_ids(request, pprm, flags);
 	print_number((long int)(*request).size, (long int)pprm.max_size);
 	print_time((*request).time_mod);
 	ft_putstr((*request).name);
+	if (get_type((*request).mode) == 'l')
+		print_link(request);
 	ft_putchar('\n');
+	print_attr_full(request, flags);
 }
 
-void	print_type(mode_t mode)
+char		get_type(mode_t mode)
 {
 	if (S_ISLNK(mode))
-		ft_putchar('l');
+		return ('l');
 	else if (S_ISREG(mode))
-		ft_putchar('-');
+		return ('-');
 	else if (S_ISDIR(mode))
-		ft_putchar('d');
+		return ('d');
 	else if (S_ISCHR(mode))
-		ft_putchar('c');
+		return ('c');
 	else if (S_ISBLK(mode))
-		ft_putchar('b');
+		return ('b');
 	else if (S_ISFIFO(mode))
-		ft_putchar('p');
+		return ('p');
 	else if (S_ISSOCK(mode))
-		ft_putchar('s');
+		return ('s');
 	else
-		ft_putchar('?');
+		return ('?');
 }
 
-void	print_mode_bits(mode_t mode)
+void		print_mode_bits(mode_t mode)
 {
 	char str[] = "rwxrwxrwx";
 
@@ -106,13 +111,12 @@ void	print_mode_bits(mode_t mode)
 	cheak_grp(mode, str);
 	cheak_oth(mode, str);
 	ft_putstr(str);
-	ft_putstr("  ");
 }
 
-void	cheak_usr(mode_t mode, char *str)
+void		cheak_usr(mode_t mode, char *str)
 {
 	if ((S_IRWXU & mode) != S_IRWXU)
- 	{
+	{
 		if ((S_IRUSR & mode) != S_IRUSR)
 			str[0] = '-';
 		if ((S_IWUSR & mode) != S_IWUSR)
@@ -122,7 +126,7 @@ void	cheak_usr(mode_t mode, char *str)
 	}
 }
 
-void	cheak_grp(mode_t mode, char *str)
+void		cheak_grp(mode_t mode, char *str)
 {
 	if ((S_IRWXG & mode) != S_IRWXG)
 	{
@@ -135,7 +139,7 @@ void	cheak_grp(mode_t mode, char *str)
 	}
 }
 
-void	cheak_oth(mode_t mode, char *str)
+void		cheak_oth(mode_t mode, char *str)
 {
 	if ((S_IRWXO & mode) != S_IRWXO)
 	{
@@ -148,7 +152,45 @@ void	cheak_oth(mode_t mode, char *str)
 	}
 }
 
-void	print_number(long int num, long int max)
+void		print_label_attr(t_dir *request, ushort flags)
+{
+	ssize_t	size_list;
+
+	size_list = listxattr((*request).path + 2, NULL, 0, 0); // обработать ошибки
+	if (is_flags(flags, '@') && size_list)
+		ft_putstr("@ ");
+	else
+		ft_putstr("  ");
+}
+
+void		print_attr_full(t_dir *request, ushort flags)
+{
+	char		list[NAME_SATTR];
+	ssize_t		size_list;
+	ssize_t	i;
+	u_int8_t	len;
+	u_int8_t	size_val;
+	char		value[SIZE_VATTR];
+
+	size_list = listxattr((*request).path + 2, list, NAME_SATTR, 0); // обработать ошибки
+	if (is_flags(flags, '@') && size_list)
+	{
+		i = -1;
+		while (++i < size_list)
+		{
+			ft_putstr("\t");
+			ft_putstr(list + i);
+			len = ft_strlen(list + i);
+			size_val = getxattr((*request).path + 2, list + i, value, SIZE_VATTR, 0, 0); // обработать ошибки
+			ft_putstr("\t");
+			ft_putnbr((int)size_val);
+			ft_putchar('\n');
+			i += len;
+		}
+	}
+}
+
+void		print_number(long int num, long int max)
 {
 	long int	i;
 
@@ -159,7 +201,7 @@ void	print_number(long int num, long int max)
 	ft_putchar(' ');
 }
 
-void	print_gu_ids(t_dir *request, t_prt_r pprm, ushort flags)
+void		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
 {
 	if (!is_flags(flags, 'g'))
 	{
@@ -170,7 +212,7 @@ void	print_gu_ids(t_dir *request, t_prt_r pprm, ushort flags)
 	ft_putstr("  ");
 }
 
-void	print_time(time_t time)
+void		print_time(time_t time)
 {
     char	*str_time;
 
@@ -178,4 +220,15 @@ void	print_time(time_t time)
 	str_time[16] = '\0';
 	ft_putstr(str_time + 4);
 	ft_putchar(' ');
+}
+
+void		print_link(t_dir *request)
+{
+	char buf[100];
+	size_t size;
+
+	size = readlink((*request).path + 2, buf, 100); //обработать ошибки
+	buf[size] = '\0';
+	ft_putstr(" -> ");
+	ft_putstr(buf);
 }
