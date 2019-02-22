@@ -41,6 +41,8 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 	pprm.max_gid = 0;
 	while (request)
 	{
+		if (!(request->mode))
+			exit(-1);
 		pprm.total += request->total;
 		if ((bit = get_bit((*request).nlink)) > pprm.max_nlink)
 			pprm.max_nlink = bit;

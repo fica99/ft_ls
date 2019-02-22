@@ -79,7 +79,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name, d);
 	}
-	check_close(closedir(folder));
+	check_close(closedir(folder), head);
 	return (head);
 }
 
