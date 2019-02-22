@@ -25,15 +25,13 @@ char	check_open(DIR *dir, t_dir **list)
 	return (0);
 }
 
-void	check_close(int nb, t_dir *head)
+void	check_close(int nb)
 {
 	if (nb == -1)
 	{
 		perror("ft_ls");
 		exit(-1);
 	}
-	if (!(head->name))
-		exit (-1);
 }
 
 t_dir	*ft_list(void)

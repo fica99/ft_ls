@@ -67,10 +67,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 	{
 		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
 			&& (file->d_name)[0] == '.')
-		{
-			d->total += 4096;
 			continue ;
-		}
 		if (d->name)
 		{
 			d->next = ft_list();
@@ -79,7 +76,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name, d);
 	}
-	check_close(closedir(folder), head);
+	check_close(closedir(folder));
 	return (head);
 }
 

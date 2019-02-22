@@ -69,7 +69,7 @@ typedef struct	s_prt_rows
 t_dir			*opening(int argc, char **argv);
 ushort			read_flags(char **argv, uint8_t *i);
 char			check_open(DIR *dir, t_dir **list);
-void			check_close(int nb, t_dir *head);
+void			check_close(int nb);
 char			*check_path(char *path, char *name, t_dir *d);
 t_dir			*check_err(t_dir *err, t_dir **list, t_dir *elem);
 t_dir			*make_list(char **arr, uint8_t *i);
