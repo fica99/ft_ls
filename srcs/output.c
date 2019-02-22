@@ -63,7 +63,7 @@ t_dir	*print_files(t_dir *request, ushort size)
 		else
 			return (dir);
 	}
-	print_cols(files, size, 0);
+	(is_flags(files->flags, 'l') || is_flags(files->flags, 'g')) ? print_rows(files, size, 0) : print_cols(files, size, 0); // исправить блять
 	return (dir);
 }
 
