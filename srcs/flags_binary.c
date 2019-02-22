@@ -43,7 +43,7 @@ ushort	add_flag(ushort flags, char flag)
 	if (flag == 'G')
 	{
 		ft_putstr("\033[32;1m");
-	return (flags | 8192);
+		return (flags | 8192);
 	}
 	print_usage(flag);
 	return (0);
