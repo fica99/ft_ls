@@ -73,6 +73,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 			d->next = ft_list();
 			d = d->next;
 		}
+		d->mode = file->d_type;
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name, d);
 	}
