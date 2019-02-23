@@ -38,6 +38,7 @@ t_dir		*make_list(char **arr, uint8_t *i)
 	t_dir		*dir;
 
 	dir = ft_list();
+	
 	head = dir;
 	while (arr[(*i)])
 	{
@@ -73,7 +74,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 			d->next = ft_list();
 			d = d->next;
 		}
-		d->mode = file->d_type;
+		d->type = file->d_type;
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name, d);
 	}

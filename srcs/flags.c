@@ -82,7 +82,7 @@ t_dir	*flag_r_big(t_dir *request, ushort flags)
 	while (request)
 	{
 		if ((ft_strcmp(request->name, ".") != 0) &&
-			(ft_strcmp(request->name, "..") != 0))
+			(ft_strcmp(request->name, "..") != 0) && (DT_DIR == (request->type) || !(request->mode)))
 		{
 			request->f_names = reading(request, flags);
 			request->f_names = flag_r_big(request->f_names, flags);

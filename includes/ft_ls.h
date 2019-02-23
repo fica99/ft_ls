@@ -30,6 +30,9 @@
 # include <time.h>
 # include <sys/xattr.h>
 
+# define NAME_SATTR 300
+# define SIZE_VATTR 300
+
 typedef struct	s_dir
 {
 	char			*name;
@@ -45,6 +48,7 @@ typedef struct	s_dir
 	mode_t			mode;
 	uid_t			uid;
 	gid_t			gid;
+	uint8_t			type;
 }				t_dir;
 
 typedef struct	s_prt_cols
@@ -99,8 +103,7 @@ t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 void			print_line(t_dir *request, t_prt_cols pprm);
 void			print_all_rek(t_dir *request, ushort size,
 				void (f)(t_dir *, ushort, ushort), ushort flags);
-t_dir			*print_files(t_dir *request, ushort size);
-t_dir			*print_files(t_dir *request, ushort ws_col);
+t_dir			*print_files(t_dir *request, ushort size, ushort flags);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
 t_prt_rows		get_print_prm_r(t_dir *request);
 uint8_t			get_bit(int nlink);
@@ -119,4 +122,6 @@ void			print_label_attr(t_dir *request, ushort flags);
 void			print_attr_full(t_dir *request, ushort flags);
 ushort			add_flag(ushort flags, char flag);
 ushort			is_flags(ushort flags, char flag);
+void			print_label_attr(t_dir *request, ushort flags);
+void			print_attr_full(t_dir *request, ushort flags);
 #endif

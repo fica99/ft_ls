@@ -31,14 +31,14 @@ void	print(t_dir *request)
 		exit(0);
 	}
 	request = sort_list_f_d(request);
-	dir = print_files(request, size.ws_col);
+	dir = print_files(request, size.ws_col, flags);
 	if (dir != request)
 		flags = add_flag(flags, 1);
 	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l') ||
 		is_flags(flags, 'g')) ? print_rows : print_cols, flags);
 }
 
-t_dir	*print_files(t_dir *request, ushort size)
+t_dir	*print_files(t_dir *request, ushort size, ushort flags)
 {
 	t_dir	*files;
 	t_dir	*dir;
@@ -63,7 +63,7 @@ t_dir	*print_files(t_dir *request, ushort size)
 		else
 			return (dir);
 	}
-	(is_flags(files->flags, 'l') || is_flags(files->flags, 'g')) ? print_rows(files, size, 0) : print_cols(files, size, 0); // исправить блять
+	(is_flags(flags, 'l') || is_flags(flags, 'g')) ? print_rows(files, size, 0) : print_cols(files, size, 0);
 	return (dir);
 }
 
