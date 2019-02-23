@@ -48,7 +48,6 @@ typedef struct	s_dir
 	mode_t			mode;
 	uid_t			uid;
 	gid_t			gid;
-	uint8_t			type;
 }				t_dir;
 
 typedef struct	s_prt_cols

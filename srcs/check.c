@@ -55,7 +55,6 @@ t_dir	*ft_list(void)
 	list->name = NULL;
 	list->path = NULL;
 	list->mode = 0;
-	list->type = 0;
 	return (list);
 }
 

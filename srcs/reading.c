@@ -56,8 +56,9 @@ t_dir		*reading(t_dir *list, ushort flags)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (!(check_open(folder = opendir(list->path), &list)))
-		return (NULL);
+	if ((get_type(list->mode) != 'd' && list->mode) ||
+		!(check_open(folder = opendir(list->path), &list)))
+				return (NULL);
 	d = ft_list();
 	head = d;
 	while ((file = readdir(folder)) != NULL)
@@ -70,7 +71,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 			d->next = ft_list();
 			d = d->next;
 		}
-		d->type = file->d_type;
+		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name, d);
 	}
@@ -87,8 +88,7 @@ t_dir		*read_request(t_dir *list)
 	err = NULL;
 	while (file)
 	{
-		if (get_type(file->mode) == 'd')
-			file->f_names = reading(file, list->flags);
+		file->f_names = reading(file, list->flags);
 		if (!is_flags(file->flags, 2))
 		{
 			err = file;
