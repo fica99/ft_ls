@@ -14,15 +14,14 @@
 
 char	check_open(DIR *dir, t_dir **list)
 {
-	if (dir == NULL && errno != ENOTDIR)
+	if (dir == NULL)
 	{
 		ft_putstr("ft_ls: ");
 		perror((*list)->path + 2);
 		(*list)->flags = add_flag((*list)->flags, 2);
+		return (0);
 	}
-	else if (dir)
-		return (1);
-	return (0);
+	return (1);
 }
 
 void	check_close(int nb)

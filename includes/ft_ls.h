@@ -71,22 +71,27 @@ typedef struct	s_prt_rows
 }				t_prt_rows;
 
 t_dir			*opening(int argc, char **argv);
+t_dir			*ft_list(void);
 ushort			read_flags(char **argv, uint8_t *i);
-char			check_open(DIR *dir, t_dir **list);
-void			check_close(int nb);
-char			*check_path(char *path, char *name, t_dir *d);
-t_dir			*check_err(t_dir *err, t_dir **list, t_dir *elem);
+ushort			add_flag(ushort flags, char flag);
+void			print_usage(char c);
+char			**check_dir(int argc, char **argv, uint8_t i);
+uint8_t			double_arr_len(char **d_names);
 t_dir			*make_list(char **arr, uint8_t *i);
+ushort			is_flags(ushort flags, char flag);
 t_dir			*read_request(t_dir *list);
 t_dir			*reading(t_dir *list, ushort flags);
-uint8_t			double_arr_len(char **d_names);
+char			check_open(DIR *dir, t_dir **list);
+char			*check_path(char *path, char *name, t_dir *d);
+void			check_close(int nb);
+t_dir			*check_err(t_dir *err, t_dir **list, t_dir *elem);
+t_dir			*find_flag(t_dir *request);
+
 t_dir			*sort_tree(t_dir *list, t_dir *(*sort)(t_dir *));
 t_dir			*sort_one_list(t_dir *list);
 t_dir			*swap_list(t_dir *cur, t_dir *next);
-t_dir			*ft_list(void);
 t_dir			*flag_r_big(t_dir *request, ushort flags);
 t_dir			*flaging_r_big(t_dir *request, ushort flags);
-t_dir			*find_flag(t_dir *request);
 t_dir			*flaging_l(t_dir *request);
 t_dir			*flag_l(t_dir *request);
 t_dir			*reading_l(t_dir *request);
@@ -117,11 +122,8 @@ void			print_number(long int num, long int max);
 void			print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags);
 void			print_time(time_t time);
 void			print_link(t_dir *request);
-void			print_usage(char c);
 void			print_label_attr(t_dir *request, ushort flags);
 void			print_attr_full(t_dir *request, ushort flags);
-ushort			add_flag(ushort flags, char flag);
-ushort			is_flags(ushort flags, char flag);
 void			print_label_attr(t_dir *request, ushort flags);
 void			print_attr_full(t_dir *request, ushort flags);
 #endif

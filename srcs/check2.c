@@ -39,3 +39,21 @@ t_dir	*check_err(t_dir *err, t_dir **list, t_dir *elem)
 	}
 	return (file);
 }
+
+char	**check_dir(int argc, char **argv, uint8_t i)
+{
+	if (argc - i == 0)
+	{
+		argv[double_arr_len(argv) + 1] = NULL;
+		argv[double_arr_len(argv)] = ".";
+	}
+	return (argv);
+}
+
+void	print_usage(char c)
+{
+	ft_putstr("ft_ls: illegal option -- ");
+	ft_putchar(c);
+	ft_putstr("\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
+	exit(-1);
+}

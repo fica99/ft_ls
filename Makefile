@@ -22,7 +22,6 @@ SRC=srcs/check.c\
 	srcs/output.c\
 	srcs/print_one_level.c\
 	srcs/print_rows.c\
-	srcs/flags_binary.c\
 
 INCLUDES=includes
 
@@ -32,7 +31,7 @@ all: $(NAME)
 
 $(NAME):
 			@make re -C $(LIB)
-			@gcc -g -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
+			@gcc -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
 
 clean:
 			@make clean -C $(LIB)

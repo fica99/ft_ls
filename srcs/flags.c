@@ -91,3 +91,18 @@ t_dir	*flag_r_big(t_dir *request, ushort flags)
 	}
 	return (head);
 }
+
+t_dir	*flaging_l(t_dir *request)
+{
+	t_dir	*dir;
+
+	dir = request;
+	while (request)
+	{
+		if (request->f_names)
+			if (!(request->f_names = flaging_l(request->f_names)))
+				return (NULL);
+		request = request->next;
+	}
+	return (flag_l(dir));
+}

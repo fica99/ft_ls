@@ -21,11 +21,7 @@ t_dir		*opening(int argc, char **argv)
 	i = 1;
 	request = ft_list();
 	request->flags = read_flags(argv, &i);
-	if (argc - i == 0)
-	{
-		argv[double_arr_len(argv) + 1] = NULL;
-		argv[double_arr_len(argv)] = ".";
-	}
+	argv = check_dir(argc, argv, i);
 	request->f_names = make_list(argv, &i);
 	if (!(is_flags(request->flags, 'd')))
 		request = read_request(request);
@@ -38,7 +34,6 @@ t_dir		*make_list(char **arr, uint8_t *i)
 	t_dir		*dir;
 
 	dir = ft_list();
-	
 	head = dir;
 	while (arr[(*i)])
 	{
@@ -49,6 +44,7 @@ t_dir		*make_list(char **arr, uint8_t *i)
 		}
 		dir->name = arr[*i];
 		dir->path = ft_strjoin("./", arr[(*i)++]);
+		dir = reading_l(dir);
 	}
 	return (head);
 }
@@ -91,7 +87,8 @@ t_dir		*read_request(t_dir *list)
 	err = NULL;
 	while (file)
 	{
-		file->f_names = reading(file, list->flags);
+		if (get_type(file->mode) == 'd')
+			file->f_names = reading(file, list->flags);
 		if (!is_flags(file->flags, 2))
 		{
 			err = file;
