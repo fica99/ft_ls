@@ -158,7 +158,7 @@ void		print_label_attr(t_dir *request, ushort flags)
 {
 	ssize_t	size_list;
 
-	size_list = listxattr((*request).path + 2, NULL, 0, 0); // обработать ошибки
+	size_list = listxattr((*request).path, NULL, 0, 0); // обработать ошибки
 	if (is_flags(flags, '@') && size_list)
 		ft_putstr("@ ");
 	else
@@ -229,7 +229,7 @@ void		print_link(t_dir *request)
 	char buf[100];
 	size_t size;
 
-	size = readlink((*request).path + 2, buf, 100); //обработать ошибки
+	size = readlink((*request).path, buf, 100); //обработать ошибки
 	buf[size] = '\0';
 	ft_putstr(" -> ");
 	ft_putstr(buf);
