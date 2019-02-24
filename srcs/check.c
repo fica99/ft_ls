@@ -12,16 +12,16 @@
 
 #include "ft_ls.h"
 
-char	check_open(DIR *dir, char *name)
+char	check_open(DIR *dir, t_dir **list)
 {
-	if (dir == NULL && errno != ENOTDIR)
+	if (dir == NULL)
 	{
 		ft_putstr("ft_ls: ");
-		perror(name);
+		perror((*list)->path + 2);
+		(*list)->flags = add_flag((*list)->flags, 2);
+		return (0);
 	}
-	else if (dir)
-		return (1);
-	return (0);
+	return (1);
 }
 
 void	check_close(int nb)
@@ -44,11 +44,10 @@ t_dir	*ft_list(void)
 	}
 	list->f_names = NULL;
 	list->next = NULL;
-	list->flags = NULL;
+	list->flags = 0;
 	list->size = 0;
 	list->gid = 0;
 	list->uid = 0;
-	list->level = 0;
 	list->total = 0;
 	list->time_mod = 0;
 	list->a_time = 0;
@@ -56,7 +55,6 @@ t_dir	*ft_list(void)
 	list->name = NULL;
 	list->path = NULL;
 	list->mode = 0;
-	list->files = 0;
 	return (list);
 }
 

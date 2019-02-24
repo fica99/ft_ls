@@ -15,7 +15,6 @@
 int	main(int argc, char **argv)
 {
 	t_dir	*request;
-	t_flags	*flags;
 
 	request = opening(argc, argv);
 	print(request);

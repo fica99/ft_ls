@@ -6,13 +6,14 @@
 #    By: aashara- <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/02/05 18:08:02 by aashara-         ###   ########.fr        #
+#    Updated: 2019/02/19 22:43:12 by ggrimes          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=ft_ls
 
 SRC=srcs/check.c\
+	srcs/check2.c\
 	srcs/reading.c\
 	srcs/sort_list.c\
 	srcs/flags.c\
