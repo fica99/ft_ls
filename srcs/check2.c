@@ -54,6 +54,16 @@ void	print_usage(char c)
 {
 	ft_putstr("ft_ls: illegal option -- ");
 	ft_putchar(c);
-	ft_putstr("\nusage: ft_ls [-RSadfglrtu] [file ...]\n");
+	ft_putstr("\nusage: ft_ls [-@RSadfglrtu] [file ...]\n");
 	exit(-1);
+}
+
+t_dir	*next_elem(t_dir *request, t_prt_cols pprm)
+{
+	ushort	i;
+
+	i = 0;
+	while (++i <= pprm.rows && request)
+		request = (*request).next;
+	return (request);
 }

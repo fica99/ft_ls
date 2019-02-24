@@ -43,7 +43,7 @@ t_dir		*make_list(char **arr, uint8_t *i)
 			dir = dir->next;
 		}
 		dir->name = arr[*i];
-		dir->path = ft_strjoin("./", arr[(*i)++]);
+		dir->path = arr[(*i)++];
 		dir = reading_l(dir);
 	}
 	return (head);
@@ -57,7 +57,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 	DIR				*folder;
 
 	if ((get_type(list->mode) != 'd' && list->mode) ||
-		!(check_open(folder = opendir(list->path), &list)))
+		!(check_open(folder = opendir(list->path), &list)) || !list)
 				return (NULL);
 	d = ft_list();
 	head = d;
