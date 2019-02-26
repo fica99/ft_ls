@@ -33,6 +33,12 @@ t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 		pprm.rows++;
 	pprm.cols = (pprm.cnt_elems % pprm.rows == 0) ? pprm.cnt_elems / pprm.rows
 			: (pprm.cnt_elems / pprm.rows) + 1;
+	while (pprm.cols * (pprm.max + 1) > ws_col)
+	{
+		pprm.rows++;
+		pprm.cols = (pprm.cnt_elems % pprm.rows == 0) ? pprm.cnt_elems / pprm.rows
+			: (pprm.cnt_elems / pprm.rows) + 1;
+	}
 	return (pprm);
 }
 

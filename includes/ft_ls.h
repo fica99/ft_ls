@@ -62,11 +62,11 @@ typedef struct	s_prt_cols
 
 typedef struct	s_prt_rows
 {
-	long		total;
-	u_int8_t	max_nlink;
-	u_int8_t	max_size;
-	ushort		max_uid;
-	ushort		max_gid;
+	unsigned int	total;
+	u_int8_t		max_nlink;
+	u_int8_t		max_size;
+	ushort			max_uid;
+	ushort			max_gid;
 }				t_prt_rows;
 
 t_dir			*opening(int argc, char **argv);
