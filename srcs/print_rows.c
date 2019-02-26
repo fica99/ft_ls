@@ -159,10 +159,7 @@ void		print_label_attr(t_dir *request, ushort flags)
 	ssize_t	size_list;
 
 	size_list = listxattr((*request).path, NULL, 0, 0); // обработать ошибки
-	if (is_flags(flags, '@') && size_list)
-		ft_putstr("@ ");
-	else
-		ft_putstr("  ");
+	size_list ? ft_putstr("@ ") : ft_putstr("  ");
 }
 
 void		print_attr_full(t_dir *request, ushort flags)
@@ -174,17 +171,17 @@ void		print_attr_full(t_dir *request, ushort flags)
 	u_int8_t	size_val;
 	char		value[SIZE_VATTR];
 
-	size_list = listxattr((*request).path + 2, list, NAME_SATTR, 0); // обработать ошибки
+	size_list = listxattr((*request).path, list, NAME_SATTR, 0); // обработать ошибки
 	if (is_flags(flags, '@') && size_list)
 	{
 		i = -1;
 		while (++i < size_list)
 		{
-			ft_putstr("\t");
+			ft_putchar('\t');
 			ft_putstr(list + i);
 			len = ft_strlen(list + i);
-			size_val = getxattr((*request).path + 2, list + i, value, SIZE_VATTR, 0, 0); // обработать ошибки
-			ft_putstr("\t");
+			size_val = getxattr((*request).path, list + i, value, SIZE_VATTR, 0, 0); // обработать ошибки
+			ft_putstr("\t   ");
 			ft_putnbr((int)size_val);
 			ft_putchar('\n');
 			i += len;
