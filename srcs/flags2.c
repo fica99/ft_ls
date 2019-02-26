@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ramory-l <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 19:37:28 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/10 19:37:30 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/26 17:56:11 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ t_dir	*reading_l(t_dir *request)
 	if (lstat(request->path, &buf) == -1)
 	{
 		ft_putstr("ft_ls: ");
-		perror(file->path + 2);
+		perror(file->path);
 		file->flags = add_flag(file->flags, 2);
 		return (file);
 	}

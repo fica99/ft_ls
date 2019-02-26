@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ramory-l <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:45 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/26 17:56:12 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	check_open(DIR *dir, t_dir **list)
 	if (dir == NULL)
 	{
 		ft_putstr("ft_ls: ");
-		perror((*list)->path + 2);
+		perror((*list)->path);
 		(*list)->flags = add_flag((*list)->flags, 2);
 		return (0);
 	}
