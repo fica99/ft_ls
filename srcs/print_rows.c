@@ -166,7 +166,7 @@ void		print_attr_full(t_dir *request, ushort flags)
 {
 	char		list[NAME_SATTR];
 	ssize_t		size_list;
-	ssize_t	i;
+	ssize_t		i;
 	u_int8_t	len;
 	u_int8_t	size_val;
 	char		value[SIZE_VATTR];
@@ -213,7 +213,7 @@ void		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
 
 void		print_time(time_t time)
 {
-    char	*str_time;
+	char	*str_time;
 
 	str_time = ctime(&time);
 	str_time[16] = '\0';
@@ -223,8 +223,8 @@ void		print_time(time_t time)
 
 void		print_link(t_dir *request)
 {
-	char buf[100];
-	size_t size;
+	char	buf[100];
+	size_t	size;
 
 	size = readlink((*request).path, buf, 100); //обработать ошибки
 	buf[size] = '\0';

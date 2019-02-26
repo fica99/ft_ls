@@ -24,7 +24,7 @@ void	print(t_dir *request)
 	request = request->f_names;
 	if (is_flags(flags, 'd'))
 	{
-		(is_flags(flags, 'l') || is_flags(flags, 'g')) ? 
+		(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
 			print_rows(request, 85, flags) : print_cols(request, 85, flags);
 		exit(0);
 	}
@@ -61,8 +61,8 @@ t_dir	*print_files(t_dir *request, ushort size, ushort flags)
 		else
 			return (dir);
 	}
-	(is_flags(flags, 'l') || is_flags(flags, 'g')) ? print_rows(files, size, 0) :
-		print_cols(files, size, 0);
+	(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
+	print_rows(files, size, 0) : print_cols(files, size, 0);
 	return (dir);
 }
 

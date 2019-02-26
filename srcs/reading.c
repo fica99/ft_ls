@@ -58,7 +58,7 @@ t_dir		*reading(t_dir *list, ushort flags)
 
 	if ((get_type(list->mode) != 'd') ||
 		!(check_open(folder = opendir(list->path), &list)) || !list)
-			return (NULL);
+		return (NULL);
 	d = ft_list();
 	head = d;
 	while ((file = readdir(folder)) != NULL)
