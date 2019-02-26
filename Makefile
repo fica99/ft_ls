@@ -22,7 +22,6 @@ SRC=srcs/check.c\
 	srcs/output.c\
 	srcs/print_one_level.c\
 	srcs/print_rows.c\
-	srcs/flags_binary.c\
 
 INCLUDES=includes
 

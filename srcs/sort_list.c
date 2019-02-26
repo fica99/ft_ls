@@ -32,7 +32,6 @@ t_dir		*sort_tree(t_dir *list, t_dir *(*sort)(t_dir *))
 t_dir		*sort_one_list(t_dir *list)
 {
 	t_dir	*head;
-	t_dir	*pre;
 
 	if (!list)
 		return (NULL);
@@ -43,15 +42,14 @@ t_dir		*sort_one_list(t_dir *list)
 	{
 		if (ft_strcmp((*list).name, (*((*list).next)).name) > 0)
 		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
+			list = swap_list(list, (*list).next);
+			if ((*list).pre)
+				list = (*list).pre;
 			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
+				head = list;
 			continue ;
 		}
-		pre = list;
-		list = list->next;
+		list = (*list).next;
 	}
 	return (head);
 }

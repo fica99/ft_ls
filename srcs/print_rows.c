@@ -41,6 +41,8 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 	pprm.max_gid = 0;
 	while (request)
 	{
+		if (!(request->mode))
+			exit(-1);
 		pprm.total += request->total;
 		if ((bit = get_bit((*request).nlink)) > pprm.max_nlink)
 			pprm.max_nlink = bit;
@@ -80,7 +82,8 @@ void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 	if (get_type((*request).mode) == 'l')
 		print_link(request);
 	ft_putchar('\n');
-	print_attr_full(request, flags);
+	if (get_type((*request).mode) != 'l')
+		print_attr_full(request, flags);
 }
 
 char		get_type(mode_t mode)
@@ -156,33 +159,30 @@ void		print_label_attr(t_dir *request, ushort flags)
 {
 	ssize_t	size_list;
 
-	size_list = listxattr((*request).path + 2, NULL, 0, 0); // обработать ошибки
-	if (is_flags(flags, '@') && size_list)
-		ft_putstr("@ ");
-	else
-		ft_putstr("  ");
+	size_list = listxattr((*request).path, NULL, 0, 0); // обработать ошибки
+	size_list ? ft_putstr("@ ") : ft_putstr("  ");
 }
 
 void		print_attr_full(t_dir *request, ushort flags)
 {
 	char		list[NAME_SATTR];
 	ssize_t		size_list;
-	ssize_t	i;
+	ssize_t		i;
 	u_int8_t	len;
 	u_int8_t	size_val;
 	char		value[SIZE_VATTR];
 
-	size_list = listxattr((*request).path + 2, list, NAME_SATTR, 0); // обработать ошибки
+	size_list = listxattr((*request).path, list, NAME_SATTR, 0); // обработать ошибки
 	if (is_flags(flags, '@') && size_list)
 	{
 		i = -1;
 		while (++i < size_list)
 		{
-			ft_putstr("\t");
+			ft_putchar('\t');
 			ft_putstr(list + i);
 			len = ft_strlen(list + i);
-			size_val = getxattr((*request).path + 2, list + i, value, SIZE_VATTR, 0, 0); // обработать ошибки
-			ft_putstr("\t");
+			size_val = getxattr((*request).path, list + i, value, SIZE_VATTR, 0, 0); // обработать ошибки
+			ft_putstr("\t   ");
 			ft_putnbr((int)size_val);
 			ft_putchar('\n');
 			i += len;
@@ -214,7 +214,7 @@ void		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
 
 void		print_time(time_t time)
 {
-    char	*str_time;
+	char	*str_time;
 
 	str_time = ctime(&time);
 	str_time[16] = '\0';
@@ -224,10 +224,10 @@ void		print_time(time_t time)
 
 void		print_link(t_dir *request)
 {
-	char buf[100];
-	size_t size;
+	char	buf[100];
+	size_t	size;
 
-	size = readlink((*request).path + 2, buf, 100); //обработать ошибки
+	size = readlink((*request).path, buf, 100); //обработать ошибки
 	buf[size] = '\0';
 	ft_putstr(" -> ");
 	ft_putstr(buf);

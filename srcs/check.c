@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ramory-l <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:45 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/26 17:56:12 by ramory-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 char	check_open(DIR *dir, t_dir **list)
 {
-	if (dir == NULL && errno != ENOTDIR)
+	if (dir == NULL)
 	{
 		ft_putstr("ft_ls: ");
-		perror((*list)->path + 2);
+		perror((*list)->path);
 		(*list)->flags = add_flag((*list)->flags, 2);
+		return (0);
 	}
-	else if (dir)
-		return (1);
-	return (0);
+	return (1);
 }
 
 void	check_close(int nb)
@@ -45,6 +44,7 @@ t_dir	*ft_list(void)
 	}
 	list->f_names = NULL;
 	list->next = NULL;
+	list->pre = NULL;
 	list->flags = 0;
 	list->size = 0;
 	list->gid = 0;
@@ -73,7 +73,11 @@ uint8_t	double_arr_len(char **d_names)
 
 t_dir	*swap_list(t_dir *cur, t_dir *next)
 {
+	(*next).pre = (*cur).pre;
 	(*cur).next = (*next).next;
 	(*next).next = cur;
+	(*cur).pre = next;
+	if ((*cur).next)
+		(*((*cur).next)).pre = cur;
 	return (next);
 }
