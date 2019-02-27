@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:18 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 19:55:28 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_dir			*reading(t_dir *list, ushort flags);
 char			check_open(DIR *dir, t_dir **list);
 char			*check_path(char *path, char *name, t_dir *d);
 void			check_close(int nb);
-t_dir			*check_err(t_dir *err, t_dir **list, t_dir *elem);
+t_dir			*check_err(t_dir **list, t_dir *elem);
 t_dir			*find_flag(t_dir *request);
 t_dir			*flaging_r_big(t_dir *request, ushort flags);
 t_dir			*flag_r_big(t_dir *request, ushort flags);

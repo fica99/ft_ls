@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 15:35:34 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 19:49:27 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,12 @@ t_dir		*read_request(t_dir *list)
 	t_dir	*err;
 
 	file = list->f_names;
-	err = NULL;
 	while (file)
 	{
 		file->f_names = reading(file, list->flags);
-		if (!is_flags(file->flags, 2))
-		{
-			err = file;
-			file = file->next;
-			continue;
-		}
-		file = check_err(err, &list, file);
+		if (is_flags(file->flags, 2))
+			file = check_err(&list, file);
+		file = file->next;
 	}
 	return (list);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/22 15:02:15 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 20:08:28 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,24 @@ char	*check_path(char *path, char *name, t_dir *d)
 	return (d->path);
 }
 
-t_dir	*check_err(t_dir *err, t_dir **list, t_dir *elem)
+t_dir	*check_err(t_dir **list, t_dir *elem)
 {
 	t_dir	*file;
 
-	if (!err)
+	if (!(elem->pre))
 	{
 		(*list)->f_names = elem->next;
-		free(elem);
+		(elem->next)->pre = NULL;
 		file = (*list)->f_names;
 	}
 	else
 	{
-		err->next = elem->next;
-		free(elem);
-		file = err->next;
+		(elem->pre)->next = elem->next;
+		if (elem->next)
+			(elem->next)->pre = elem->pre;		
+		file = elem->pre;
 	}
+	ft_memdel((void**)&elem);
 	return (file);
 }
 
