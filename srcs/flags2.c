@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 19:37:28 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/26 17:56:11 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/02/27 15:24:32 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_dir	*flag_l(t_dir *request)
 	t_dir	*head;
 
 	head = request;
+	if (!request)
+		return (NULL);
 	while (request)
 	{
 		request = reading_l(request);
@@ -31,6 +33,8 @@ t_dir	*reading_l(t_dir *request)
 	struct stat	buf;
 
 	file = request;
+	if (!request)
+		return (NULL);
 	if (lstat(request->path, &buf) == -1)
 	{
 		ft_putstr("ft_ls: ");
