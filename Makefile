@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aashara- <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/02/19 22:43:12 by ggrimes          ###   ########.fr        #
+#    Updated: 2019/02/27 18:59:28 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,7 +31,7 @@ all: $(NAME)
 
 $(NAME):
 			@make re -C $(LIB)
-			@gcc -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
+			@gcc -g -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
 
 clean:
 			@make clean -C $(LIB)

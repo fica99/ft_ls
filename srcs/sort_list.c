@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:21:48 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/10 00:21:50 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 19:15:47 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,10 @@ t_dir		*sort_one_list(t_dir *list)
 		{
 			list = swap_list(list, (*list).next);
 			if ((*list).pre)
+			{
+				(list->pre)->next = list;
 				list = (*list).pre;
+			}
 			else
 				head = list;
 			continue ;
