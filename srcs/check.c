@@ -6,22 +6,28 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 19:10:26 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 22:50:15 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char	check_open(DIR *dir, t_dir **list)
+void	*check_open(char *path, u_int8_t f)
 {
-	if (dir == NULL)
+	DIR				*folder;
+	
+	if (!(folder = opendir(path)))
 	{
 		ft_putstr("ft_ls: ");
-		perror((*list)->path);
-		(*list)->flags = add_flag((*list)->flags, 2);
-		return (0);
+		perror(path);
+		return (NULL);
 	}
-	return (1);
+	if (!f)
+	{
+	 	check_close(closedir(folder));
+		return (path);
+	}
+	return (folder);
 }
 
 void	check_close(int nb)
@@ -31,6 +37,22 @@ void	check_close(int nb)
 		perror("ft_ls");
 		exit(-1);
 	}
+}
+
+mode_t	check_stat(char *path)
+{
+	struct stat	buf;
+	mode_t	mode;
+	
+	mode = 0;
+	if (lstat(path, &buf) == -1)
+	{
+			ft_putstr("ft_ls: ");
+			perror(path);
+	}
+	else
+		mode = buf.st_mode;
+	return (mode);
 }
 
 t_dir	*ft_list(void)

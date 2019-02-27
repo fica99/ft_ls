@@ -6,13 +6,13 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 19:37:28 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 19:29:27 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 22:23:33 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir	*flag_l(t_dir *request)
+t_dir	*flag_l(t_dir *request, ushort flags)
 {
 	t_dir	*head;
 
@@ -20,6 +20,8 @@ t_dir	*flag_l(t_dir *request)
 	while (request)
 	{
 		request = reading_l(request);
+		if (is_flags(flags, 2))
+			request = check_err(&head, request);
 		request = request->next;
 	}
 	return (head);
@@ -30,13 +32,14 @@ t_dir	*reading_l(t_dir *request)
 	t_dir		*file;
 	struct stat	buf;
 
+	if(!request)
+		return (NULL);
 	file = request;
 	if (lstat(request->path, &buf) == -1)
 	{
 		ft_putstr("ft_ls: ");
-		perror(file->path);
-		file->flags = add_flag(file->flags, 2);
-		return (file);
+		perror(request->path);
+		return (NULL);
 	}
 	request->size = buf.st_size;
 	request->time_mod = buf.st_mtime;
@@ -73,8 +76,6 @@ ushort	add_flag(ushort flags, char flag)
 		return (flags | 512);
 	if (flag == 1)
 		return (flags | 1024);
-	if (flag == 2)
-		return (flags | 2048);
 	if (flag == '@')
 		return (flags | 4096);
 	if (flag == 'G')
@@ -109,8 +110,6 @@ ushort	is_flags(ushort flags, char flag)
 	if (flag == 'S' && (flags & 512) == 512)
 		return (1);
 	if (flag == 1 && (flags & 1024) == 1024)
-		return (1);
-	if (flag == 2 && (flags & 2048) == 2048)
 		return (1);
 	if (flag == '@' && (flags & 4096) == 4096)
 		return (1);

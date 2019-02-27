@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 19:49:27 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 22:50:58 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,33 @@ t_dir		*make_list(char **arr, uint8_t *i)
 {
 	t_dir		*head;
 	t_dir		*dir;
+	mode_t		mode;
 
-	dir = ft_list();
+	dir = NULL;
 	head = dir;
-	while (arr[(*i)])
+	(*i)--;
+	while (arr[++(*i)])
 	{
-		if (arr[(*i) - 1][0] != '-' && ((*i) - 1) != 0)
+		if (!(mode = check_stat(arr[*i])))
+			continue;
+		if (get_type(mode) == 'd' && !check_open(arr[*i], 0))
+			continue ;
+		if (dir)
 		{
 			dir->next = ft_list();
 			(dir->next)->pre = dir;
 			dir = dir->next;
 		}
-		dir->name = arr[*i];
-		dir->path = arr[(*i)++];
-		dir = reading_l(dir);
+		else
+		{
+			dir = ft_list();
+			head = dir;
+		}
+		dir->mode = mode;
+		dir->name = arr[(*i)];
+		dir->path = arr[(*i)];
 	}
-	return (head);
+	return (sort_one_list(head));
 }
 
 t_dir		*reading(t_dir *list, ushort flags)
@@ -57,20 +68,25 @@ t_dir		*reading(t_dir *list, ushort flags)
 	DIR				*folder;
 
 	if ((get_type(list->mode) != 'd') ||
-		!(check_open(folder = opendir(list->path), &list)) || !list)
+		!(folder = (DIR *)check_open(list->path, 1)) || !list)
 		return (NULL);
-	d = ft_list();
+	d = NULL;
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
 		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
 			&& (file->d_name)[0] == '.')
 			continue ;
-		if (d->name)
+		if (d && d->name)
 		{
 			d->next = ft_list();
 			(d->next)->pre = d;
 			d = d->next;
+		}
+		else
+		{
+			d = ft_list();
+			head = d;
 		}
 		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
@@ -83,14 +99,12 @@ t_dir		*reading(t_dir *list, ushort flags)
 t_dir		*read_request(t_dir *list)
 {
 	t_dir	*file;
-	t_dir	*err;
 
 	file = list->f_names;
 	while (file)
 	{
 		file->f_names = reading(file, list->flags);
-		if (is_flags(file->flags, 2))
-			file = check_err(&list, file);
+		
 		file = file->next;
 	}
 	return (list);

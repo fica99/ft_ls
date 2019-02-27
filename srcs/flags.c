@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flags.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:26:58 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/10 00:26:59 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 20:50:28 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ t_dir	*find_flag(t_dir *request)
 	if (is_flags(f, 'R'))
 		request->f_names = flaging_r_big(request->f_names, f);
 	if (is_flags(f, 'l'))
-		request->f_names = flaging_l(request->f_names);
+		request->f_names = flaging_l(request->f_names, f);
 	if (is_flags(f, 'r'))
 		request->f_names = sort_tree(request->f_names, sort_list_rev);
 	if (is_flags(f, 't') || is_flags(f, 'u')
 		|| is_flags(f, 'S') || is_flags(f, 'g'))
 	{
 		if (!(is_flags(f, 'l')))
-			request->f_names = flaging_l(request->f_names);
+			request->f_names = flaging_l(request->f_names, f);
 		if (is_flags(f, 't'))
 			request->f_names = sort_tree(request->f_names, sort_list_time);
 		if (is_flags(f, 'u'))
@@ -92,7 +92,7 @@ t_dir	*flag_r_big(t_dir *request, ushort flags)
 	return (head);
 }
 
-t_dir	*flaging_l(t_dir *request)
+t_dir	*flaging_l(t_dir *request, ushort flags)
 {
 	t_dir	*dir;
 
@@ -100,9 +100,9 @@ t_dir	*flaging_l(t_dir *request)
 	while (request)
 	{
 		if (request->f_names)
-			if (!(request->f_names = flaging_l(request->f_names)))
+			if (!(request->f_names = flaging_l(request->f_names, flags)))
 				return (NULL);
 		request = request->next;
 	}
-	return (flag_l(dir));
+	return (flag_l(dir, flags));
 }

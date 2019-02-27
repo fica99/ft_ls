@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 20:08:28 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 21:43:44 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,17 @@ t_dir	*check_err(t_dir **list, t_dir *elem)
 
 	if (!(elem->pre))
 	{
-		(*list)->f_names = elem->next;
+		if ((*list)->f_names)
+		{
+			(*list)->f_names = elem->next;
+			file = (*list)->f_names;
+		}
+		else
+		{
+			(*list)->next = elem->next;
+			file = *list;
+		}
 		(elem->next)->pre = NULL;
-		file = (*list)->f_names;
 	}
 	else
 	{

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 19:55:28 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 22:48:15 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,21 +76,22 @@ ushort			read_flags(char **argv, uint8_t *i);
 ushort			add_flag(ushort flags, char flag);
 void			print_usage(char c);
 char			**check_dir(int argc, char **argv, uint8_t i);
+mode_t	check_stat(char *path);
 uint8_t			double_arr_len(char **d_names);
 t_dir			*make_list(char **arr, uint8_t *i);
 t_dir			*reading_l(t_dir *request);
 ushort			is_flags(ushort flags, char flag);
 t_dir			*read_request(t_dir *list);
 t_dir			*reading(t_dir *list, ushort flags);
-char			check_open(DIR *dir, t_dir **list);
+void	*check_open(char *path, u_int8_t f);
 char			*check_path(char *path, char *name, t_dir *d);
 void			check_close(int nb);
 t_dir			*check_err(t_dir **list, t_dir *elem);
 t_dir			*find_flag(t_dir *request);
 t_dir			*flaging_r_big(t_dir *request, ushort flags);
 t_dir			*flag_r_big(t_dir *request, ushort flags);
-t_dir			*flaging_l(t_dir *request);
-t_dir			*flag_l(t_dir *request);
+t_dir			*flaging_l(t_dir *request, ushort flags);
+t_dir			*flag_l(t_dir *request, ushort flags);
 t_dir			*sort_tree(t_dir *list, t_dir *(*sort)(t_dir *));
 t_dir			*sort_list_rev(t_dir *list);
 t_dir			*swap_list(t_dir *cur, t_dir *next);
