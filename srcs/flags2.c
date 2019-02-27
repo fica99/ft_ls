@@ -6,28 +6,13 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 19:37:28 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 22:23:33 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 23:37:50 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir	*flag_l(t_dir *request, ushort flags)
-{
-	t_dir	*head;
-
-	head = request;
-	while (request)
-	{
-		request = reading_l(request);
-		if (is_flags(flags, 2))
-			request = check_err(&head, request);
-		request = request->next;
-	}
-	return (head);
-}
-
-t_dir	*reading_l(t_dir *request)
+t_dir	*get_data(t_dir *request)
 {
 	t_dir		*file;
 	struct stat	buf;

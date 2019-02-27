@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sort_list2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:03:09 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/26 17:56:04 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/02/27 23:38:10 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 t_dir		*sort_list_size(t_dir *list)
 {
 	t_dir	*head;
-	t_dir	*pre;
 
-	if (!list)
-		return (NULL);
 	if (!(*list).next)
 		return (list);
 	head = list;
@@ -26,15 +23,17 @@ t_dir		*sort_list_size(t_dir *list)
 	{
 		if (list->size < (list->next)->size)
 		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
+			list = swap_list(list, (*list).next);
+			if ((*list).pre)
+			{
+				(list->pre)->next = list;
+				list = (*list).pre;
+			}
 			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
+				head = list;
 			continue ;
 		}
-		pre = list;
-		list = list->next;
+		list = (*list).next;
 	}
 	return (head);
 }
@@ -42,10 +41,7 @@ t_dir		*sort_list_size(t_dir *list)
 t_dir		*sort_list_f_d(t_dir *list)
 {
 	t_dir	*head;
-	t_dir	*pre;
 
-	if (!list)
-		return (NULL);
 	if (!(*list).next)
 		return (list);
 	head = list;
@@ -53,15 +49,17 @@ t_dir		*sort_list_f_d(t_dir *list)
 	{
 		if ((*list).f_names && !(*((*list).next)).f_names)
 		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
+			list = swap_list(list, (*list).next);
+			if ((*list).pre)
+			{
+				(list->pre)->next = list;
+				list = (*list).pre;
+			}
 			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
+				head = list;
 			continue ;
 		}
-		pre = list;
-		list = list->next;
+		list = (*list).next;
 	}
 	return (head);
 }

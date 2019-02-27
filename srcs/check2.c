@@ -6,19 +6,21 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 21:43:44 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 23:16:19 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char	*check_path(char *path, char *name, t_dir *d)
+char	*check_path(char *path, char *name)
 {
+	char	*d;
+	
 	if (path[ft_strlen(path) - 1] == '/')
-		d->path = ft_strjoin(path, name);
+		d = ft_strjoin(path, name);
 	else
-		d->path = ft_strjoin(ft_strjoin(path, "/"), name);
-	return (d->path);
+		d = ft_strjoin(ft_strjoin(path, "/"), name);
+	return (d);
 }
 
 t_dir	*check_err(t_dir **list, t_dir *elem)

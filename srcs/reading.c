@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 22:50:58 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/27 23:21:38 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ t_dir		*reading(t_dir *list, ushort flags)
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
+		if (!(check_stat(check_path(list->path, file->d_name))))
+			continue;
 		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
 			&& (file->d_name)[0] == '.')
 			continue ;
@@ -90,7 +92,10 @@ t_dir		*reading(t_dir *list, ushort flags)
 		}
 		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
-		d->path = check_path(list->path, file->d_name, d);
+		d->path = check_path(list->path, file->d_name);
+		if (is_flags(flags, 't') || is_flags(flags, 'u')
+		|| is_flags(flags, 'S') || is_flags(flags, 'g') || is_flags(flags, 'l'))
+			d = get_data(d);
 	}
 	check_close(closedir(folder));
 	return (head);
@@ -104,7 +109,6 @@ t_dir		*read_request(t_dir *list)
 	while (file)
 	{
 		file->f_names = reading(file, list->flags);
-		
 		file = file->next;
 	}
 	return (list);
