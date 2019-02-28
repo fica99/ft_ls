@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 15:35:28 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:32:41 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	print(t_dir *request)
 			print_rows(request, 85, flags) : print_cols(request, 85, flags);
 		exit(0);
 	}
-	request = sort_list_f_d(request);
+	request = sort_one_list(request, list_f_d);
 	dir = print_files(request, size.ws_col, flags);
 	if (dir != request)
 		flags = add_flag(flags, 1);
@@ -71,6 +71,9 @@ void	print_all_rek(t_dir *request, ushort size,
 {
 	while (request)
 	{
+		if (!(request->f_names) && is_flags(flags, 'R') && get_type(request->mode) == 'd' && (ft_strcmp(request->name, ".") != 0) &&
+			(ft_strcmp(request->name, "..") != 0))
+			request->f_names = reading(request, flags);
 		if (request->f_names)
 		{
 			if (request->next || is_flags(flags, 1))
@@ -80,6 +83,7 @@ void	print_all_rek(t_dir *request, ushort size,
 				ft_putstr(request->path);
 				ft_putstr(":\n");
 			}
+			request->f_names = sorting(request->f_names, flags);
 			f(request->f_names, size, flags);
 			flags = add_flag(flags, 1);
 			print_all_rek(request->f_names, size, f, flags);

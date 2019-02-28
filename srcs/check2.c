@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 23:16:19 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:23:54 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,6 @@ char	*check_path(char *path, char *name)
 	else
 		d = ft_strjoin(ft_strjoin(path, "/"), name);
 	return (d);
-}
-
-t_dir	*check_err(t_dir **list, t_dir *elem)
-{
-	t_dir	*file;
-
-	if (!(elem->pre))
-	{
-		if ((*list)->f_names)
-		{
-			(*list)->f_names = elem->next;
-			file = (*list)->f_names;
-		}
-		else
-		{
-			(*list)->next = elem->next;
-			file = *list;
-		}
-		(elem->next)->pre = NULL;
-	}
-	else
-	{
-		(elem->pre)->next = elem->next;
-		if (elem->next)
-			(elem->next)->pre = elem->pre;		
-		file = elem->pre;
-	}
-	ft_memdel((void**)&elem);
-	return (file);
 }
 
 char	**check_dir(int argc, char **argv, uint8_t i)

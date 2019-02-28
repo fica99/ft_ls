@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 23:21:38 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:16:10 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_dir		*opening(int argc, char **argv)
 	request->f_names = make_list(argv, &i);
 	if (!(is_flags(request->flags, 'd')))
 		request = read_request(request);
-	return (find_flag(request));
+	return (request);
 }
 
 t_dir		*make_list(char **arr, uint8_t *i)
@@ -57,7 +57,7 @@ t_dir		*make_list(char **arr, uint8_t *i)
 		dir->name = arr[(*i)];
 		dir->path = arr[(*i)];
 	}
-	return (sort_one_list(head));
+	return (sort_one_list(head, list_sort));
 }
 
 t_dir		*reading(t_dir *list, ushort flags)

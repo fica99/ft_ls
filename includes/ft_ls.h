@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/27 23:22:01 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/02/28 17:15:49 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,17 @@ t_dir			*flaging_r_big(t_dir *request, ushort flags);
 t_dir			*flag_r_big(t_dir *request, ushort flags);
 t_dir			*flaging_l(t_dir *request, ushort flags);
 t_dir			*flag_l(t_dir *request, ushort flags);
-t_dir			*sort_tree(t_dir *list, t_dir *(*sort)(t_dir *));
-t_dir			*sort_list_rev(t_dir *list);
-t_dir			*swap_list(t_dir *cur, t_dir *next);
-t_dir			*sort_list_time(t_dir *list);
-t_dir			*sort_list_atime(t_dir *list);
-t_dir			*sort_list_size(t_dir *list);
-t_dir			*sort_one_list(t_dir *list);
+t_dir		*sort_one_list(t_dir *list, uint8_t (fun)(t_dir*));
+uint8_t	list_rev(t_dir *list);
+uint8_t	list_time_mod(t_dir *list);
+uint8_t	list_time_a(t_dir *list);
+uint8_t	list_sort(t_dir *list);
+uint8_t	list_size(t_dir *list);
+uint8_t	list_f_d(t_dir *list);
+t_dir	*sorting(t_dir *request, ushort flags);
+t_dir	*swap_list(t_dir *cur, t_dir *next);
 void			print(t_dir *request);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
-
-t_dir			*sort_list_f_d(t_dir *list);
 void			print_cols(t_dir *request, ushort ws_col, ushort flags);
 t_prt_cols		get_print_prm_c(t_dir *request, ushort ws_col);
 void			print_elem(char *str, uint8_t max);
