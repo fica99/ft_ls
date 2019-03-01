@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 15:25:04 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 20:20:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	check_close(int nb)
 	}
 }
 
-mode_t	check_stat(char *path)
+mode_t	check_stat(char *path, uint8_t del)
 {
 	struct stat	buf;
 	mode_t		mode;
@@ -52,6 +52,8 @@ mode_t	check_stat(char *path)
 	}
 	else
 		mode = buf.st_mode;
+	if (del)
+		ft_memdel((void **)&path);
 	return (mode);
 }
 

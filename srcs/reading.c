@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:11:28 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 20:41:40 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,19 @@ t_dir	*opening(int argc, char **argv)
 {
 	uint8_t	i;
 	t_dir	*request;
+	ushort	flags;
 
 	i = 1;
-	request = ft_list();
-	request->flags = read_flags(argv, &i);
+	flags = read_flags(argv, &i);
 	argv = check_dir(argc, argv, i);
 	i--;
-	request->f_names = make_list(argv, &i);
+	request = make_list(argv, &i, flags);
 	if (!(is_flags(request->flags, 'd')))
 		request = read_request(request);
 	return (request);
 }
 
-t_dir	*make_list(char **arr, uint8_t *i)
+t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 {
 	t_dir		*head;
 	t_dir		*dir;
@@ -38,23 +38,26 @@ t_dir	*make_list(char **arr, uint8_t *i)
 	head = dir;
 	while (arr[++(*i)])
 	{
-		if (!(mode = check_stat(arr[*i])) || (get_type(mode) == 'd'
+		if (!(mode = check_stat(arr[*i], 0)) || (get_type(mode) == 'd'
 		&& !check_open(arr[*i], 0)))
 			continue;
-		dir = check_exist(dir, &head);
+		dir = check_exist(dir, &head, flags);
 		dir->mode = mode;
-		dir->path = arr[(*i)];
-		dir->name = arr[(*i)];
+		dir->path = ft_strdup(arr[(*i)]);
+		dir->name = ft_strdup(arr[(*i)]);
 	}
+	if (!head)
+		exit(-1);
 	return (sort_one_list(head, list_sort));
 }
 
-t_dir	*reading(t_dir *list, ushort flags)
+t_dir	*reading(t_dir *list)
 {
 	t_dir			*head;
 	t_dir			*d;
 	struct dirent	*file;
 	DIR				*folder;
+	char			*path;
 
 	if ((!S_ISDIR(list->mode)) || !(folder = (DIR*)check_open(list->path, 1)))
 		return (NULL);
@@ -62,16 +65,16 @@ t_dir	*reading(t_dir *list, ushort flags)
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
-		if (!(check_stat(check_path(list->path, file->d_name))) ||
-		(!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
+		if (!(check_stat(check_path(list->path, file->d_name), 1)) ||
+		(!(is_flags(list->flags, 'a')) && !(is_flags(list->flags, 'f'))
 		&& (file->d_name)[0] == '.'))
 			continue;
-		d = check_exist(d, &(head));
+		d = check_exist(d, &(head), list->flags);
 		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name);
-		if (is_flags(flags, 't') || is_flags(flags, 'u')
-		|| is_flags(flags, 'S') || is_flags(flags, 'g') || is_flags(flags, 'l'))
+		if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
+		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g') || is_flags(list->flags, 'l'))
 			d = get_data(d);
 	}
 	check_close(closedir(folder));
@@ -80,15 +83,15 @@ t_dir	*reading(t_dir *list, ushort flags)
 
 t_dir	*read_request(t_dir *list)
 {
-	t_dir	*file;
+	t_dir	*head;
 
-	file = list->f_names;
-	while (file)
+	head = list;
+	while (list)
 	{
-		file->f_names = reading(file, list->flags);
-		file = file->next;
+		list->f_names = reading(list);
+		list = list->next;
 	}
-	return (list);
+	return (head);
 }
 
 t_dir	*get_data(t_dir *request)

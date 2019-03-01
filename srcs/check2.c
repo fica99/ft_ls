@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 15:38:47 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 20:27:10 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,18 @@
 char	*check_path(char *path, char *name)
 {
 	char	*d;
+	char	*temp;
 
 	d = NULL;
 	if (path[ft_strlen(path) - 1] == '/')
 		d = ft_strjoin(path, name);
 	else
-		d = ft_strjoin(ft_strjoin(path, "/"), name);
+	{
+		d = ft_strjoin(path, "/");
+		temp = d;
+		d = ft_strjoin(temp, name);
+		ft_memdel((void **)&temp);
+	}
 	return (d);
 }
 
@@ -34,17 +40,17 @@ char	**check_dir(int argc, char **argv, uint8_t i)
 	return (argv);
 }
 
-t_dir	*check_exist(t_dir *dir, t_dir **head)
+t_dir	*check_exist(t_dir *dir, t_dir **head, ushort flags)
 {
 	if (dir)
 	{
-		dir->next = ft_list();
+		dir->next = ft_list(flags);
 		(dir->next)->pre = dir;
 		dir = dir->next;
 	}
 	else
 	{
-		dir = ft_list();
+		dir = ft_list(flags);
 		*head = dir;
 	}
 	return (dir);

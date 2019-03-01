@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 17:05:33 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 20:29:13 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,26 +71,26 @@ typedef struct	s_prt_rows
 }				t_prt_rows;
 
 t_dir			*opening(int argc, char **argv);
-t_dir			*ft_list(void);
+t_dir			*ft_list(ushort flags);
 ushort			read_flags(char **argv, uint8_t *i);
 ushort			add_flag(ushort flags, char flag);
 ushort			add_flag2(ushort flags, char flag);
 void			print_usage(char c);
 char			**check_dir(int argc, char **argv, uint8_t i);
 uint8_t			double_arr_len(char **d_names);
-t_dir			*make_list(char **arr, uint8_t *i);
-mode_t			check_stat(char *path);
+t_dir			*make_list(char **arr, uint8_t *i, ushort flags);
+mode_t			check_stat(char *path, uint8_t del);
 char			get_type(mode_t mode);
-void			*check_open(char *path, u_int8_t f);
+void			*check_open(char *path, uint8_t f);
 void			check_close(int nb);
-t_dir			*check_exist(t_dir *dir, t_dir **head);
+t_dir			*check_exist(t_dir *dir, t_dir **head, ushort flags);
 t_dir			*sort_one_list(t_dir *list, uint8_t (fun)(t_dir*));
 uint8_t			list_sort(t_dir *list);
 t_dir			*swap_list(t_dir *cur, t_dir *next);
 ushort			is_flags(ushort flags, char flag);
 ushort			is_flags2(ushort flags, char flag);
 t_dir			*read_request(t_dir *list);
-t_dir			*reading(t_dir *list, ushort flags);
+t_dir			*reading(t_dir *list);
 char			*check_path(char *path, char *name);
 t_dir			*get_data(t_dir *request);
 void			print(t_dir *request);
@@ -122,4 +122,5 @@ uint8_t			list_rev(t_dir *list);
 uint8_t			list_time_mod(t_dir *list);
 uint8_t			list_time_a(t_dir *list);
 uint8_t			list_size(t_dir *list);
+t_dir			*free_list(t_dir **request);
 #endif
