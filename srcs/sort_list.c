@@ -6,13 +6,13 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/10 00:21:48 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/28 17:05:17 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:26:01 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir		*sort_one_list(t_dir *list, uint8_t (fun)(t_dir*))
+t_dir	*sort_one_list(t_dir *list, uint8_t (fun)(t_dir*))
 {
 	t_dir	*head;
 
@@ -57,7 +57,7 @@ uint8_t	list_time_mod(t_dir *list)
 	i = 0;
 	if (list->time_mod < (list->next)->time_mod)
 		i = 1;
-	return (i);	
+	return (i);
 }
 
 uint8_t	list_time_a(t_dir *list)
@@ -67,7 +67,7 @@ uint8_t	list_time_a(t_dir *list)
 	i = 0;
 	if (list->a_time < (list->next)->a_time)
 		i = 1;
-	return (i);	
+	return (i);
 }
 
 uint8_t	list_sort(t_dir *list)

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:03:09 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/28 17:21:08 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:25:29 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,3 @@ t_dir	*sorting(t_dir *request, ushort flags)
 		return (sort_one_list(request, list_size));
 	return (sort_one_list(request, list_sort));
 }
-
