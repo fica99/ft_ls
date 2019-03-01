@@ -3,41 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   check2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/22 15:02:15 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:38:47 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char	*check_path(char *path, char *name, t_dir *d)
+char	*check_path(char *path, char *name)
 {
+	char	*d;
+
+	d = NULL;
 	if (path[ft_strlen(path) - 1] == '/')
-		d->path = ft_strjoin(path, name);
+		d = ft_strjoin(path, name);
 	else
-		d->path = ft_strjoin(ft_strjoin(path, "/"), name);
-	return (d->path);
-}
-
-t_dir	*check_err(t_dir *err, t_dir **list, t_dir *elem)
-{
-	t_dir	*file;
-
-	if (!err)
-	{
-		(*list)->f_names = elem->next;
-		free(elem);
-		file = (*list)->f_names;
-	}
-	else
-	{
-		err->next = elem->next;
-		free(elem);
-		file = err->next;
-	}
-	return (file);
+		d = ft_strjoin(ft_strjoin(path, "/"), name);
+	return (d);
 }
 
 char	**check_dir(int argc, char **argv, uint8_t i)
@@ -50,20 +34,18 @@ char	**check_dir(int argc, char **argv, uint8_t i)
 	return (argv);
 }
 
-void	print_usage(char c)
+t_dir	*check_exist(t_dir *dir, t_dir **head)
 {
-	ft_putstr("ft_ls: illegal option -- ");
-	ft_putchar(c);
-	ft_putstr("\nusage: ft_ls [-@RSadfglrtu] [file ...]\n");
-	exit(-1);
-}
-
-t_dir	*next_elem(t_dir *request, t_prt_cols pprm)
-{
-	ushort	i;
-
-	i = 0;
-	while (++i <= pprm.rows && request)
-		request = (*request).next;
-	return (request);
+	if (dir)
+	{
+		dir->next = ft_list();
+		(dir->next)->pre = dir;
+		dir = dir->next;
+	}
+	else
+	{
+		dir = ft_list();
+		*head = dir;
+	}
+	return (dir);
 }

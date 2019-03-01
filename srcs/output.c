@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/15 22:02:48 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:02:52 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,16 @@ void	print(t_dir *request)
 
 	if (!request || ioctl(0, TIOCGWINSZ, (char*)&size) < 0)
 		exit(-1);
-	flags = (*request).flags;
+	flags = request->flags;
 	request = request->f_names;
 	if (is_flags(flags, 'd'))
 	{
 		(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
-			print_rows(request, 85, flags) : print_cols(request, 85, flags);
+			print_rows(request, size.ws_col, flags) :
+			print_cols(request, size.ws_col, flags);
 		exit(0);
 	}
-	request = sort_list_f_d(request);
+	request = sort_one_list(request, list_f_d);
 	dir = print_files(request, size.ws_col, flags);
 	if (dir != request)
 		flags = add_flag(flags, 1);
@@ -41,8 +42,6 @@ t_dir	*print_files(t_dir *request, ushort size, ushort flags)
 	t_dir	*files;
 	t_dir	*dir;
 
-	if (!request)
-		return (NULL);
 	files = request;
 	dir = request;
 	while (request)
@@ -71,6 +70,10 @@ void	print_all_rek(t_dir *request, ushort size,
 {
 	while (request)
 	{
+		if (!(request->f_names) && is_flags(flags, 'R') &&
+		get_type(request->mode) == 'd' && (ft_strcmp(request->name, ".") != 0)
+		&& (ft_strcmp(request->name, "..") != 0))
+			request->f_names = reading(request, flags);
 		if (request->f_names)
 		{
 			if (request->next || is_flags(flags, 1))
@@ -80,6 +83,7 @@ void	print_all_rek(t_dir *request, ushort size,
 				ft_putstr(request->path);
 				ft_putstr(":\n");
 			}
+			request->f_names = sorting(request->f_names, flags);
 			f(request->f_names, size, flags);
 			flags = add_flag(flags, 1);
 			print_all_rek(request->f_names, size, f, flags);

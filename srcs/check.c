@@ -3,25 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ramory-l <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/26 17:56:12 by ramory-l         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:25:04 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char	check_open(DIR *dir, t_dir **list)
+void	*check_open(char *path, u_int8_t f)
 {
-	if (dir == NULL)
+	DIR	*folder;
+
+	if (!(folder = opendir(path)))
 	{
 		ft_putstr("ft_ls: ");
-		perror((*list)->path);
-		(*list)->flags = add_flag((*list)->flags, 2);
-		return (0);
+		perror(path);
+		return (NULL);
 	}
-	return (1);
+	if (!f)
+	{
+		check_close(closedir(folder));
+		return (path);
+	}
+	return (folder);
 }
 
 void	check_close(int nb)
@@ -33,29 +39,20 @@ void	check_close(int nb)
 	}
 }
 
-t_dir	*ft_list(void)
+mode_t	check_stat(char *path)
 {
-	t_dir	*list;
+	struct stat	buf;
+	mode_t		mode;
 
-	if (!(list = (t_dir*)malloc(sizeof(t_dir))))
+	mode = 0;
+	if (lstat(path, &buf) == -1)
 	{
-		perror("ft_ls");
-		exit(-1);
+		ft_putstr("ft_ls: ");
+		perror(path);
 	}
-	list->f_names = NULL;
-	list->next = NULL;
-	list->flags = 0;
-	list->size = 0;
-	list->gid = 0;
-	list->uid = 0;
-	list->total = 0;
-	list->time_mod = 0;
-	list->a_time = 0;
-	list->nlink = 0;
-	list->name = NULL;
-	list->path = NULL;
-	list->mode = 0;
-	return (list);
+	else
+		mode = buf.st_mode;
+	return (mode);
 }
 
 uint8_t	double_arr_len(char **d_names)
@@ -68,11 +65,4 @@ uint8_t	double_arr_len(char **d_names)
 	while (d_names[i])
 		i++;
 	return (i);
-}
-
-t_dir	*swap_list(t_dir *cur, t_dir *next)
-{
-	(*cur).next = (*next).next;
-	(*next).next = cur;
-	return (next);
 }
