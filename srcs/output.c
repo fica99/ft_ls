@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void	print(t_dir *request)
+void				print(t_dir *request)
 {
 	struct winsize	size;
 	t_dir			*dir;
@@ -31,18 +31,18 @@ void	print(t_dir *request)
 	if (dir != request)
 		request->flags = add_flag(request->flags, 1);
 	print_all_rek(dir, size.ws_col, (is_flags(request->flags, 'l') ||
-		is_flags(request->flags, 'g')) ? print_rows : print_cols, request->flags);
+	is_flags(request->flags, 'g')) ? print_rows : print_cols, request->flags);
 }
 
-t_dir	*print_files(t_dir *request, ushort size, ushort flags)
+t_dir				*print_files(t_dir *request, ushort size, ushort flags)
 {
-	t_dir	*files;
-	t_dir	*dir;
+	t_dir			*files;
+	t_dir			*dir;
 
 	if (!(request))
 		return (NULL);
 	files = request;
-	dir = request;
+	dir = NULL;
 	while (request)
 	{
 		if (!request->f_names && request->next && (request->next)->f_names)
@@ -53,18 +53,13 @@ t_dir	*print_files(t_dir *request, ushort size, ushort flags)
 		request = request->next;
 	}
 	if (files == dir)
-	{
-		if (!(dir->f_names))
-			dir = NULL;
-		else
-			return (dir);
-	}
+		return (dir);
 	(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
 	print_rows(files, size, 0) : print_cols(files, size, 0);
 	return (dir);
 }
 
-void	print_all_rek(t_dir *request, ushort size,
+void				print_all_rek(t_dir *request, ushort size,
 		void (f)(t_dir *, ushort, ushort), ushort flags)
 {
 	while (request)
@@ -91,10 +86,10 @@ void	print_all_rek(t_dir *request, ushort size,
 	}
 }
 
-t_dir	*free_list(t_dir **request)
+t_dir				*free_list(t_dir **request)
 {
-	t_dir	*next;
-	
+	t_dir			*next;
+
 	if (!(*request))
 		return (NULL);
 	next = (*request)->next;
@@ -104,6 +99,5 @@ t_dir	*free_list(t_dir **request)
 	(*request)->next = NULL;
 	(*request)->pre = NULL;
 	free(*request);
-	request = NULL;
 	return (next);
 }

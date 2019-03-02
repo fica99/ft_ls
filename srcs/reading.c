@@ -57,16 +57,14 @@ t_dir	*reading(t_dir *list)
 	t_dir			*d;
 	struct dirent	*file;
 	DIR				*folder;
-	char			*path;
 
 	if ((!S_ISDIR(list->mode)) || !(folder = (DIR*)check_open(list->path, 1)))
 		return (NULL);
 	d = NULL;
-	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
-		if (!(check_stat(check_path(list->path, file->d_name), 1)) ||
-		(!(is_flags(list->flags, 'a')) && !(is_flags(list->flags, 'f'))
+		if (!(check_stat(check_path(list->path, file->d_name), 1))
+		|| (!(is_flags(list->flags, 'a')) && !(is_flags(list->flags, 'f'))
 		&& (file->d_name)[0] == '.'))
 			continue;
 		d = check_exist(d, &(head), list->flags);
@@ -74,7 +72,8 @@ t_dir	*reading(t_dir *list)
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name);
 		if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
-		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g') || is_flags(list->flags, 'l'))
+		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
+		|| is_flags(list->flags, 'l'))
 			d = get_data(d);
 	}
 	check_close(closedir(folder));
