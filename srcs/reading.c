@@ -45,6 +45,8 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 		dir->mode = mode;
 		dir->path = ft_strdup(arr[(*i)]);
 		dir->name = ft_strdup(arr[(*i)]);
+		if (is_flags(flags, 'l') || is_flags(flags, 'g'))
+			dir = get_data(dir);
 	}
 	if (!head)
 		exit(-1);

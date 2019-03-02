@@ -42,7 +42,7 @@ t_dir				*print_files(t_dir *request, ushort size, ushort flags)
 	if (!(request))
 		return (NULL);
 	files = request;
-	dir = NULL;
+	dir = request;
 	while (request)
 	{
 		if (!request->f_names && request->next && (request->next)->f_names)
@@ -52,11 +52,11 @@ t_dir				*print_files(t_dir *request, ushort size, ushort flags)
 		}
 		request = request->next;
 	}
-	if (files == dir)
+	if (files == dir && dir->f_names)
 		return (dir);
 	(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
 	print_rows(files, size, 0) : print_cols(files, size, 0);
-	return (dir);
+	return ((files == dir) ? NULL : dir);
 }
 
 void				print_all_rek(t_dir *request, ushort size,
