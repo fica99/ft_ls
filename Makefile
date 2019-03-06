@@ -3,25 +3,27 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aashara- <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/02/19 22:43:12 by ggrimes          ###   ########.fr        #
+#    Updated: 2019/03/06 22:39:06 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=ft_ls
 
-SRC=srcs/check.c\
-	srcs/check2.c\
-	srcs/reading.c\
-	srcs/sort_list.c\
+SRC=srcs/reading.c\
+	srcs/make.c\
 	srcs/flags.c\
-	srcs/flags2.c\
-	srcs/sort_list2.c\
+	srcs/check2.c\
+	srcs/check.c\
+	srcs/sort_list.c\
 	srcs/output.c\
-	srcs/print_one_level.c\
 	srcs/print_rows.c\
+	srcs/print_rows2.c\
+	srcs/print_rows3.c\
+	srcs/print_cols.c\
+	srcs/sort_list2.c\
 
 INCLUDES=includes
 
@@ -31,7 +33,7 @@ all: $(NAME)
 
 $(NAME):
 			@make re -C $(LIB)
-			@gcc -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
+			@gcc -g -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
 
 clean:
 			@make clean -C $(LIB)

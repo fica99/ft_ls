@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:45 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/06 21:40:07 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char	check_open(DIR *dir, t_dir **list)
+DIR		*check_open(char *path)
 {
-	if (dir == NULL)
+	DIR	*folder;
+
+	if (!(folder = opendir(path)))
 	{
 		ft_putstr("ft_ls: ");
-		perror((*list)->path + 2);
-		(*list)->flags = add_flag((*list)->flags, 2);
-		return (0);
+		perror(path);
+		return (NULL);
 	}
-	return (1);
+	return (folder);
 }
 
 void	check_close(int nb)
@@ -33,29 +34,17 @@ void	check_close(int nb)
 	}
 }
 
-t_dir	*ft_list(void)
+uint8_t	check_stat(char *path)
 {
-	t_dir	*list;
+	struct stat	buf;
 
-	if (!(list = (t_dir*)malloc(sizeof(t_dir))))
+	if (lstat(path, &buf) == -1)
 	{
-		perror("ft_ls");
-		exit(-1);
+		ft_putstr("ft_ls: ");
+		perror(path);
+		return (0);
 	}
-	list->f_names = NULL;
-	list->next = NULL;
-	list->flags = 0;
-	list->size = 0;
-	list->gid = 0;
-	list->uid = 0;
-	list->total = 0;
-	list->time_mod = 0;
-	list->a_time = 0;
-	list->nlink = 0;
-	list->name = NULL;
-	list->path = NULL;
-	list->mode = 0;
-	return (list);
+	return (1);
 }
 
 uint8_t	double_arr_len(char **d_names)
@@ -68,11 +57,4 @@ uint8_t	double_arr_len(char **d_names)
 	while (d_names[i])
 		i++;
 	return (i);
-}
-
-t_dir	*swap_list(t_dir *cur, t_dir *next)
-{
-	(*cur).next = (*next).next;
-	(*next).next = cur;
-	return (next);
 }

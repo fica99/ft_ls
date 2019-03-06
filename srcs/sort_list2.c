@@ -3,65 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   sort_list2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/12 20:03:09 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/12 20:03:11 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 15:25:29 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir		*sort_list_size(t_dir *list)
+uint8_t	list_size(t_dir *list)
 {
-	t_dir	*head;
-	t_dir	*pre;
+	uint8_t	i;
 
-	if (!list)
-		return (NULL);
-	if (!(*list).next)
-		return (list);
-	head = list;
-	while (list && (*list).next)
-	{
-		if (list->size < (list->next)->size)
-		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
-			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
-			continue ;
-		}
-		pre = list;
-		list = list->next;
-	}
-	return (head);
+	i = 0;
+	if (list->size < (list->next)->size)
+		i = 1;
+	return (i);
 }
 
-t_dir		*sort_list_f_d(t_dir *list)
+uint8_t	list_f_d(t_dir *list)
 {
-	t_dir	*head;
-	t_dir	*pre;
+	uint8_t	i;
 
-	if (!list)
-		return (NULL);
-	if (!(*list).next)
-		return (list);
-	head = list;
-	while (list && (*list).next)
-	{
-		if ((*list).f_names && !(*((*list).next)).f_names)
-		{
-			if (list == head)
-				head = swap_list(list, (*list).next);
-			else
-				(*pre).next = swap_list(list, (*list).next);
-			list = head;
-			continue ;
-		}
-		pre = list;
-		list = list->next;
-	}
-	return (head);
+	i = 0;
+	if ((*list).f_names && !(*((*list).next)).f_names)
+		i = 1;
+	return (i);
+}
+
+t_dir	*sorting(t_dir *request, ushort flags)
+{
+	if (is_flags(flags, 'r'))
+		return (sort_one_list(request, list_rev));
+	if (is_flags(flags, 't'))
+		return (sort_one_list(request, list_time_mod));
+	if (is_flags(flags, 'u'))
+		return (sort_one_list(request, list_time_a));
+	if (is_flags(flags, 'S'))
+		return (sort_one_list(request, list_size));
+	return (sort_one_list(request, list_sort));
 }

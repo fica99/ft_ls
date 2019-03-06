@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_one_level.c                                  :+:      :+:    :+:   */
+/*   print_cols.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/02/18 14:59:45 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/01 17:13:41 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 	pprm.cnt_elems = 0;
 	while (request)
 	{
-		len = ft_strlen((*request).name);
+		len = ft_strlen(request->name);
 		if (len > pprm.max)
 			pprm.max = len;
 		pprm.cnt_elems++;
-		request = (*request).next;
+		request = request->next;
 	}
 	pprm.cols = pprm.cnt_elems;
 	pprm.rows = 1;
@@ -33,6 +33,11 @@ t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 		pprm.rows++;
 	pprm.cols = (pprm.cnt_elems % pprm.rows == 0) ? pprm.cnt_elems / pprm.rows
 			: (pprm.cnt_elems / pprm.rows) + 1;
+	while (pprm.cols * (pprm.max + 1) > ws_col)
+	{
+		pprm.cols = (pprm.cnt_elems % (++pprm.rows) == 0)
+		? pprm.cnt_elems / pprm.rows : (pprm.cnt_elems / pprm.rows) + 1;
+	}
 	return (pprm);
 }
 
@@ -48,7 +53,7 @@ void		print_cols(t_dir *request, ushort ws_col, ushort flags)
 	while (++pprm.cur_row <= pprm.rows)
 	{
 		print_line(request, pprm);
-		request = (*request).next;
+		request = request->next;
 	}
 }
 
@@ -67,7 +72,7 @@ void		print_line(t_dir *request, t_prt_cols pprm)
 	pprm.cur_col = 0;
 	while (++pprm.cur_col <= pprm.cols && request)
 	{
-		print_elem((*request).name, pprm.max);
+		print_elem(request->name, pprm.max);
 		if (pprm.cur_col == pprm.cols)
 			ft_putchar('\n');
 		else
