@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 19:20:40 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:24:55 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,16 @@ void	print(t_dir *request)
 {
 	struct winsize	size;
 
-	if (!request || ioctl(0, TIOCGWINSZ, (char*)&size) < 0)
+	if (!request)
+		return ;
+	if (ioctl(0, TIOCGWINSZ, (char*)&size) < 0)
 		exit(-1);
+	if (get_type(request->mode) != 'd')
+	{
+		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g'))
+		? print_rows(request, size.ws_col, request->flags) : print_cols(request, size.ws_col, request->flags);
+		return;
+	}
 	if (is_flags(request->flags, 'd'))
 	{
 		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g')) ?

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 19:25:35 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 20:30:15 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 		if (get_type(dir->mode) != 'd')
 			dir = make_file_list(dir, &head_files);
 	}
-	if (head_files)
-	{
-		
-		print(sorting(head_files, head_files->flags));
-		ft_putchar('\n');
-	}
+	print(sorting(head_files, head_files->flags));
 	return (sorting(head, head->flags));
 }
 
@@ -128,7 +123,7 @@ t_dir	*get_data(t_dir **request)
 {
 	struct stat	buf;
 
-	if (!request)
+	if (!(*request))
 		return (NULL);
 	if (lstat((*request)->path, &buf) == -1)
 	{
