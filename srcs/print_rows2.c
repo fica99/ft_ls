@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_rows2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: filip <filip@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:51:06 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 23:42:06 by filip            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ void		cheak_oth(mode_t mode, char *str)
 	}
 }
 
-void		print_label_attr(t_dir *request, ushort flags)
+/*void		print_label_attr(t_dir *request, ushort flags)
 {
 	ssize_t	size_list;
 
 	size_list = listxattr(request->path, NULL, 0, 0);
 	size_list ? ft_putstr("@ ") : ft_putstr("  ");
-}
+}*/
 
 void		print_number(long int num, long int max)
 {

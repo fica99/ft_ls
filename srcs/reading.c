@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: filip <filip@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 21:59:02 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/08 00:24:56 by filip            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,13 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 			continue ;
 		}
 		if (get_type(dir->mode) != 'd')
-			dir = make_file_list(dir, &head_files);
+		{
+			make_file_list(dir, &head_files);
+			while (dir && get_type(dir->mode) != 'd')
+				dir = dir->pre;
+			if (!dir)
+				head = NULL;
+		}
 	}
 	if (head_files)
 		print(sorting(head_files, head_files->flags));
@@ -54,10 +60,9 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 	return (NULL);
 }
 
-t_dir	*make_file_list(t_dir *dir, t_dir **head_files)
+void	make_file_list(t_dir *dir, t_dir **head_files)
 {
 	t_dir		*files;
-	t_dir		*direct;
 
 	if (!(*head_files))
 	{
@@ -72,7 +77,6 @@ t_dir	*make_file_list(t_dir *dir, t_dir **head_files)
 		files->next = dir;
 		files->next->pre = files;
 	}
-	return (direct);
 }
 
 /*t_dir	*reading(t_dir *list)
