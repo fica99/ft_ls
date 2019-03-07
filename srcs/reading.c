@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 21:03:14 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 21:59:02 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ t_dir	*opening(int argc, char **argv)
 	flags = read_flags(argv, &i);
 	argv = check_dir(argc, argv, i);
 	i--;
-	request = make_list(argv, &i, flags);
-	return (request);
+	return (make_list(argv, &i, flags));
 }
 
 t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
@@ -60,7 +59,6 @@ t_dir	*make_file_list(t_dir *dir, t_dir **head_files)
 	t_dir		*files;
 	t_dir		*direct;
 
-	direct = dir->pre;
 	if (!(*head_files))
 	{
 		*head_files = dir;
