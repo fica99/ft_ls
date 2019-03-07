@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 20:27:10 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 16:54:15 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,18 @@ t_dir	*check_exist(t_dir *dir, t_dir **head, ushort flags)
 		*head = dir;
 	}
 	return (dir);
+}
+
+void	delete_from_list(t_dir **dir, t_dir **head)
+{
+	if ((*dir)->pre)
+	{
+		*dir = (*dir)->pre;
+		free_list(&((*dir)->next));
+	}
+	else
+	{
+		free_list(dir);
+		*head = *dir;
+	}
 }

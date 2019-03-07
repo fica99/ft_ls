@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/06 23:16:16 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:25:35 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,40 +30,57 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 {
 	t_dir		*head;
 	t_dir		*dir;
-	t_dir		*file;
+	t_dir		*head_files;
 	mode_t		mode;
 
 	dir = NULL;
 	head = dir;
+	head_files = NULL;
 	while (arr[++(*i)])
 	{
 		dir = check_exist(dir, &head, flags);
-		if (!(file = get_data(arr[(*i)])))
+		dir->name = ft_strdup(arr[(*i)]);
+		dir->path = ft_strdup(arr[(*i)]);
+		if (!(get_data(&dir)))
 		{
-			if (dir->pre)
-			{
-				dir = dir->pre;
-				free_list(&(dir->next));
-			}
-			else
-			{
-				free_list(&dir);
-				head = dir;
-			}
+			delete_from_list(&dir, &head);
 			continue ;
 		}
-		else
-			dir = file;
-		dir->name = ft_strdup(arr[(*i)]);
-//	if (!(is_flags(flags, 'd')))
-//		dir ->f_names = reading(dir);
+		if (get_type(dir->mode) != 'd')
+			dir = make_file_list(dir, &head_files);
 	}
-	if (!head)
-		exit(-1);
-	return (sort_one_list(head, list_sort));
+	if (head_files)
+	{
+		
+		print(sorting(head_files, head_files->flags));
+		ft_putchar('\n');
+	}
+	return (sorting(head, head->flags));
 }
 
-t_dir	*reading(t_dir *list)
+t_dir	*make_file_list(t_dir *dir, t_dir **head_files)
+{
+	t_dir		*files;
+	t_dir		*direct;
+
+	direct = dir->pre;
+	if (!(*head_files))
+	{
+		*head_files = dir;
+		(*head_files)->pre = NULL;
+	}
+	else
+	{
+		files = *head_files;
+		while (files->next)
+			files = files->next;
+		files->next = dir;
+		files->next->pre = files;
+	}
+	return (direct);
+}
+
+/*t_dir	*reading(t_dir *list)
 {
 	t_dir			*head;
 	t_dir			*d;
@@ -105,23 +122,27 @@ t_dir	*reading(t_dir *list)
 	}
 	check_close(closedir(folder));
 	return (head);
-}
+}*/
 
-t_dir	*get_data(char *path)
+t_dir	*get_data(t_dir **request)
 {
-	t_dir		*request;
 	struct stat	buf;
 
-	if (!path || !(check_stat(path)))
+	if (!request)
 		return (NULL);
-	request->size = buf.st_size;
-	request->time_mod = buf.st_mtime;
-	request->a_time = buf.st_atime;
-	request->nlink = buf.st_nlink;
-	request->uid = buf.st_uid;
-	request->gid = buf.st_gid;
-	request->mode = buf.st_mode;
-	request->total = buf.st_blocks;
-	request->path = path;
-	return (request);
+	if (lstat((*request)->path, &buf) == -1)
+	{
+		ft_putstr("ft_ls: ");
+		perror((*request)->path);
+		return (NULL);
+	}
+	(*request)->size = buf.st_size;
+	(*request)->time_mod = buf.st_mtime;
+	(*request)->a_time = buf.st_atime;
+	(*request)->nlink = buf.st_nlink;
+	(*request)->uid = buf.st_uid;
+	(*request)->gid = buf.st_gid;
+	(*request)->mode = buf.st_mode;
+	(*request)->total = buf.st_blocks;
+	return (*request);
 }

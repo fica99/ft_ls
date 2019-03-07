@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/06 21:40:07 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 17:24:14 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,6 @@ void	check_close(int nb)
 		perror("ft_ls");
 		exit(-1);
 	}
-}
-
-uint8_t	check_stat(char *path)
-{
-	struct stat	buf;
-
-	if (lstat(path, &buf) == -1)
-	{
-		ft_putstr("ft_ls: ");
-		perror(path);
-		return (0);
-	}
-	return (1);
 }
 
 uint8_t	double_arr_len(char **d_names)

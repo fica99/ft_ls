@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/06 23:15:20 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/07 19:13:59 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void			print_usage(char c);
 char			**check_dir(int argc, char **argv, uint8_t i);
 uint8_t			double_arr_len(char **d_names);
 t_dir			*make_list(char **arr, uint8_t *i, ushort flags);
-uint8_t			check_stat(char *path);
 char			get_type(mode_t mode);
 DIR				*check_open(char *path);
 void			check_close(int nb);
@@ -91,7 +90,11 @@ ushort			is_flags(ushort flags, char flag);
 ushort			is_flags2(ushort flags, char flag);
 t_dir			*reading(t_dir *list);
 char			*check_path(char *path, char *name);
-t_dir			*get_data(char *path);
+
+t_dir	*get_data(t_dir **request);
+void	delete_from_list(t_dir **dir, t_dir **head);
+t_dir	*make_file_list(t_dir *dir, t_dir **head_files);
+
 void			print(t_dir *request);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
 t_prt_rows		get_print_prm_r(t_dir *request);
@@ -113,7 +116,6 @@ t_prt_cols		get_print_prm_c(t_dir *request, ushort ws_col);
 void			print_line(t_dir *request, t_prt_cols pprm);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 uint8_t			list_f_d(t_dir *list);
-t_dir			*print_files(t_dir *request, ushort size, ushort flags);
 void			print_all_rek(t_dir *request, ushort size,
 				void (f)(t_dir *, ushort, ushort), ushort flags);
 t_dir			*sorting(t_dir *request, ushort flags);
