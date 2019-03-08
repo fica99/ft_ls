@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   reading.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: filip <filip@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 00:24:56 by filip            ###   ########.fr       */
+/*   Updated: 2019/03/08 19:47:41 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 			continue ;
 		}
 		if (get_type(dir->mode) != 'd')
-		{
-			make_file_list(dir, &head_files);
-			while (dir && get_type(dir->mode) != 'd')
-				dir = dir->pre;
-			if (!dir)
-				head = NULL;
-		}
+			dir = make_file_list(dir, &head_files, &head);
 	}
 	if (head_files)
 		print(sorting(head_files, head_files->flags));
@@ -60,9 +54,9 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 	return (NULL);
 }
 
-void	make_file_list(t_dir *dir, t_dir **head_files)
+t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head)
 {
-	t_dir		*files;
+	t_dir	*files;
 
 	if (!(*head_files))
 	{
@@ -77,13 +71,13 @@ void	make_file_list(t_dir *dir, t_dir **head_files)
 		files->next = dir;
 		files->next->pre = files;
 	}
+	return (make_dir_list(head, dir));
 }
 
-/*t_dir	*reading(t_dir *list)
+t_dir	*reading(t_dir *list)
 {
 	t_dir			*head;
 	t_dir			*d;
-	t_dir			*f;
 	struct dirent	*file;
 	DIR				*folder;
 
@@ -101,27 +95,13 @@ void	make_file_list(t_dir *dir, t_dir **head_files)
 		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
 		|| is_flags(list->flags, 'l'))
 		{
-			if (!(f = get_data(d)))
-			{
-				if (d->pre)
-				{
-					d = d->pre;
-					free_list(&(d->next));
-				}
-				else
-				{
-					free_list(&d);
-					head = d;
-				}
-				continue ;
-			}
-			else
-				d = f;
+			if (!(get_data(&d)))
+				delete_from_list(&d, &head);
 		}
 	}
 	check_close(closedir(folder));
 	return (head);
-}*/
+}
 
 t_dir	*get_data(t_dir **request)
 {

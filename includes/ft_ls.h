@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: filip <filip@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 23:48:47 by filip            ###   ########.fr       */
+/*   Updated: 2019/03/08 19:45:40 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,9 @@ char			*check_path(char *path, char *name);
 
 t_dir	*get_data(t_dir **request);
 void	delete_from_list(t_dir **dir, t_dir **head);
-void	make_file_list(t_dir *dir, t_dir **head_files);
+t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head);
+void	free_all_list(t_dir *request);
+t_dir	*make_dir_list(t_dir **head, t_dir *dir);
 
 void			print(t_dir *request);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);

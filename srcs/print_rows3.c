@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_rows3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: filip <filip@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:30:21 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 23:42:35 by filip            ###   ########.fr       */
+/*   Updated: 2019/03/08 17:29:14 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void		print_link(t_dir *request)
 	ft_putstr(buf);
 }
 
-/*void		print_attr_full(t_dir *request, ushort flags)
+void		print_attr_full(t_dir *request, ushort flags)
 {
 	char		list[NAME_SATTR];
 	ssize_t		size_list;
@@ -68,4 +68,4 @@ void		print_link(t_dir *request)
 			i += ft_strlen(list + i);
 		}
 	}
-}*/
+}

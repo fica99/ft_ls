@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   print_rows.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: filip <filip@student.42.fr>                +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 23:43:03 by filip            ###   ########.fr       */
+/*   Updated: 2019/03/08 17:28:59 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 {
 	ft_putchar(get_type(request->mode));
 	print_mode_bits(request->mode);
-//	print_label_attr(request, flags);
+	print_label_attr(request, flags);
 	print_number((long int)request->nlink, (long int)pprm.max_nlink);
 	print_gu_ids(request, pprm, flags);
 	print_number((long int)request->size, (long int)pprm.max_size);
@@ -70,8 +70,8 @@ void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 	if (get_type(request->mode) == 'l')
 		print_link(request);
 	ft_putchar('\n');
-//	if (get_type(request->mode) != 'l')
-//		print_attr_full(request, flags);
+	if (get_type(request->mode) != 'l')
+		print_attr_full(request, flags);
 }
 
 char		get_type(mode_t mode)

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 16:54:15 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/08 17:54:43 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,17 @@ void	delete_from_list(t_dir **dir, t_dir **head)
 		free_list(dir);
 		*head = *dir;
 	}
+}
+
+void	free_list(t_dir **request)
+{
+	if (!request)
+		return ;
+	ft_memdel((void**)&((*request)->name));
+	ft_memdel((void**)&((*request)->path));
+	(*request)->f_names = NULL;
+	(*request)->next = NULL;
+	(*request)->pre = NULL;
+	free(*request);
+	*request = NULL;
 }

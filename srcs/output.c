@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/07 20:24:55 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/08 20:08:52 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@ void	print(t_dir *request)
 	if (get_type(request->mode) != 'd')
 	{
 		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g'))
-		? print_rows(request, size.ws_col, request->flags) : print_cols(request, size.ws_col, request->flags);
-		return;
+		? print_rows(request, size.ws_col, request->flags) :
+		print_cols(request, size.ws_col, request->flags);
+		free_all_list(request);
+		ft_putchar('\n');
+		return ;
 	}
 	if (is_flags(request->flags, 'd'))
 	{
@@ -39,12 +42,12 @@ void	print(t_dir *request)
 void	print_all_rek(t_dir *request, ushort size,
 		void (f)(t_dir *, ushort, ushort), ushort flags)
 {
+	t_dir	*file;
+
+	file = request;
 	while (request)
 	{
-		if (!(request->f_names) && is_flags(flags, 'R') &&
-		get_type(request->mode) == 'd' && (ft_strcmp(request->name, ".") != 0)
-		&& (ft_strcmp(request->name, "..") != 0))
-			//request->f_names = reading(request);
+		request->f_names = reading(request);
 		if (request->f_names)
 		{
 			if (request->next || is_flags(flags, 1))
@@ -57,19 +60,12 @@ void	print_all_rek(t_dir *request, ushort size,
 			request->f_names = sorting(request->f_names, flags);
 			f(request->f_names, size, flags);
 			flags = add_flag(flags, 1);
-			print_all_rek(request->f_names, size, f, flags);
+			if (!(request->f_names) && is_flags(flags, 'R') &&
+			get_type(request->mode) == 'd' && (ft_strcmp(request->name, ".") != 0)
+			&& (ft_strcmp(request->name, "..") != 0))
+				print_all_rek(request->f_names, size, f, flags);
 		}
-		free_list(&request);
+		request = request->next;
 	}
-}
-
-void	free_list(t_dir **request)
-{	
-	ft_memdel((void**)&((*request)->name));
-	ft_memdel((void**)&((*request)->path));
-	(*request)->f_names = NULL;
-	(*request)->next = NULL;
-	(*request)->pre = NULL;
-	free(*request);
-	*request = NULL;
+	free_all_list(file);
 }
