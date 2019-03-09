@@ -6,20 +6,20 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 17:51:32 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:36:38 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-DIR		*check_open(char *path)
+DIR		*check_open(char *path, char *name)
 {
 	DIR	*folder;
 
 	if (!(folder = opendir(path)))
 	{
 		ft_putstr("ft_ls: ");
-		perror(path);
+		perror(name);
 		return (NULL);
 	}
 	return (folder);

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 18:43:47 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:56:26 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 	while (arr[++(*i)])
 	{
 		dir = check_exist(dir, &head, flags);	
-		dir->name = ft_strdup(arr[(*i)]);
+		dir->name = check_name(arr[*i]);
 		dir->path = ft_strdup(arr[(*i)]);
 		if (!(get_data(&dir)))
 		{
@@ -85,12 +85,14 @@ t_dir	*reading(t_dir *list)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (get_type(list->mode) != 'd' || !(folder = check_open(list->path)))
+	if (get_type(list->mode) != 'd' || !(folder = check_open(list->path, list->name)))
 		return (NULL);
 	d = NULL;
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
+		if ((!(is_flags(list->flags, 'a')) && !(is_flags(list->flags, 'f'))) && (file->d_name)[0] == '.')
+			continue ;
 		d = check_exist(d, &(head), list->flags);
 		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
@@ -116,7 +118,7 @@ t_dir	*get_data(t_dir **request)
 	if (lstat((*request)->path, &buf) == -1)
 	{
 		ft_putstr("ft_ls: ");
-		perror((*request)->path);
+		perror((*request)->name);
 		return (NULL);
 	}
 	(*request)->size = buf.st_size;

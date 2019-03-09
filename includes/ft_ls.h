@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 18:52:50 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:56:35 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char			**check_dir(int argc, char **argv, uint8_t i);
 uint8_t			double_arr_len(char **d_names);
 t_dir			*make_list(char **arr, uint8_t *i, ushort flags);
 char			get_type(mode_t mode);
-DIR				*check_open(char *path);
+DIR		*check_open(char *path, char *name);
 void			check_close(int nb);
 t_dir			*check_exist(t_dir *dir, t_dir **head, ushort flags);
 t_dir			*sort_one_list(t_dir *list, uint8_t (fun)(t_dir*));
@@ -96,6 +96,7 @@ void	delete_from_list(t_dir **dir, t_dir **head);
 t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head);
 void	free_all_list(t_dir *request);
 t_dir	*make_dir_list(t_dir **head, t_dir *dir);
+char	*check_name(char *name);
 
 void			print(t_dir *request);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);

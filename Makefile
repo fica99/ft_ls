@@ -6,7 +6,7 @@
 #    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/03/09 17:48:18 by aashara-         ###   ########.fr        #
+#    Updated: 2019/03/09 19:58:53 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC=srcs/reading.c\
 	srcs/flags.c\
 	srcs/check2.c\
 	srcs/check.c\
+	srcs/check3.c\
 	srcs/sort_list.c\
 	srcs/output.c\
 	srcs/print_rows.c\
@@ -33,7 +34,7 @@ all: $(NAME)
 
 $(NAME):
 			@make re -C $(LIB)
-			@gcc -g -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
+			@gcc -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
 
 clean:
 			@make clean -C $(LIB)
