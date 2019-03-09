@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:28:59 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 19:06:48 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,11 @@ void		print_rows(t_dir *request, ushort ws_cols, ushort flags)
 	ft_putchar('\n');
 	while (request)
 	{
+		if (!(is_flags(flags, 'a')) && !(is_flags(flags, 'f')) && (request->name)[0] == '.')
+		{
+			request = request->next;
+			continue ;
+		}
 		print_line_rows(request, flags, pprm);
 		request = request->next;
 	}

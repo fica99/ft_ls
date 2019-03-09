@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 19:47:41 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 18:43:47 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 	head_files = NULL;
 	while (arr[++(*i)])
 	{
-		dir = check_exist(dir, &head, flags);
+		dir = check_exist(dir, &head, flags);	
 		dir->name = ft_strdup(arr[(*i)]);
 		dir->path = ft_strdup(arr[(*i)]);
 		if (!(get_data(&dir)))
@@ -44,11 +44,15 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 			delete_from_list(&dir, &head);
 			continue ;
 		}
-		if (get_type(dir->mode) != 'd')
+		if (get_type(dir->mode) != 'd' && !(is_flags(flags, 'd')))
 			dir = make_file_list(dir, &head_files, &head);
 	}
 	if (head_files)
+	{
 		print(sorting(head_files, head_files->flags));
+		if (head)
+			ft_putchar('\n');
+	}
 	if (head)
 		return (sorting(head, head->flags));
 	return (NULL);

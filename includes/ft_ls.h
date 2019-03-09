@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 19:45:40 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 18:52:50 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ void			print_line(t_dir *request, t_prt_cols pprm);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 uint8_t			list_f_d(t_dir *list);
 void			print_all_rek(t_dir *request, ushort size,
-				void (f)(t_dir *, ushort, ushort), ushort flags);
+				void (f)(t_dir *, ushort, ushort), ushort flags, ushort i);
 t_dir			*sorting(t_dir *request, ushort flags);
 uint8_t			list_rev(t_dir *list);
 uint8_t			list_time_mod(t_dir *list);

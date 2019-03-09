@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 19:47:25 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 17:51:32 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,15 @@ uint8_t	double_arr_len(char **d_names)
 
 void	free_all_list(t_dir *request)
 {
+	t_dir	*file;
+	
 	if (!request)
 		return ;
 	while (request)
 	{
+		file = request;
 		request = request->next;
-		if (request)
-			free_list(&(request->pre));
+		free_list(&file);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/22 15:02:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:54:43 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/09 18:35:05 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,14 @@ char	*check_path(char *path, char *name)
 
 char	**check_dir(int argc, char **argv, uint8_t i)
 {
+	uint8_t	j;
+
+	j = double_arr_len(argv);
 	if (argc - i == 0)
 	{
-		argv[double_arr_len(argv) + 1] = NULL;
-		argv[double_arr_len(argv)] = ".";
+		argv[j + 1] = NULL;
+		argv[j] = ".";
+
 	}
 	return (argv);
 }
