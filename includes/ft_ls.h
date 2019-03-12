@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 11:20:35 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:19:03 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 
 # define NAME_SATTR 300
 # define SIZE_VATTR 300
-# define BUFFOUT 500
+# define BUFFOUT 100000
 
 typedef struct	s_dir
 {
@@ -43,6 +43,7 @@ typedef struct	s_dir
 	struct s_dir	*next;
 	struct s_dir	*pre;
 	short int		total;
+	uint16_t		len;
 	ushort			flags;
 	off_t			size;
 	time_t			time_mod;
@@ -99,6 +100,7 @@ t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head);
 void	free_all_list(t_dir *request);
 t_dir	*make_dir_list(t_dir **head, t_dir *dir);
 char	*check_name(char *name);
+void		print_line(t_dir *request, t_prt_cols pprm, char **buf, int *i);
 
 void			print(t_dir *request);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
@@ -118,7 +120,6 @@ void			print_link(t_dir *request);
 void			print_attr_full(t_dir *request, ushort flags);
 void			print_cols(t_dir *request, ushort ws_col, ushort flags);
 t_prt_cols		get_print_prm_c(t_dir *request, ushort ws_col);
-void			print_line(t_dir *request, t_prt_cols pprm);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 uint8_t			list_f_d(t_dir *list);
 void			print_all_rek(t_dir *request, ushort size,

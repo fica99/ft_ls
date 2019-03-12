@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 20:37:41 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:18:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 		dir = check_exist(dir, &head, flags);	
 		dir->name = check_name(arr[*i]);
 		dir->path = ft_strdup(arr[(*i)]);
+		dir->len = ft_strlen(arr[(*i)]);
 		if (!(get_data(&dir)))
 		{
 			delete_from_list(&dir, &head);
@@ -97,6 +98,7 @@ t_dir	*reading(t_dir *list)
 		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name);
+		d->len = file->d_namlen;
 		if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
 		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
 		|| is_flags(list->flags, 'l'))

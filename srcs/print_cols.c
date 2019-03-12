@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 10:11:02 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:14:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,17 +44,24 @@ t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 void		print_cols(t_dir *request, ushort ws_col, ushort flags)
 {
 	t_prt_cols	pprm;
+	char *buf;
+	int i;
 
 	if (!request)
 		exit(-1);
 	flags = 0;
+	i = 0;
+	if (!(buf = (char *)malloc(sizeof(char) * BUFFOUT)))
+		exit(-1);
 	pprm = get_print_prm_c(request, ws_col);
 	pprm.cur_row = 0;
 	while (++pprm.cur_row <= pprm.rows)
 	{
-		print_line(request, pprm);
+		print_line(request, pprm, &buf, &i);
 		request = request->next;
 	}
+	write(1, buf, i);
+	free(buf);
 }
 
 void		print_elem(char *str, uint8_t max)
@@ -67,23 +74,38 @@ void		print_elem(char *str, uint8_t max)
 		ft_putchar(' ');
 }
 
-void		print_line(t_dir *request, t_prt_cols pprm)
+void		print_line(t_dir *request, t_prt_cols pprm, char **buf, int *i)
 {
-	char buf[BUFFOUT];
-	int	i;
 	int j;
 
-	i = 0;
 	pprm.cur_col = 0;
 	while (++pprm.cur_col <= pprm.cols && request)
 	{
 		j = 0;
-		while (request->name[j] && i < BUFFOUT)
-			buf[i++] = request->name[j++];
-		while (++j <= pprm.max && i < BUFFOUT)
-			buf[i++] = ' ';
+		while (request->name[j])
+		{
+			if (*i == BUFFOUT)
+			{
+				write(1, *buf, *i);
+				*i = 0;
+			}
+			(*buf)[(*i)++] = request->name[j++];
+		}
+		while (j++ <= pprm.max)
+		{
+			if (*i == BUFFOUT)
+			{
+				write(1, *buf, *i);
+				*i = 0;
+			}
+			(*buf)[(*i)++] = ' ';
+		}
 		request = next_elem(request, pprm);
 	}
-	buf[i++] = '\n';
-	write(1, &buf, i);
+	if (*i == BUFFOUT)
+	{
+		write(1, *buf, *i);
+		*i = 0;
+	}
+	(*buf)[(*i)++] = '\n';
 }
