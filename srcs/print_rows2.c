@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:29:06 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 11:22:42 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,19 @@ void		cheak_oth(mode_t mode, char *str)
 void		print_label_attr(t_dir *request, ushort flags)
 {
 	ssize_t	size_list;
+	acl_t	tmp;
 
 	size_list = listxattr(request->path, NULL, 0, 0);
-	size_list ? ft_putstr("@ ") : ft_putstr("  ");
+	tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
+	if (size_list)
+		ft_putstr("@ ");
+	else if (tmp)
+	{
+		ft_putstr("+ ");
+		acl_free(tmp);
+	}
+	else
+		ft_putstr("  ");
 }
 
 void		print_number(long int num, long int max)

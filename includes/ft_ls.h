@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 09:40:58 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 11:20:35 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # include <limits.h>
 # include <time.h>
 # include <sys/xattr.h>
+# include <sys/acl.h>
 
 # define NAME_SATTR 300
 # define SIZE_VATTR 300
