@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 20:37:50 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 09:40:58 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@
 
 # define NAME_SATTR 300
 # define SIZE_VATTR 300
+# define BUFFOUT 500
 
 typedef struct	s_dir
 {

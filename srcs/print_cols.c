@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 19:09:05 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 09:38:09 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,23 @@ void		print_elem(char *str, uint8_t max)
 
 void		print_line(t_dir *request, t_prt_cols pprm)
 {
+	char buf[BUFFOUT];
+	int	i;
+	int j;
+	int len;
+
+	i = 0;
 	pprm.cur_col = 0;
 	while (++pprm.cur_col <= pprm.cols && request)
 	{
-		print_elem(request->name, pprm.max);
-		if (pprm.cur_col == pprm.cols)
-			ft_putchar('\n');
-		else
-			ft_putchar(' ');
+		j = 0;
+		while (request->name[j] && i < BUFFOUT)
+			buf[i++] = request->name[j++];
+		len = ft_strlen(request->name);
+		while (++len <= pprm.max && i < BUFFOUT)
+			buf[i++] = ' ';
 		request = next_elem(request, pprm);
-		if (!request && pprm.cur_col != pprm.cols)
-			ft_putchar('\n');
 	}
+	buf[i++] = '\n';
+	write(1, &buf, i);
 }
