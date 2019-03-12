@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:51:06 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 11:22:42 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,43 @@ void		cheak_oth(mode_t mode, char *str)
 	}
 }
 
-void		print_label_attr(t_dir *request, ushort flags)
+u_int16_t		print_label_attr(t_dir *request, ushort flags, char *buf)
 {
 	ssize_t	size_list;
+	acl_t	tmp;
 
 	size_list = listxattr(request->path, NULL, 0, 0);
-	size_list ? ft_putstr("@ ") : ft_putstr("  ");
+	tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
+	if (size_list)
+		buf[0] = '@';
+	else if (tmp)
+	{
+		buf[0] = '+';
+		acl_free(tmp);
+	}
+	else
+		buf[0] = ' ';
+	buf[1] = ' ';
+	return (2);
 }
 
-void		print_number(long int num, long int max)
+u_int16_t		print_number(long int num, long int max, char *buf)
 {
-	long int	i;
+	long int	bit;
+	u_int16_t	i;
 
-	i = get_bit(num);
-	while (i++ < max)
-		ft_putchar(' ');
-	ft_putnbr(num);
-	ft_putchar(' ');
+	i = 0;
+	bit = get_bit(num);
+	while (i + bit < max)
+		buf[i++] = ' ';
+	putnbr(num, i, buf);
+	buf[i + bit] = ' ';
+	return ((u_int16_t)max + 1);
+}
+
+void	putnbr(long int n, u_int16_t i, char *buf)
+{
+		if (n >= 10)
+			putnbr(n / 10, i + 1, buf);
+		buf[i] = n % 10 + '0';
 }

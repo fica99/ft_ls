@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 17:02:52 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 10:44:50 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,65 +15,42 @@
 void	print(t_dir *request)
 {
 	struct winsize	size;
-	ushort			flags;
-	t_dir			*dir;
 
-	if (!request || ioctl(0, TIOCGWINSZ, (char*)&size) < 0)
+	if (!request)
+		return ;
+	if (ioctl(0, TIOCGWINSZ, (char*)&size) < 0)
 		exit(-1);
-	flags = request->flags;
-	request = request->f_names;
-	if (is_flags(flags, 'd'))
+	printf("%d\n", size.ws_col);
+	if (is_flags(request->flags, 'd'))
 	{
-		(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
-			print_rows(request, size.ws_col, flags) :
-			print_cols(request, size.ws_col, flags);
+		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g')) ?
+			print_rows(request, size.ws_col, request->flags) :
+			print_cols(request, size.ws_col, request->flags);
 		exit(0);
 	}
-	request = sort_one_list(request, list_f_d);
-	dir = print_files(request, size.ws_col, flags);
-	if (dir != request)
-		flags = add_flag(flags, 1);
-	print_all_rek(dir, size.ws_col, (is_flags(flags, 'l') ||
-		is_flags(flags, 'g')) ? print_rows : print_cols, flags);
-}
-
-t_dir	*print_files(t_dir *request, ushort size, ushort flags)
-{
-	t_dir	*files;
-	t_dir	*dir;
-
-	files = request;
-	dir = request;
-	while (request)
+	if (get_type(request->mode) != 'd')
 	{
-		if (!request->f_names && request->next && (request->next)->f_names)
-		{
-			dir = request->next;
-			request->next = NULL;
-		}
-		request = request->next;
+		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g'))
+		? print_rows(request, size.ws_col, request->flags) :
+		print_cols(request, size.ws_col, request->flags);
+		free_all_list(request);
+		return ;
 	}
-	if (files == dir)
-	{
-		if (!(dir->f_names))
-			dir = NULL;
-		else
-			return (dir);
-	}
-	(is_flags(flags, 'l') || is_flags(flags, 'g')) ?
-	print_rows(files, size, 0) : print_cols(files, size, 0);
-	return (dir);
+	print_all_rek(request, size.ws_col, (is_flags(request->flags, 'l') ||
+		is_flags(request->flags, 'g')) ? print_rows : print_cols, request->flags, 1);
 }
 
 void	print_all_rek(t_dir *request, ushort size,
-		void (f)(t_dir *, ushort, ushort), ushort flags)
+		void (f)(t_dir *, ushort, ushort), ushort flags, ushort i)
 {
+	t_dir	*file;
+
+	file = request;
 	while (request)
 	{
-		if (!(request->f_names) && is_flags(flags, 'R') &&
-		get_type(request->mode) == 'd' && (ft_strcmp(request->name, ".") != 0)
-		&& (ft_strcmp(request->name, "..") != 0))
-			request->f_names = reading(request, flags);
+		if ((get_type(request->mode) == 'd' && (ft_strcmp(request->name, ".") != 0)
+		&& (ft_strcmp(request->name, "..") != 0)) || (i == 1))
+			request->f_names = reading(request);
 		if (request->f_names)
 		{
 			if (request->next || is_flags(flags, 1))
@@ -83,11 +60,16 @@ void	print_all_rek(t_dir *request, ushort size,
 				ft_putstr(request->path);
 				ft_putstr(":\n");
 			}
+			flags = add_flag(flags, 1);
 			request->f_names = sorting(request->f_names, flags);
 			f(request->f_names, size, flags);
-			flags = add_flag(flags, 1);
-			print_all_rek(request->f_names, size, f, flags);
+			if ((is_flags(flags, 'R') && (ft_strcmp(request->name, ".") != 0)
+			&& (ft_strcmp(request->name, "..") != 0)) || ((is_flags(flags, 'R') && i == 1)))
+				print_all_rek(request->f_names, size, f, flags, ++i);
+			else
+				free_all_list(request->f_names);
 		}
 		request = request->next;
 	}
+	free_all_list(file);
 }

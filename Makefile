@@ -6,7 +6,7 @@
 #    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/03/01 16:41:41 by aashara-         ###   ########.fr        #
+#    Updated: 2019/03/12 10:46:45 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRC=srcs/reading.c\
 	srcs/flags.c\
 	srcs/check2.c\
 	srcs/check.c\
+	srcs/check3.c\
 	srcs/sort_list.c\
 	srcs/output.c\
 	srcs/print_rows.c\

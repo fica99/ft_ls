@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:11:28 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:18:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,97 +16,120 @@ t_dir	*opening(int argc, char **argv)
 {
 	uint8_t	i;
 	t_dir	*request;
+	ushort	flags;
 
 	i = 1;
-	request = ft_list();
-	request->flags = read_flags(argv, &i);
+	flags = read_flags(argv, &i);
 	argv = check_dir(argc, argv, i);
 	i--;
-	request->f_names = make_list(argv, &i);
-	if (!(is_flags(request->flags, 'd')))
-		request = read_request(request);
-	return (request);
+	return (make_list(argv, &i, flags));
 }
 
-t_dir	*make_list(char **arr, uint8_t *i)
+t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 {
 	t_dir		*head;
 	t_dir		*dir;
-	mode_t		mode;
+	t_dir		*head_files;
 
 	dir = NULL;
 	head = dir;
+	head_files = NULL;
 	while (arr[++(*i)])
 	{
-		if (!(mode = check_stat(arr[*i])) || (get_type(mode) == 'd'
-		&& !check_open(arr[*i], 0)))
-			continue;
-		dir = check_exist(dir, &head);
-		dir->mode = mode;
-		dir->path = arr[(*i)];
-		dir->name = arr[(*i)];
+		dir = check_exist(dir, &head, flags);	
+		dir->name = check_name(arr[*i]);
+		dir->path = ft_strdup(arr[(*i)]);
+		dir->len = ft_strlen(arr[(*i)]);
+		if (!(get_data(&dir)))
+		{
+			delete_from_list(&dir, &head);
+			continue ;
+		}
+		if (get_type(dir->mode) != 'd' && !(is_flags(flags, 'd')))
+			dir = make_file_list(dir, &head_files, &head);
 	}
-	return (sort_one_list(head, list_sort));
+	if (head_files)
+	{
+		print(sorting(head_files, head_files->flags));
+		if (head)
+			ft_putchar('\n');
+	}
+	if (head)
+		return (sorting(head, head->flags));
+	return (NULL);
 }
 
-t_dir	*reading(t_dir *list, ushort flags)
+t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head)
+{
+	t_dir	*files;
+
+	if (!(*head_files))
+	{
+		*head_files = dir;
+		(*head_files)->pre = NULL;
+	}
+	else
+	{
+		files = *head_files;
+		while (files->next)
+			files = files->next;
+		files->next = dir;
+		files->next->pre = files;
+	}
+	return (make_dir_list(head, dir));
+}
+
+t_dir	*reading(t_dir *list)
 {
 	t_dir			*head;
 	t_dir			*d;
 	struct dirent	*file;
 	DIR				*folder;
 
-	if ((!S_ISDIR(list->mode)) || !(folder = (DIR*)check_open(list->path, 1)))
+	if (get_type(list->mode) != 'd' || !(folder = check_open(list->path, list->name)))
 		return (NULL);
 	d = NULL;
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
-		if (!(check_stat(check_path(list->path, file->d_name))) ||
-		(!(is_flags(flags, 'a')) && !(is_flags(flags, 'f'))
-		&& (file->d_name)[0] == '.'))
-			continue;
-		d = check_exist(d, &(head));
+		if ((!(is_flags(list->flags, 'a')) && !(is_flags(list->flags, 'f'))) && (file->d_name)[0] == '.')
+			continue ;
+		d = check_exist(d, &(head), list->flags);
 		d->mode = DTTOIF(file->d_type);
 		d->name = ft_strdup(file->d_name);
 		d->path = check_path(list->path, file->d_name);
-		if (is_flags(flags, 't') || is_flags(flags, 'u')
-		|| is_flags(flags, 'S') || is_flags(flags, 'g') || is_flags(flags, 'l'))
-			d = get_data(d);
+		d->len = file->d_namlen;
+		if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
+		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
+		|| is_flags(list->flags, 'l'))
+		{
+			if (!(get_data(&d)))
+				delete_from_list(&d, &head);
+		}
 	}
 	check_close(closedir(folder));
 	return (head);
 }
 
-t_dir	*read_request(t_dir *list)
+t_dir	*get_data(t_dir **request)
 {
-	t_dir	*file;
-
-	file = list->f_names;
-	while (file)
-	{
-		file->f_names = reading(file, list->flags);
-		file = file->next;
-	}
-	return (list);
-}
-
-t_dir	*get_data(t_dir *request)
-{
-	t_dir		*file;
 	struct stat	buf;
 
-	if (!request)
+	if (!(*request))
 		return (NULL);
-	file = request;
-	lstat(request->path, &buf);
-	request->size = buf.st_size;
-	request->time_mod = buf.st_mtime;
-	request->a_time = buf.st_atime;
-	request->nlink = buf.st_nlink;
-	request->uid = buf.st_uid;
-	request->gid = buf.st_gid;
-	request->mode = buf.st_mode;
-	request->total = buf.st_blocks;
-	return (file);
+	if (lstat((*request)->path, &buf) == -1)
+	{
+		ft_putstr("ft_ls: ");
+		perror((*request)->name);
+		return (NULL);
+	}
+	(*request)->size = buf.st_size;
+	(*request)->time_mod = buf.st_mtime;
+	(*request)->a_time = buf.st_atime;
+	(*request)->nlink = buf.st_nlink;
+	(*request)->uid = buf.st_uid;
+	(*request)->gid = buf.st_gid;
+	(*request)->mode = buf.st_mode;
+	(*request)->total = buf.st_blocks;
+	return (*request);
 }

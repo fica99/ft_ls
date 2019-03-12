@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 17:05:33 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:19:03 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,12 @@
 # include <limits.h>
 # include <time.h>
 # include <sys/xattr.h>
+# include <sys/acl.h>
 
 # define NAME_SATTR 300
 # define SIZE_VATTR 300
+# define BUFFOUT 100000
+# define SIZELINE 300
 
 typedef struct	s_dir
 {
@@ -41,6 +44,7 @@ typedef struct	s_dir
 	struct s_dir	*next;
 	struct s_dir	*pre;
 	short int		total;
+	uint16_t		len;
 	ushort			flags;
 	off_t			size;
 	time_t			time_mod;
@@ -53,12 +57,13 @@ typedef struct	s_dir
 
 typedef struct	s_prt_cols
 {
-	uint8_t	max;
-	ushort	cnt_elems;
-	ushort	cols;
-	ushort	rows;
-	ushort	cur_row;
-	ushort	cur_col;
+	ushort		ws_col;
+	uint16_t	max;
+	ushort		cnt_elems;
+	ushort		cols;
+	ushort		rows;
+	ushort		cur_row;
+	ushort		cur_col;
 }				t_prt_cols;
 
 typedef struct	s_prt_rows
@@ -71,55 +76,65 @@ typedef struct	s_prt_rows
 }				t_prt_rows;
 
 t_dir			*opening(int argc, char **argv);
-t_dir			*ft_list(void);
+t_dir			*ft_list(ushort flags);
 ushort			read_flags(char **argv, uint8_t *i);
 ushort			add_flag(ushort flags, char flag);
 ushort			add_flag2(ushort flags, char flag);
 void			print_usage(char c);
 char			**check_dir(int argc, char **argv, uint8_t i);
 uint8_t			double_arr_len(char **d_names);
-t_dir			*make_list(char **arr, uint8_t *i);
-mode_t			check_stat(char *path);
+t_dir			*make_list(char **arr, uint8_t *i, ushort flags);
 char			get_type(mode_t mode);
-void			*check_open(char *path, u_int8_t f);
+DIR		*check_open(char *path, char *name);
 void			check_close(int nb);
-t_dir			*check_exist(t_dir *dir, t_dir **head);
+t_dir			*check_exist(t_dir *dir, t_dir **head, ushort flags);
 t_dir			*sort_one_list(t_dir *list, uint8_t (fun)(t_dir*));
 uint8_t			list_sort(t_dir *list);
 t_dir			*swap_list(t_dir *cur, t_dir *next);
 ushort			is_flags(ushort flags, char flag);
 ushort			is_flags2(ushort flags, char flag);
-t_dir			*read_request(t_dir *list);
-t_dir			*reading(t_dir *list, ushort flags);
+t_dir			*reading(t_dir *list);
 char			*check_path(char *path, char *name);
-t_dir			*get_data(t_dir *request);
+
+t_dir	*get_data(t_dir **request);
+void	delete_from_list(t_dir **dir, t_dir **head);
+t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head);
+void	free_all_list(t_dir *request);
+t_dir	*make_dir_list(t_dir **head, t_dir *dir);
+char	*check_name(char *name);
+void		print_line(t_dir *request, t_prt_cols pprm, char *buf, u_int16_t *i);
+
 void			print(t_dir *request);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
 t_prt_rows		get_print_prm_r(t_dir *request);
 uint8_t			get_bit(int nlink);
-void			print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm);
-void			print_mode_bits(mode_t mode);
+u_int16_t		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf);
+u_int16_t		print_mode_bits(mode_t mode, char *buf);
 void			cheak_usr(mode_t mode, char *str);
 void			cheak_grp(mode_t mode, char *str);
 void			cheak_oth(mode_t mode, char *str);
-void			print_label_attr(t_dir *request, ushort flags);
-void			print_number(long int num, long int max);
-void			print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags);
+u_int16_t		print_label_attr(t_dir *request, ushort flags, char *buf);
+u_int16_t		print_number(long int num, long int max, char *buf);
+u_int16_t		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf);
 void			print_elem(char *str, uint8_t max);
 void			print_time(time_t time);
 void			print_link(t_dir *request);
 void			print_attr_full(t_dir *request, ushort flags);
 void			print_cols(t_dir *request, ushort ws_col, ushort flags);
 t_prt_cols		get_print_prm_c(t_dir *request, ushort ws_col);
-void			print_line(t_dir *request, t_prt_cols pprm);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 uint8_t			list_f_d(t_dir *list);
-t_dir			*print_files(t_dir *request, ushort size, ushort flags);
 void			print_all_rek(t_dir *request, ushort size,
-				void (f)(t_dir *, ushort, ushort), ushort flags);
+				void (f)(t_dir *, ushort, ushort), ushort flags, ushort i);
 t_dir			*sorting(t_dir *request, ushort flags);
 uint8_t			list_rev(t_dir *list);
 uint8_t			list_time_mod(t_dir *list);
 uint8_t			list_time_a(t_dir *list);
 uint8_t			list_size(t_dir *list);
+void			free_list(t_dir **request);
+
+u_int8_t check_buf(char *buf, u_int8_t i);
+void	putnbr(long int n, u_int16_t i, char *buf);
+u_int16_t putuid(char *uid, ushort max, char *buf);
+u_int16_t putgid(char *gid, ushort max, char *buf);
 #endif

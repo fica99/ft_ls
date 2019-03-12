@@ -6,21 +6,21 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:30:21 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:50:34 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/08 17:29:14 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
+u_int16_t		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf)
 {
+	u_int16_t i;
+
+	i = 0;
 	if (!is_flags(flags, 'g'))
-	{
-		print_elem(getpwuid(request->uid)->pw_name, pprm.max_uid);
-		ft_putstr("  ");
-	}
-	print_elem(getgrgid(request->gid)->gr_name, pprm.max_gid);
-	ft_putstr("  ");
+		i += putuid(getpwuid(request->uid)->pw_name, pprm.max_uid, buf + i);
+	i += putgid(getgrgid(request->gid)->gr_name, pprm.max_gid, buf + i);
+	return (i);
 }
 
 void		print_time(time_t time)
@@ -68,4 +68,34 @@ void		print_attr_full(t_dir *request, ushort flags)
 			i += ft_strlen(list + i);
 		}
 	}
+}
+
+u_int16_t putuid(char *uid, ushort max, char *buf)
+{
+	u_int16_t i;
+
+	i = 0;
+	while (uid[i])
+	{
+		buf[i] = uid[i];
+		i++;
+	}
+	while (i++ < max + 2)
+		buf[i++] = ' ';
+	return (i);
+}
+
+u_int16_t putgid(char *gid, ushort max, char *buf)
+{
+	u_int16_t i;
+
+	i = 0;
+	while (gid[i])
+	{
+		buf[i] = gid[i];
+		i++;
+	}
+	while (i++ < max + 2)
+		buf[i++] = ' ';
+	return (i);
 }

@@ -6,17 +6,17 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 15:07:47 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:50:55 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 12:18:18 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_dir	*ft_list(void)
+t_dir	*ft_list(ushort flags)
 {
 	t_dir	*list;
 
-	if (!(list = (t_dir*)malloc(sizeof(t_dir))))
+	if (!(list = (t_dir *)malloc(sizeof(t_dir))))
 	{
 		perror("ft_ls");
 		exit(-1);
@@ -24,7 +24,7 @@ t_dir	*ft_list(void)
 	list->f_names = NULL;
 	list->next = NULL;
 	list->pre = NULL;
-	list->flags = 0;
+	list->flags = flags;
 	list->size = 0;
 	list->gid = 0;
 	list->uid = 0;
@@ -35,6 +35,7 @@ t_dir	*ft_list(void)
 	list->name = NULL;
 	list->path = NULL;
 	list->mode = 0;
+	list->len = 0;
 	return (list);
 }
 
