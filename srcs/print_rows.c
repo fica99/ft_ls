@@ -6,21 +6,24 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 19:21:39 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 14:11:50 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		print_rows(t_dir *request, ushort ws_cols, ushort flags)
+void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t i)
 {
 	t_prt_rows	pprm;
 
 	ws_cols = 0;
 	pprm = get_print_prm_r(request);
-	ft_putstr("total ");
-	ft_putnbr(pprm.total);
-	ft_putchar('\n');
+	if (i)
+	{
+		ft_putstr("total ");
+		ft_putnbr(pprm.total);
+		ft_putchar('\n');
+	}
 	while (request)
 	{
 		print_line_rows(request, flags, pprm);

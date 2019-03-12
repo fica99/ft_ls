@@ -6,11 +6,23 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 10:44:50 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:42:51 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
+
+t_dir	*print_files(t_dir *head, t_dir *head_files)
+{
+	if (head_files)
+	{
+		print(sorting(head_files, head_files->flags));
+		head->flags = add_flag(head->flags, 1);
+	}
+	if (head)
+		return (sorting(head, head->flags));
+	return (NULL);
+}
 
 void	print(t_dir *request)
 {
@@ -23,15 +35,15 @@ void	print(t_dir *request)
 	if (is_flags(request->flags, 'd'))
 	{
 		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g')) ?
-			print_rows(request, size.ws_col, request->flags) :
-			print_cols(request, size.ws_col, request->flags);
+			print_rows(request, size.ws_col, request->flags, 0) :
+			print_cols(request, size.ws_col, request->flags, 1);
 		exit(0);
 	}
 	if (get_type(request->mode) != 'd')
 	{
 		(is_flags(request->flags, 'l') || is_flags(request->flags, 'g'))
-		? print_rows(request, size.ws_col, request->flags) :
-		print_cols(request, size.ws_col, request->flags);
+		? print_rows(request, size.ws_col, request->flags, 0) :
+		print_cols(request, size.ws_col, request->flags, 1);
 		free_all_list(request);
 		return ;
 	}
@@ -40,7 +52,7 @@ void	print(t_dir *request)
 }
 
 void	print_all_rek(t_dir *request, ushort size,
-		void (f)(t_dir *, ushort, ushort), ushort flags, ushort i)
+		void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags, ushort i)
 {
 	t_dir	*file;
 
@@ -61,7 +73,7 @@ void	print_all_rek(t_dir *request, ushort size,
 			}
 			flags = add_flag(flags, 1);
 			request->f_names = sorting(request->f_names, flags);
-			f(request->f_names, size, flags);
+			f(request->f_names, size, flags, 1);
 			if ((is_flags(flags, 'R') && (ft_strcmp(request->name, ".") != 0)
 			&& (ft_strcmp(request->name, "..") != 0)) || ((is_flags(flags, 'R') && i == 1)))
 				print_all_rek(request->f_names, size, f, flags, ++i);

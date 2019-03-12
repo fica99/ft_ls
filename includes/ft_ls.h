@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 12:19:03 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:55:54 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,16 @@ t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head);
 void	free_all_list(t_dir *request);
 t_dir	*make_dir_list(t_dir **head, t_dir *dir);
 char	*check_name(char *name);
-void		print_line(t_dir *request, t_prt_cols pprm, char **buf, int *i);
+void		print_line(t_dir *request, t_prt_cols pprm, char *buf, int *i);
+void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t i);
+void	print_all_rek(t_dir *request, ushort size,
+		void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags, ushort i);
+void		print_cols(t_dir *request, ushort ws_col, ushort flags, uint8_t j);
+t_dir	*print_files(t_dir *head, t_dir *head_files);
+void	check_err(char *name, char *path);
+void	data_init(struct dirent *file, t_dir *list, t_dir **d, t_dir **head);
 
 void			print(t_dir *request);
-void			print_rows(t_dir *request, ushort ws_cols, ushort flags);
 t_prt_rows		get_print_prm_r(t_dir *request);
 uint8_t			get_bit(int nlink);
 void			print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm);
@@ -118,12 +124,9 @@ void			print_elem(char *str, uint8_t max);
 void			print_time(time_t time);
 void			print_link(t_dir *request);
 void			print_attr_full(t_dir *request, ushort flags);
-void			print_cols(t_dir *request, ushort ws_col, ushort flags);
 t_prt_cols		get_print_prm_c(t_dir *request, ushort ws_col);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 uint8_t			list_f_d(t_dir *list);
-void			print_all_rek(t_dir *request, ushort size,
-				void (f)(t_dir *, ushort, ushort), ushort flags, ushort i);
 t_dir			*sorting(t_dir *request, ushort flags);
 uint8_t			list_rev(t_dir *list);
 uint8_t			list_time_mod(t_dir *list);

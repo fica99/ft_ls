@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 12:18:46 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:55:44 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 	head_files = NULL;
 	while (arr[++(*i)])
 	{
-		dir = check_exist(dir, &head, flags);	
+		dir = check_exist(dir, &head, flags);
 		dir->name = check_name(arr[*i]);
 		dir->path = ft_strdup(arr[(*i)]);
 		dir->len = ft_strlen(arr[(*i)]);
@@ -48,15 +48,7 @@ t_dir	*make_list(char **arr, uint8_t *i, ushort flags)
 		if (get_type(dir->mode) != 'd' && !(is_flags(flags, 'd')))
 			dir = make_file_list(dir, &head_files, &head);
 	}
-	if (head_files)
-	{
-		print(sorting(head_files, head_files->flags));
-		if (head)
-			ft_putchar('\n');
-	}
-	if (head)
-		return (sorting(head, head->flags));
-	return (NULL);
+	return (print_files(head, head_files));
 }
 
 t_dir	*make_file_list(t_dir *dir, t_dir **head_files, t_dir **head)
@@ -86,26 +78,18 @@ t_dir	*reading(t_dir *list)
 	struct dirent	*file;
 	DIR				*folder;
 
-	if (get_type(list->mode) != 'd' || !(folder = check_open(list->path, list->name)))
+	if (get_type(list->mode) != 'd' ||
+		!(folder = check_open(list->path, list->name)))
 		return (NULL);
 	d = NULL;
 	head = d;
 	while ((file = readdir(folder)) != NULL)
 	{
-		if ((!(is_flags(list->flags, 'a')) && !(is_flags(list->flags, 'f'))) && (file->d_name)[0] == '.')
+		if ((!(is_flags(list->flags, 'a')) &&
+			!(is_flags(list->flags, 'f'))) && (file->d_name)[0] == '.')
 			continue ;
 		d = check_exist(d, &(head), list->flags);
-		d->mode = DTTOIF(file->d_type);
-		d->name = ft_strdup(file->d_name);
-		d->path = check_path(list->path, file->d_name);
-		d->len = file->d_namlen;
-		if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
-		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
-		|| is_flags(list->flags, 'l'))
-		{
-			if (!(get_data(&d)))
-				delete_from_list(&d, &head);
-		}
+		data_init(file, list, &d, &head);
 	}
 	check_close(closedir(folder));
 	return (head);
@@ -119,8 +103,7 @@ t_dir	*get_data(t_dir **request)
 		return (NULL);
 	if (lstat((*request)->path, &buf) == -1)
 	{
-		ft_putstr("ft_ls: ");
-		perror((*request)->name);
+		check_err((*request)->name, (*request)->path);
 		return (NULL);
 	}
 	(*request)->size = buf.st_size;

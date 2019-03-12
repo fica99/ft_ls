@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 12:14:46 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:15:41 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,26 @@
 
 t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 {
-	uint8_t		len;
 	t_prt_cols	pprm;
 
 	pprm.max = 0;
 	pprm.cnt_elems = 0;
+
 	while (request)
 	{
-		len = ft_strlen(request->name);
-		if (len > pprm.max)
-			pprm.max = len;
+		if (request->len > pprm.max)
+			pprm.max = request->len;
 		pprm.cnt_elems++;
 		request = request->next;
 	}
 	pprm.cols = pprm.cnt_elems;
 	pprm.rows = 1;
+	if (pprm.max >= ws_col)
+	{
+		pprm.cols = 1;
+		pprm.rows = pprm.cnt_elems;
+		return (pprm);
+	}
 	while (((pprm.max + 1) * pprm.cnt_elems) / pprm.rows > ws_col)
 		pprm.rows++;
 	pprm.cols = (pprm.cnt_elems % pprm.rows == 0) ? pprm.cnt_elems / pprm.rows
@@ -41,27 +46,24 @@ t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 	return (pprm);
 }
 
-void		print_cols(t_dir *request, ushort ws_col, ushort flags)
+void		print_cols(t_dir *request, ushort ws_col, ushort flags, uint8_t j)
 {
 	t_prt_cols	pprm;
-	char *buf;
 	int i;
+	char buf[BUFFOUT];
 
 	if (!request)
 		exit(-1);
 	flags = 0;
 	i = 0;
-	if (!(buf = (char *)malloc(sizeof(char) * BUFFOUT)))
-		exit(-1);
 	pprm = get_print_prm_c(request, ws_col);
 	pprm.cur_row = 0;
 	while (++pprm.cur_row <= pprm.rows)
 	{
-		print_line(request, pprm, &buf, &i);
+		print_line(request, pprm, buf, &i);
 		request = request->next;
 	}
 	write(1, buf, i);
-	free(buf);
 }
 
 void		print_elem(char *str, uint8_t max)
@@ -74,7 +76,7 @@ void		print_elem(char *str, uint8_t max)
 		ft_putchar(' ');
 }
 
-void		print_line(t_dir *request, t_prt_cols pprm, char **buf, int *i)
+void		print_line(t_dir *request, t_prt_cols pprm, char *buf, int *i)
 {
 	int j;
 
@@ -86,26 +88,26 @@ void		print_line(t_dir *request, t_prt_cols pprm, char **buf, int *i)
 		{
 			if (*i == BUFFOUT)
 			{
-				write(1, *buf, *i);
+				write(1, buf, *i);
 				*i = 0;
 			}
-			(*buf)[(*i)++] = request->name[j++];
+			buf[(*i)++] = request->name[j++];
 		}
-		while (j++ <= pprm.max)
+		while (j++ <= pprm.max && pprm.cur_col != pprm.cols)
 		{
 			if (*i == BUFFOUT)
 			{
-				write(1, *buf, *i);
+				write(1, buf, *i);
 				*i = 0;
 			}
-			(*buf)[(*i)++] = ' ';
+			buf[(*i)++] = ' ';
 		}
 		request = next_elem(request, pprm);
 	}
 	if (*i == BUFFOUT)
 	{
-		write(1, *buf, *i);
+		write(1, buf, *i);
 		*i = 0;
 	}
-	(*buf)[(*i)++] = '\n';
+	buf[(*i)++] = '\n';
 }

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 19:55:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 19:57:30 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:57:18 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,32 @@ char	*check_name(char *name)
 	else
 		file_name = ft_strdup(file + 1);
 	return (file_name);
+}
+
+void	check_err(char *name, char *path)
+{
+	if (errno == EACCES)
+	{
+		ft_putstr(path);
+		ft_putstr(":\nft_ls: ");
+		perror(name);
+	}
+	else
+	{
+		ft_putstr("ft_ls: ");
+		perror(path);
+	}
+}
+
+void	data_init(struct dirent *file, t_dir *list, t_dir **d, t_dir **head)
+{
+	(*d)->mode = DTTOIF(file->d_type);
+	(*d)->name = ft_strdup(file->d_name);
+	(*d)->path = check_path(list->path, file->d_name);
+	(*d)->len = file->d_namlen;
+	if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
+		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
+		|| is_flags(list->flags, 'l'))
+		if (!(get_data(d)))
+			delete_from_list(d, head);
 }

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 20:37:38 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:58:00 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ DIR		*check_open(char *path, char *name)
 
 	if (!(folder = opendir(path)))
 	{
-		ft_putstr("ft_ls: ");
-		perror(name);
+		check_err(name, path);
 		return (NULL);
 	}
 	return (folder);
@@ -49,7 +48,7 @@ uint8_t	double_arr_len(char **d_names)
 void	free_all_list(t_dir *request)
 {
 	t_dir	*file;
-	
+
 	if (!request)
 		return ;
 	while (request)
