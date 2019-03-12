@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 09:38:09 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 10:11:02 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ void		print_line(t_dir *request, t_prt_cols pprm)
 	char buf[BUFFOUT];
 	int	i;
 	int j;
-	int len;
 
 	i = 0;
 	pprm.cur_col = 0;
@@ -81,8 +80,7 @@ void		print_line(t_dir *request, t_prt_cols pprm)
 		j = 0;
 		while (request->name[j] && i < BUFFOUT)
 			buf[i++] = request->name[j++];
-		len = ft_strlen(request->name);
-		while (++len <= pprm.max && i < BUFFOUT)
+		while (++j <= pprm.max && i < BUFFOUT)
 			buf[i++] = ' ';
 		request = next_elem(request, pprm);
 	}

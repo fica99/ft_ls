@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/15 22:02:45 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/09 21:01:57 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 10:44:50 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	print_all_rek(t_dir *request, ushort size,
 			if ((is_flags(flags, 'R') && (ft_strcmp(request->name, ".") != 0)
 			&& (ft_strcmp(request->name, "..") != 0)) || ((is_flags(flags, 'R') && i == 1)))
 				print_all_rek(request->f_names, size, f, flags, ++i);
+			else
+				free_all_list(request->f_names);
 		}
 		request = request->next;
 	}
