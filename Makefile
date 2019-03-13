@@ -6,25 +6,25 @@
 #    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/03/13 14:13:02 by aashara-         ###   ########.fr        #
+#    Updated: 2019/03/13 16:40:30 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=ft_ls
 
 SRC=srcs/reading.c\
-	srcs/make.c\
 	srcs/flags.c\
 	srcs/check2.c\
 	srcs/check.c\
+	srcs/make.c\
 	srcs/check3.c\
-	srcs/sort_list.c\
 	srcs/output.c\
+	srcs/sort_list.c\
+	srcs/sort_list2.c\
 	srcs/print_rows.c\
 	srcs/print_rows2.c\
 	srcs/print_rows3.c\
 	srcs/print_cols.c\
-	srcs/sort_list2.c\
 	srcs/print_cols2.c\
 
 INCLUDES=includes
