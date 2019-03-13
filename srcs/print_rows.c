@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 14:11:50 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:43:15 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 {
 	ft_putchar(get_type(request->mode));
 	print_mode_bits(request->mode);
-	print_label_attr(request, flags);
+	print_label_attr(request);
 	print_number((long int)request->nlink, (long int)pprm.max_nlink);
 	print_gu_ids(request, pprm, flags);
 	print_number((long int)request->size, (long int)pprm.max_size);

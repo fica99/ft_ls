@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 11:22:42 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:42:47 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		cheak_oth(mode_t mode, char *str)
 	}
 }
 
-void		print_label_attr(t_dir *request, ushort flags)
+void		print_label_attr(t_dir *request)
 {
 	ssize_t	size_list;
 	acl_t	tmp;

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:27:16 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:42:24 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void		print_cols(t_dir *request, ushort ws_col, ushort flags, uint8_t j)
 
 	if (!request)
 		exit(-1);
+	j = 1;
 	flags = 0;
 	i = 0;
 	pprm = get_print_prm_c(request, ws_col);

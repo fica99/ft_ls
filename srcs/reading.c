@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 15:55:44 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:41:56 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 t_dir	*opening(int argc, char **argv)
 {
 	uint8_t	i;
-	t_dir	*request;
 	ushort	flags;
 
 	i = 1;

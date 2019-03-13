@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:39:48 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 16:42:53 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void			print_mode_bits(mode_t mode);
 void			cheak_usr(mode_t mode, char *str);
 void			cheak_grp(mode_t mode, char *str);
 void			cheak_oth(mode_t mode, char *str);
-void			print_label_attr(t_dir *request, ushort flags);
+void			print_label_attr(t_dir *request);
 void			print_number(long int num, long int max);
 void			print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags);
 void			print_elem(char *str, uint8_t max);

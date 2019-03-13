@@ -6,7 +6,7 @@
 #    By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 12:59:55 by aashara-          #+#    #+#              #
-#    Updated: 2019/03/13 16:40:30 by aashara-         ###   ########.fr        #
+#    Updated: 2019/03/13 16:44:11 by aashara-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,13 +29,15 @@ SRC=srcs/reading.c\
 
 INCLUDES=includes
 
+EXTRA_FLAGS=-Wall -Wextra -Werror
+
 LIB=libft
 
 all: $(NAME)
 
 $(NAME):
 			@make re -C $(LIB)
-			@gcc -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
+			@gcc $(EXTRA_FLAGS) -o $(NAME) main.c $(SRC) -I libft/includes -I $(INCLUDES) -L $(LIB) -lft
 
 clean:
 			@make clean -C $(LIB)
