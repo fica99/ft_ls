@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:30:21 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/08 17:29:14 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:59:00 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,30 @@ void		print_attr_full(t_dir *request, ushort flags)
 			i += ft_strlen(list + i);
 		}
 	}
+}
+
+void		get_data_max(t_prt_rows *pprm, t_dir *request)
+{
+	u_int8_t	bit;
+	ushort		len;
+
+	pprm->total += request->total;
+	if ((bit = get_bit(request->nlink)) > pprm->max_nlink)
+		pprm->max_nlink = bit;
+	if (get_type(request->mode) == 'b' || get_type(request->mode) == 'c')
+	{
+		if ((bit = get_bit(major(request->st_rdev))) > pprm->max_major)
+			pprm->max_major = bit;
+		if ((bit = get_bit(minor(request->st_rdev))) > pprm->max_minor)
+			pprm->max_minor = bit;
+	}
+	else
+	{
+		if ((bit = get_bit(request->size)) > pprm->max_size)
+			pprm->max_size = bit;
+	}
+	if ((len = ft_strlen(getpwuid(request->uid)->pw_name)) > pprm->max_uid)
+		pprm->max_uid = len;
+	if ((len = ft_strlen(getgrgid(request->gid)->gr_name)) > pprm->max_gid)
+		pprm->max_gid = len;
 }

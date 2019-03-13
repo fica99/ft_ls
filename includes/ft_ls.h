@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:42:53 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:47:08 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct	s_dir
 	mode_t			mode;
 	uid_t			uid;
 	gid_t			gid;
+	dev_t			st_rdev;
 }				t_dir;
 
 typedef struct	s_prt_cols
@@ -72,6 +73,8 @@ typedef struct	s_prt_rows
 	u_int8_t		max_size;
 	ushort			max_uid;
 	ushort			max_gid;
+	ushort			max_minor;
+	ushort			max_major;
 }				t_prt_rows;
 
 t_dir			*opening(int argc, char **argv);
@@ -116,6 +119,7 @@ t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags,
 				uint8_t i);
 t_prt_rows		get_print_prm_r(t_dir *request);
+void			get_data_max(t_prt_rows *pprm, t_dir *request);
 uint8_t			get_bit(int nlink);
 void			print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm);
 void			print_mode_bits(mode_t mode);
@@ -123,7 +127,7 @@ void			cheak_usr(mode_t mode, char *str);
 void			cheak_grp(mode_t mode, char *str);
 void			cheak_oth(mode_t mode, char *str);
 void			print_label_attr(t_dir *request);
-void			print_number(long int num, long int max);
+void			print_number(long int num, long int max, uint8_t j);
 void			print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags);
 void			print_elem(char *str, uint8_t max);
 void			print_time(time_t time);

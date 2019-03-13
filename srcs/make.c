@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 15:07:47 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 14:24:11 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:25:30 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_dir	*ft_list(ushort flags)
 	list->mode = 0;
 	list->len = 0;
 	list->level = 1;
+	list->st_rdev = 0;
 	return (list);
 }
 

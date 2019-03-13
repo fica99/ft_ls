@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:14:50 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:41:56 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:31:49 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ t_dir	*get_data(t_dir **request)
 		check_err((*request)->name, (*request)->path);
 		return (NULL);
 	}
-	(*request)->size = buf.st_size;
 	(*request)->time_mod = buf.st_mtime;
 	(*request)->a_time = buf.st_atime;
 	(*request)->nlink = buf.st_nlink;
@@ -113,5 +112,9 @@ t_dir	*get_data(t_dir **request)
 	(*request)->gid = buf.st_gid;
 	(*request)->mode = buf.st_mode;
 	(*request)->total = buf.st_blocks;
+	if (get_type((*request)->mode) == 'b' || get_type((*request)->mode) == 'c')
+		(*request)->st_rdev = buf.st_rdev;
+	else
+		(*request)->size = buf.st_size;
 	return (*request);
 }

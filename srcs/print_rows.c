@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:43:15 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:54:25 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,28 +33,18 @@ void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t i)
 
 t_prt_rows	get_print_prm_r(t_dir *request)
 {
-	ushort		len;
 	t_prt_rows	pprm;
-	u_int8_t	bit;
 
 	pprm.total = 0;
 	pprm.max_nlink = 1;
 	pprm.max_size = 1;
 	pprm.max_uid = 0;
 	pprm.max_gid = 0;
+	pprm.max_gid = 0;
+	pprm.max_minor = 0;
 	while (request)
 	{
-		if (!(request->mode))
-			exit(-1);
-		pprm.total += request->total;
-		if ((bit = get_bit(request->nlink)) > pprm.max_nlink)
-			pprm.max_nlink = bit;
-		if ((bit = get_bit(request->size)) > pprm.max_size)
-			pprm.max_size = bit;
-		if ((len = ft_strlen(getpwuid(request->uid)->pw_name)) > pprm.max_uid)
-			pprm.max_uid = len;
-		if ((len = ft_strlen(getgrgid(request->gid)->gr_name)) > pprm.max_gid)
-			pprm.max_gid = len;
+		get_data_max(&pprm, request);
 		request = request->next;
 	}
 	return (pprm);
@@ -64,10 +54,19 @@ void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 {
 	ft_putchar(get_type(request->mode));
 	print_mode_bits(request->mode);
-	print_label_attr(request);
-	print_number((long int)request->nlink, (long int)pprm.max_nlink);
+	if (get_type(request->mode) != 'b' && get_type(request->mode) != 'c')
+		print_label_attr(request);
+	else
+		ft_putstr("  ");
+	print_number((long int)request->nlink, (long int)pprm.max_nlink, 0);
 	print_gu_ids(request, pprm, flags);
-	print_number((long int)request->size, (long int)pprm.max_size);
+	if (get_type(request->mode) == 'b' || get_type(request->mode) == 'c')
+	{
+		print_number(major(request->st_rdev), pprm.max_major, 1);
+		print_number(minor(request->st_rdev), pprm.max_minor, 0);
+	}
+	else
+		print_number((long int)request->size, (long int)pprm.max_size, 0);
 	print_time(request->time_mod);
 	ft_putstr(request->name);
 	if (get_type(request->mode) == 'l')

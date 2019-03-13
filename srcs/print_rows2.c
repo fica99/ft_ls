@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 16:42:47 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 20:51:18 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,17 @@ void		print_label_attr(t_dir *request)
 		ft_putstr("  ");
 }
 
-void		print_number(long int num, long int max)
+void		print_number(long int num, long int max, uint8_t j)
 {
 	long int	i;
 
 	i = get_bit(num);
+	if (j)
+		ft_putchar(' ');
 	while (i++ < max)
 		ft_putchar(' ');
 	ft_putnbr(num);
+	if (j)
+		ft_putchar(',');
 	ft_putchar(' ');
 }
