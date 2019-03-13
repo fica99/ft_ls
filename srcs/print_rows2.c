@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:51:18 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:26:48 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void		print_label_attr(t_dir *request)
 	ssize_t	size_list;
 	acl_t	tmp;
 
-	size_list = listxattr(request->path, NULL, 0, 0);
+	if (get_type(request->mode) == 'l')
+		size_list = listxattr(request->path, NULL, 0, XATTR_NOFOLLOW);
+	else
+		size_list = listxattr(request->path, NULL, 0, 0);
 	tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
 	if (size_list)
 		ft_putstr("@ ");

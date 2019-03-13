@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:30:21 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:59:00 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:42:02 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void		print_attr_full(t_dir *request, ushort flags)
 			size_val = getxattr(request->path,
 			list + i, value, SIZE_VATTR, 0, 0);
 			ft_putstr("\t   ");
-			ft_putnbr((int)size_val);
+			print_number(size_val, 2, 0);
 			ft_putchar('\n');
 			i += ft_strlen(list + i);
 		}
