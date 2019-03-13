@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:54:25 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:52:27 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,7 @@ void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
 	if (get_type(request->mode) == 'l')
 		print_link(request);
 	ft_putchar('\n');
-	if (get_type(request->mode) != 'l')
-		print_attr_full(request, flags);
+	print_attr_full(request, flags);
 }
 
 char		get_type(mode_t mode)

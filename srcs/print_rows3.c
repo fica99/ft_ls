@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:30:21 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:42:02 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 21:54:53 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,10 @@ void		print_attr_full(t_dir *request, ushort flags)
 	u_int8_t	size_val;
 	char		value[SIZE_VATTR];
 
-	size_list = listxattr(request->path, list, NAME_SATTR, 0);
+	if (get_type(request->mode) == 'l')
+		size_list = listxattr(request->path, list, NAME_SATTR, XATTR_NOFOLLOW);
+	else
+		size_list = listxattr(request->path, list, NAME_SATTR, 0);
 	if (is_flags(flags, '@') && size_list)
 	{
 		i = -1;
@@ -60,10 +63,14 @@ void		print_attr_full(t_dir *request, ushort flags)
 		{
 			ft_putchar('\t');
 			ft_putstr(list + i);
-			size_val = getxattr(request->path,
-			list + i, value, SIZE_VATTR, 0, 0);
+			if (get_type(request->mode) == 'l')
+				size_val = getxattr(request->path,
+				list + i, value, SIZE_VATTR, 0, XATTR_NOFOLLOW);
+			else
+				size_val = getxattr(request->path,
+				list + i, value, SIZE_VATTR, 0, 0);
 			ft_putstr("\t   ");
-			print_number(size_val, 2, 0);
+			print_number(size_val, 3, 0);
 			ft_putchar('\n');
 			i += ft_strlen(list + i);
 		}
