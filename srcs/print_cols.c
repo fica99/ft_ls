@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/18 14:59:43 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 16:58:58 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 14:16:17 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,23 +25,7 @@ t_prt_cols	get_print_prm_c(t_dir *request, ushort ws_col)
 		pprm.cnt_elems++;
 		request = request->next;
 	}
-	pprm.cols = pprm.cnt_elems;
-	pprm.rows = 1;
-	if (pprm.max >= ws_col)
-	{
-		pprm.cols = 1;
-		pprm.rows = pprm.cnt_elems;
-		return (pprm);
-	}
-	while (((pprm.max + 1) * pprm.cnt_elems) / pprm.rows > ws_col)
-		pprm.rows++;
-	pprm.cols = (pprm.cnt_elems % pprm.rows == 0) ? pprm.cnt_elems / pprm.rows
-	: (pprm.cnt_elems / pprm.rows) + 1;
-	while (pprm.cols * (pprm.max + 1) > ws_col)
-	{
-		pprm.cols = (pprm.cnt_elems % (++pprm.rows) == 0)
-		? pprm.cnt_elems / pprm.rows : (pprm.cnt_elems / pprm.rows) + 1;
-	}
+	get_cols_rows(&pprm, ws_col);
 	return (pprm);
 }
 

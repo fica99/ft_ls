@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 19:55:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 16:55:24 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 15:23:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void	data_init(struct dirent *file, t_dir *list, t_dir **d, t_dir **head)
 	(*d)->name = ft_strdup(file->d_name);
 	(*d)->path = check_path(list->path, file->d_name);
 	(*d)->len = file->d_namlen;
+	(*d)->level = (list->level) + 1;
 	if (is_flags(list->flags, 't') || is_flags(list->flags, 'u')
 		|| is_flags(list->flags, 'S') || is_flags(list->flags, 'g')
 		|| is_flags(list->flags, 'l'))

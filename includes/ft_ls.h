@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/12 16:43:27 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/13 15:48:34 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct	s_dir
 	struct s_dir	*pre;
 	short int		total;
 	uint16_t		len;
+	uint8_t			level;
 	ushort			flags;
 	off_t			size;
 	time_t			time_mod;
@@ -103,12 +104,14 @@ char	*check_name(char *name);
 void		print_line(t_dir *request, t_prt_cols pprm, char *buf, u_int16_t *i);
 void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t i);
 void	print_all_rek(t_dir *request, ushort size,
-		void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags, ushort i);
+		void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags);
 void		print_cols(t_dir *request, ushort ws_col, ushort flags, uint8_t j);
 t_dir	*print_files(t_dir *head, t_dir *head_files);
 void	check_err(char *name, char *path);
 void	data_init(struct dirent *file, t_dir *list, t_dir **d, t_dir **head);
 u_int8_t check_buf(char *buf, u_int8_t i);
+void	get_cols_rows(t_prt_cols *pprm, ushort ws_col);
+void	print_path(t_dir *request, ushort flags);
 
 void			print(t_dir *request);
 t_prt_rows		get_print_prm_r(t_dir *request);
