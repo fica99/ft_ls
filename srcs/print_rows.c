@@ -12,13 +12,16 @@
 
 #include "ft_ls.h"
 
-void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t i)
+void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t g)
 {
+	char buf[BUFFOUT];
 	t_prt_rows	pprm;
+	int i;
 
 	ws_cols = 0;
+	i = 0;
 	pprm = get_print_prm_r(request);
-	if (i)
+	if (g)
 	{
 		ft_putstr("total ");
 		ft_putnbr(pprm.total);
@@ -26,9 +29,15 @@ void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t i)
 	}
 	while (request)
 	{
-		print_line_rows(request, flags, pprm);
+		if (i + SIZELINE >= BUFFOUT)
+		{
+			write(1, buf, i);
+			i = 0;
+		}
+		i += print_line_rows(request, flags, pprm, buf + i);
 		request = request->next;
 	}
+	write(1, buf, i);
 }
 
 t_prt_rows	get_print_prm_r(t_dir *request)
@@ -42,6 +51,7 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 	pprm.max_gid = 0;
 	pprm.max_gid = 0;
 	pprm.max_minor = 0;
+	pprm.cur_time = time(NULL);
 	while (request)
 	{
 		get_data_max(&pprm, request);
@@ -50,29 +60,33 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 	return (pprm);
 }
 
-void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
+int		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf)
 {
-	ft_putchar(get_type(request->mode));
-	print_mode_bits(request->mode);
-	if (get_type(request->mode) != 'b' && get_type(request->mode) != 'c')
-		print_label_attr(request);
-	else
-		ft_putstr("  ");
-	print_number((long int)request->nlink, (long int)pprm.max_nlink, 0);
-	print_gu_ids(request, pprm, flags);
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	buf[i++] = get_type(request->mode);
+	i += print_mode_bits(request->mode, buf + i);
+	i += print_label_attr(request, buf + i);
+	i += print_number((long int)request->nlink, (long int)pprm.max_nlink, buf + i, 0);
+	i += print_gu_ids(request, pprm, flags, buf + i);
 	if (get_type(request->mode) == 'b' || get_type(request->mode) == 'c')
 	{
-		print_number(major(request->st_rdev), pprm.max_major, 1);
-		print_number(minor(request->st_rdev), pprm.max_minor, 0);
+		i += print_number(major(request->st_rdev), pprm.max_major, buf + i, 1);
+		i += print_number(minor(request->st_rdev), pprm.max_minor, buf + i, 0);
 	}
 	else
-		print_number((long int)request->size, (long int)pprm.max_size, 0);
-	print_time(request->time_mod);
-	ft_putstr(request->name);
+		i += print_number((long int)request->size, (long int)pprm.max_size, buf + i, 0);
+	i += print_time(request->time_mod, pprm.cur_time, buf + i);
+	while (request->name[j])
+		buf[i++] = request->name[j++];
 	if (get_type(request->mode) == 'l')
-		print_link(request);
-	ft_putchar('\n');
-	print_attr_full(request, flags);
+		i += print_link(request, buf + i);
+	buf[i++] = '\n';
+	//print_attr_full(request, flags);
+	return (i);
 }
 
 char		get_type(mode_t mode)
@@ -95,21 +109,19 @@ char		get_type(mode_t mode)
 		return ('?');
 }
 
-void		print_mode_bits(mode_t mode)
+int		print_mode_bits(mode_t mode, char *buf)
 {
-	char	str[10];
-	uint8_t	i;
+	int	i;
 
 	i = 0;
 	while (i < 8)
 	{
-		str[i++] = 'r';
-		str[i++] = 'w';
-		str[i++] = 'x';
+		buf[i++] = 'r';
+		buf[i++] = 'w';
+		buf[i++] = 'x';
 	}
-	str[9] = '\0';
-	cheak_usr(mode, str);
-	cheak_grp(mode, str);
-	cheak_oth(mode, str);
-	ft_putstr(str);
+	cheak_usr(mode, buf);
+	cheak_grp(mode, buf);
+	cheak_oth(mode, buf);
+	return (9);
 }

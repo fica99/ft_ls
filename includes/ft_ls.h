@@ -34,6 +34,7 @@
 # define NAME_SATTR 300
 # define SIZE_VATTR 300
 # define BUFFOUT 100000
+# define SIZELINE 300
 
 typedef struct	s_dir
 {
@@ -75,6 +76,7 @@ typedef struct	s_prt_rows
 	ushort			max_gid;
 	ushort			max_minor;
 	ushort			max_major;
+	time_t			cur_time;
 }				t_prt_rows;
 
 t_dir			*opening(int argc, char **argv);
@@ -117,21 +119,24 @@ void			print_line(t_dir *request, t_prt_cols pprm, char *buf,
 u_int8_t		check_buf(char *buf, u_int8_t i);
 t_dir			*next_elem(t_dir *request, t_prt_cols pprm);
 void			print_rows(t_dir *request, ushort ws_cols, ushort flags,
-				uint8_t i);
+				uint8_t g);
 t_prt_rows		get_print_prm_r(t_dir *request);
 void			get_data_max(t_prt_rows *pprm, t_dir *request);
 uint8_t			get_bit(int nlink);
-void			print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm);
-void			print_mode_bits(mode_t mode);
+int				print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf);
+int				print_mode_bits(mode_t mode, char *buf);
 void			cheak_usr(mode_t mode, char *str);
 void			cheak_grp(mode_t mode, char *str);
 void			cheak_oth(mode_t mode, char *str);
-void			print_label_attr(t_dir *request);
-void			print_number(long int num, long int max, uint8_t j);
-void			print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags);
+int				print_label_attr(t_dir *request, char *buf);
+int				print_number(long int num, long int max, char *buf, uint8_t j);
+void			putnum(long int n, int i, char *buf);
+int				print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf);
+int 			putuid(char *uid, ushort max, char *buf);
+int 			putgid(char *gid, ushort max, char *buf);
 void			print_elem(char *str, uint8_t max);
-void			print_time(time_t time);
-void			print_link(t_dir *request);
+int				print_time(time_t time, time_t cur_time, char *buf);
+int				print_link(t_dir *request, char *buf);
 void			print_attr_full(t_dir *request, ushort flags);
 void			print_all_rek(t_dir *request, ushort size,
 				void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags);

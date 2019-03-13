@@ -12,39 +12,66 @@
 
 #include "ft_ls.h"
 
-void		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags)
+int		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf)
 {
+	int i;
+
+	i = 0;
 	if (!is_flags(flags, 'g'))
-	{
-		print_elem(getpwuid(request->uid)->pw_name, pprm.max_uid);
-		ft_putstr("  ");
-	}
-	print_elem(getgrgid(request->gid)->gr_name, pprm.max_gid);
-	ft_putstr("  ");
+		i += putuid(getpwuid(request->uid)->pw_name, pprm.max_uid, buf + i);
+	i += putgid(getgrgid(request->gid)->gr_name, pprm.max_gid, buf + i);
+	return (i);
 }
 
-void		print_time(time_t time)
+int		print_time(time_t time, time_t cur_time, char *buf)
 {
 	char	*str_time;
+	int i;
+	int j;
 
+	i = 0;
 	str_time = ctime(&time);
-	str_time[16] = '\0';
-	ft_putstr(str_time + 4);
-	ft_putchar(' ');
+	j = 4;
+
+	while (j < 11)
+		buf[i++] = str_time[j++];
+	if (difftime(cur_time, time) > (double)(86400 * 182))
+	{
+		buf[i++] = ' ';
+		j = 20;
+		while (j < 24)
+			buf[i++] = str_time[j++];
+	}
+	else
+	{
+		while (j < 16)
+			buf[i++] = str_time[j++];
+	}
+	buf[i++] = ' ';
+	return (i);
 }
 
-void		print_link(t_dir *request)
+int		print_link(t_dir *request, char *buf)
 {
-	char	buf[100];
+	char	buf_l[100];
+	char	row[] = " -> ";
 	size_t	size;
+	int i;
+	int j;
 
-	size = readlink((*request).path, buf, 100);
-	buf[size] = '\0';
-	ft_putstr(" -> ");
-	ft_putstr(buf);
+	i = 0;
+	j = 0;
+	size = readlink((*request).path, buf_l, 100);
+	buf_l[size] = '\0';
+	while (row[j])
+		buf[i++] = row[j++];
+	j = 0;
+	while (buf_l[j])
+		buf[i++] = buf_l[j++];
+	return (i);
 }
 
-void		print_attr_full(t_dir *request, ushort flags)
+/*void		print_attr_full(t_dir *request, ushort flags)
 {
 	char		list[NAME_SATTR];
 	ssize_t		size_list;
@@ -75,7 +102,7 @@ void		print_attr_full(t_dir *request, ushort flags)
 			i += ft_strlen(list + i);
 		}
 	}
-}
+}*/
 
 void		get_data_max(t_prt_rows *pprm, t_dir *request)
 {
@@ -101,4 +128,34 @@ void		get_data_max(t_prt_rows *pprm, t_dir *request)
 		pprm->max_uid = len;
 	if ((len = ft_strlen(getgrgid(request->gid)->gr_name)) > pprm->max_gid)
 		pprm->max_gid = len;
+}
+
+int putuid(char *uid, ushort max, char *buf)
+{
+	int i;
+
+	i = 0;
+	while (uid[i])
+	{
+		buf[i] = uid[i];
+		i++;
+	}
+	while (i < max + 2)
+		buf[i++] = ' ';
+	return (i);
+}
+
+int putgid(char *gid, ushort max, char *buf)
+{
+	int i;
+
+	i = 0;
+	while (gid[i])
+	{
+		buf[i] = gid[i];
+		i++;
+	}
+	while (i < max + 2)
+		buf[i++] = ' ';
+	return (i);
 }

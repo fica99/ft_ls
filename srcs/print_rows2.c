@@ -51,38 +51,54 @@ void		cheak_oth(mode_t mode, char *str)
 	}
 }
 
-void		print_label_attr(t_dir *request)
+int		print_label_attr(t_dir *request, char *buf)
 {
 	ssize_t	size_list;
 	acl_t	tmp;
 
-	if (get_type(request->mode) == 'l')
-		size_list = listxattr(request->path, NULL, 0, XATTR_NOFOLLOW);
-	else
-		size_list = listxattr(request->path, NULL, 0, 0);
-	tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
-	if (size_list)
-		ft_putstr("@ ");
-	else if (tmp)
+	if (get_type(request->mode) != 'b' && get_type(request->mode) != 'c')
 	{
-		ft_putstr("+ ");
-		acl_free(tmp);
+		if (get_type(request->mode) == 'l')
+			size_list = listxattr(request->path, NULL, 0, XATTR_NOFOLLOW);
+		else
+			size_list = listxattr(request->path, NULL, 0, 0);
+		tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
+		if (size_list)
+			buf[0] = '@';
+		else if (tmp)
+		{
+			buf[0] = '+';
+			acl_free(tmp);
+		}
+		else
+			buf[0] = ' ';
 	}
 	else
-		ft_putstr("  ");
+		buf[0] = ' ';
+	buf[1] = ' ';
+	return (2);
 }
 
-void		print_number(long int num, long int max, uint8_t j)
+int		print_number(long int num, long int max, char *buf, uint8_t j)
 {
-	long int	i;
+	long int	bit;
+	int	i;
 
-	i = get_bit(num);
+	i = 0;
+	bit = get_bit(num);
+	while (i + bit < max)
+		buf[i++] = ' ';
+	max = (j) ? max + 2 : max;
+	putnum(num, i + bit - 1, buf);
 	if (j)
-		ft_putchar(' ');
-	while (i++ < max)
-		ft_putchar(' ');
-	ft_putnbr(num);
-	if (j)
-		ft_putchar(',');
-	ft_putchar(' ');
+		buf[i++ + bit] = ',';
+	buf[i + bit] = ' ';
+	return ((int)max + 1);
+}
+
+void	putnum(long int n, int i, char *buf)
+{
+	if (n >= 10)
+		putnum(n / 10, i - 1, buf);
+	buf[i] = n % 10 + '0';
 }
