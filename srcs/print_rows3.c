@@ -71,38 +71,33 @@ int		print_link(t_dir *request, char *buf)
 	return (i);
 }
 
-/*void		print_attr_full(t_dir *request, ushort flags)
+int		print_attr_full(t_dir *request, ushort flags, char *buf, t_attr attr)
 {
-	char		list[NAME_SATTR];
-	ssize_t		size_list;
-	ssize_t		i;
+	ssize_t		j;
+	int			i;
 	u_int8_t	size_val;
 	char		value[SIZE_VATTR];
-
-	if (get_type(request->mode) == 'l')
-		size_list = listxattr(request->path, list, NAME_SATTR, XATTR_NOFOLLOW);
-	else
-		size_list = listxattr(request->path, list, NAME_SATTR, 0);
-	if (is_flags(flags, '@') && size_list)
+	i = 0;
+	if (is_flags(flags, '@') && attr.size_list)
 	{
-		i = -1;
-		while (++i < size_list)
+		j = 0;
+		while (j < attr.size_list)
 		{
-			ft_putchar('\t');
-			ft_putstr(list + i);
-			if (get_type(request->mode) == 'l')
-				size_val = getxattr(request->path,
-				list + i, value, SIZE_VATTR, 0, XATTR_NOFOLLOW);
-			else
-				size_val = getxattr(request->path,
-				list + i, value, SIZE_VATTR, 0, 0);
-			ft_putstr("\t   ");
-			print_number(size_val, 3, 0);
-			ft_putchar('\n');
-			i += ft_strlen(list + i);
+			size_val = getxattr(request->path, attr.list + j, value, SIZE_VATTR, 0,
+								(get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
+			buf[i++] = '\t';
+			while (*(attr.list + j))
+				buf[i++] = *(attr.list + j++);
+			buf[i++] = '\t';
+			buf[i++] = ' ';
+			buf[i++] = ' ';
+			i += print_number(size_val, 3, buf + i, 0);
+			buf[i++] = '\n';
+			j++;
 		}
 	}
-}*/
+	return (i);
+}
 
 void		get_data_max(t_prt_rows *pprm, t_dir *request)
 {

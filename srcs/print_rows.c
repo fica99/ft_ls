@@ -63,13 +63,12 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 int		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf)
 {
 	int i;
-	int j;
+	t_attr	attr;
 
 	i = 0;
-	j = 0;
 	buf[i++] = get_type(request->mode);
 	i += print_mode_bits(request->mode, buf + i);
-	i += print_label_attr(request, buf + i);
+	i += print_label_attr(request, buf + i, &attr);
 	i += print_number((long int)request->nlink, (long int)pprm.max_nlink, buf + i, 0);
 	i += print_gu_ids(request, pprm, flags, buf + i);
 	if (get_type(request->mode) == 'b' || get_type(request->mode) == 'c')
@@ -80,12 +79,8 @@ int		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf)
 	else
 		i += print_number((long int)request->size, (long int)pprm.max_size, buf + i, 0);
 	i += print_time(request->time_mod, pprm.cur_time, buf + i);
-	while (request->name[j])
-		buf[i++] = request->name[j++];
-	if (get_type(request->mode) == 'l')
-		i += print_link(request, buf + i);
-	buf[i++] = '\n';
-	//print_attr_full(request, flags);
+	i += print_name(request, buf + i);
+	i += print_attr_full(request, flags, buf + i, attr);
 	return (i);
 }
 
@@ -124,4 +119,19 @@ int		print_mode_bits(mode_t mode, char *buf)
 	cheak_grp(mode, buf);
 	cheak_oth(mode, buf);
 	return (9);
+}
+
+int		print_name(t_dir *request, char *buf)
+{
+	int i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (request->name[j])
+		buf[i++] = request->name[j++];
+	if (get_type(request->mode) == 'l')
+		i += print_link(request, buf + i);
+	buf[i++] = '\n';
+	return (i);
 }

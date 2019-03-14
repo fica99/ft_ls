@@ -50,16 +50,6 @@ void		print_cols(t_dir *request, ushort ws_col, ushort flags, uint8_t j)
 	write(1, buf, i);
 }
 
-void		print_elem(char *str, uint8_t max)
-{
-	uint8_t	str_len;
-
-	str_len = ft_strlen(str);
-	ft_putstr(str);
-	while (++str_len <= max)
-		ft_putchar(' ');
-}
-
 void		print_line(t_dir *request, t_prt_cols pprm, char *buf, u_int16_t *i)
 {
 	u_int16_t j;

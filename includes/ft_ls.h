@@ -79,6 +79,12 @@ typedef struct	s_prt_rows
 	time_t			cur_time;
 }				t_prt_rows;
 
+typedef struct	s_attr
+{
+	char		list[NAME_SATTR];
+	ssize_t		size_list;
+}				t_attr;
+
 t_dir			*opening(int argc, char **argv);
 ushort			read_flags(char **argv, uint8_t *i);
 ushort			add_flag(ushort flags, char flag);
@@ -128,16 +134,16 @@ int				print_mode_bits(mode_t mode, char *buf);
 void			cheak_usr(mode_t mode, char *str);
 void			cheak_grp(mode_t mode, char *str);
 void			cheak_oth(mode_t mode, char *str);
-int				print_label_attr(t_dir *request, char *buf);
+int				print_label_attr(t_dir *request, char *buf, t_attr *attr);
 int				print_number(long int num, long int max, char *buf, uint8_t j);
 void			putnum(long int n, int i, char *buf);
 int				print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf);
 int 			putuid(char *uid, ushort max, char *buf);
 int 			putgid(char *gid, ushort max, char *buf);
-void			print_elem(char *str, uint8_t max);
 int				print_time(time_t time, time_t cur_time, char *buf);
+int				print_name(t_dir *request, char *buf);
 int				print_link(t_dir *request, char *buf);
-void			print_attr_full(t_dir *request, ushort flags);
+int				print_attr_full(t_dir *request, ushort flags, char *buf, t_attr attr);
 void			print_all_rek(t_dir *request, ushort size,
 				void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags);
 t_dir			*reading(t_dir *list);

@@ -51,19 +51,16 @@ void		cheak_oth(mode_t mode, char *str)
 	}
 }
 
-int		print_label_attr(t_dir *request, char *buf)
+int		print_label_attr(t_dir *request, char *buf, t_attr *attr)
 {
-	ssize_t	size_list;
 	acl_t	tmp;
 
 	if (get_type(request->mode) != 'b' && get_type(request->mode) != 'c')
 	{
-		if (get_type(request->mode) == 'l')
-			size_list = listxattr(request->path, NULL, 0, XATTR_NOFOLLOW);
-		else
-			size_list = listxattr(request->path, NULL, 0, 0);
+		attr->size_list = listxattr(request->path, attr->list, NAME_SATTR,
+							  (get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
 		tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
-		if (size_list)
+		if (attr->size_list)
 			buf[0] = '@';
 		else if (tmp)
 		{
