@@ -6,50 +6,11 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:26:48 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:38:54 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-void		cheak_usr(mode_t mode, char *str)
-{
-	if ((S_IRWXU & mode) != S_IRWXU)
-	{
-		if ((S_IRUSR & mode) != S_IRUSR)
-			str[0] = '-';
-		if ((S_IWUSR & mode) != S_IWUSR)
-			str[1] = '-';
-		if ((S_IXUSR & mode) != S_IXUSR)
-			str[2] = '-';
-	}
-}
-
-void		cheak_grp(mode_t mode, char *str)
-{
-	if ((S_IRWXG & mode) != S_IRWXG)
-	{
-		if ((S_IRGRP & mode) != S_IRGRP)
-			str[3] = '-';
-		if ((S_IWGRP & mode) != S_IWGRP)
-			str[4] = '-';
-		if ((S_IXGRP & mode) != S_IXGRP)
-			str[5] = '-';
-	}
-}
-
-void		cheak_oth(mode_t mode, char *str)
-{
-	if ((S_IRWXO & mode) != S_IRWXO)
-	{
-		if ((S_IROTH & mode) != S_IROTH)
-			str[6] = '-';
-		if ((S_IWOTH & mode) != S_IWOTH)
-			str[7] = '-';
-		if ((S_IXOTH & mode) != S_IXOTH)
-			str[8] = '-';
-	}
-}
 
 int		print_label_attr(t_dir *request, char *buf, t_attr *attr)
 {
@@ -58,7 +19,7 @@ int		print_label_attr(t_dir *request, char *buf, t_attr *attr)
 	if (get_type(request->mode) != 'b' && get_type(request->mode) != 'c')
 	{
 		attr->size_list = listxattr(request->path, attr->list, NAME_SATTR,
-							  (get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
+						(get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
 		tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
 		if (attr->size_list)
 			buf[0] = '@';
@@ -79,7 +40,7 @@ int		print_label_attr(t_dir *request, char *buf, t_attr *attr)
 int		print_number(long int num, long int max, char *buf, uint8_t j)
 {
 	long int	bit;
-	int	i;
+	int			i;
 
 	i = 0;
 	bit = get_bit(num);
@@ -98,4 +59,34 @@ void	putnum(long int n, int i, char *buf)
 	if (n >= 10)
 		putnum(n / 10, i - 1, buf);
 	buf[i] = n % 10 + '0';
+}
+
+int		putuid(char *uid, ushort max, char *buf)
+{
+	int i;
+
+	i = 0;
+	while (uid[i])
+	{
+		buf[i] = uid[i];
+		i++;
+	}
+	while (i < max + 2)
+		buf[i++] = ' ';
+	return (i);
+}
+
+int		putgid(char *gid, ushort max, char *buf)
+{
+	int i;
+
+	i = 0;
+	while (gid[i])
+	{
+		buf[i] = gid[i];
+		i++;
+	}
+	while (i < max + 2)
+		buf[i++] = ' ';
+	return (i);
 }

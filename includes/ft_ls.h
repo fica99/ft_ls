@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:16 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 20:47:08 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:41:04 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ void			print_rows(t_dir *request, ushort ws_cols, ushort flags,
 t_prt_rows		get_print_prm_r(t_dir *request);
 void			get_data_max(t_prt_rows *pprm, t_dir *request);
 uint8_t			get_bit(int nlink);
-int				print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf);
+int				print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm,
+				char *buf);
 int				print_mode_bits(mode_t mode, char *buf);
 void			cheak_usr(mode_t mode, char *str);
 void			cheak_grp(mode_t mode, char *str);
@@ -137,13 +138,15 @@ void			cheak_oth(mode_t mode, char *str);
 int				print_label_attr(t_dir *request, char *buf, t_attr *attr);
 int				print_number(long int num, long int max, char *buf, uint8_t j);
 void			putnum(long int n, int i, char *buf);
-int				print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf);
-int 			putuid(char *uid, ushort max, char *buf);
-int 			putgid(char *gid, ushort max, char *buf);
+int				print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags,
+				char *buf);
+int				putuid(char *uid, ushort max, char *buf);
+int				putgid(char *gid, ushort max, char *buf);
 int				print_time(time_t time, time_t cur_time, char *buf);
 int				print_name(t_dir *request, char *buf);
 int				print_link(t_dir *request, char *buf);
-int				print_attr_full(t_dir *request, ushort flags, char *buf, t_attr attr);
+int				print_attr_full(t_dir *request, ushort flags, char *buf,
+				t_attr attr);
 void			print_all_rek(t_dir *request, ushort size,
 				void (f)(t_dir *, ushort, ushort, uint8_t), ushort flags);
 t_dir			*reading(t_dir *list);

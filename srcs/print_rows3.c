@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:30:21 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:54:53 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:38:35 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,12 @@ int		print_gu_ids(t_dir *request, t_prt_rows pprm, ushort flags, char *buf)
 int		print_time(time_t time, time_t cur_time, char *buf)
 {
 	char	*str_time;
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	i = 0;
 	str_time = ctime(&time);
 	j = 4;
-
 	while (j < 11)
 		buf[i++] = str_time[j++];
 	if (difftime(cur_time, time) > (double)(86400 * 182))
@@ -54,13 +53,14 @@ int		print_time(time_t time, time_t cur_time, char *buf)
 int		print_link(t_dir *request, char *buf)
 {
 	char	buf_l[100];
-	char	row[] = " -> ";
+	char	*row;
 	size_t	size;
-	int i;
-	int j;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
+	row = " -> ";
 	size = readlink((*request).path, buf_l, 100);
 	buf_l[size] = '\0';
 	while (row[j])
@@ -77,14 +77,15 @@ int		print_attr_full(t_dir *request, ushort flags, char *buf, t_attr attr)
 	int			i;
 	u_int8_t	size_val;
 	char		value[SIZE_VATTR];
+
 	i = 0;
 	if (is_flags(flags, '@') && attr.size_list)
 	{
 		j = 0;
 		while (j < attr.size_list)
 		{
-			size_val = getxattr(request->path, attr.list + j, value, SIZE_VATTR, 0,
-								(get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
+			size_val = getxattr(request->path, attr.list + j, value, SIZE_VATTR,
+					0, (get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
 			buf[i++] = '\t';
 			while (*(attr.list + j))
 				buf[i++] = *(attr.list + j++);
@@ -99,7 +100,7 @@ int		print_attr_full(t_dir *request, ushort flags, char *buf, t_attr attr)
 	return (i);
 }
 
-void		get_data_max(t_prt_rows *pprm, t_dir *request)
+void	get_data_max(t_prt_rows *pprm, t_dir *request)
 {
 	u_int8_t	bit;
 	ushort		len;
@@ -123,34 +124,4 @@ void		get_data_max(t_prt_rows *pprm, t_dir *request)
 		pprm->max_uid = len;
 	if ((len = ft_strlen(getgrgid(request->gid)->gr_name)) > pprm->max_gid)
 		pprm->max_gid = len;
-}
-
-int putuid(char *uid, ushort max, char *buf)
-{
-	int i;
-
-	i = 0;
-	while (uid[i])
-	{
-		buf[i] = uid[i];
-		i++;
-	}
-	while (i < max + 2)
-		buf[i++] = ' ';
-	return (i);
-}
-
-int putgid(char *gid, ushort max, char *buf)
-{
-	int i;
-
-	i = 0;
-	while (gid[i])
-	{
-		buf[i] = gid[i];
-		i++;
-	}
-	while (i < max + 2)
-		buf[i++] = ' ';
-	return (i);
 }

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/09 19:55:13 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 15:23:46 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:29:36 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,37 @@ void	data_init(struct dirent *file, t_dir *list, t_dir **d, t_dir **head)
 		|| is_flags(list->flags, 'l'))
 		if (!(get_data(d)))
 			delete_from_list(d, head);
+}
+
+char	get_type(mode_t mode)
+{
+	if (S_ISLNK(mode))
+		return ('l');
+	else if (S_ISREG(mode))
+		return ('-');
+	else if (S_ISDIR(mode))
+		return ('d');
+	else if (S_ISCHR(mode))
+		return ('c');
+	else if (S_ISBLK(mode))
+		return ('b');
+	else if (S_ISFIFO(mode))
+		return ('p');
+	else if (S_ISSOCK(mode))
+		return ('s');
+	else
+		return ('?');
+}
+
+void	cheak_usr(mode_t mode, char *str)
+{
+	if ((S_IRWXU & mode) != S_IRWXU)
+	{
+		if ((S_IRUSR & mode) != S_IRUSR)
+			str[0] = '-';
+		if ((S_IWUSR & mode) != S_IWUSR)
+			str[1] = '-';
+		if ((S_IXUSR & mode) != S_IXUSR)
+			str[2] = '-';
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/13 21:52:27 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:23:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t g)
 {
-	char buf[BUFFOUT];
+	char		buf[BUFFOUT];
 	t_prt_rows	pprm;
-	int i;
+	int			i;
 
 	ws_cols = 0;
 	i = 0;
@@ -60,16 +60,18 @@ t_prt_rows	get_print_prm_r(t_dir *request)
 	return (pprm);
 }
 
-int		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf)
+int			print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm,
+			char *buf)
 {
-	int i;
+	int		i;
 	t_attr	attr;
 
 	i = 0;
 	buf[i++] = get_type(request->mode);
 	i += print_mode_bits(request->mode, buf + i);
 	i += print_label_attr(request, buf + i, &attr);
-	i += print_number((long int)request->nlink, (long int)pprm.max_nlink, buf + i, 0);
+	i += print_number((long int)request->nlink,
+			(long int)pprm.max_nlink, buf + i, 0);
 	i += print_gu_ids(request, pprm, flags, buf + i);
 	if (get_type(request->mode) == 'b' || get_type(request->mode) == 'c')
 	{
@@ -77,34 +79,15 @@ int		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm, char *buf)
 		i += print_number(minor(request->st_rdev), pprm.max_minor, buf + i, 0);
 	}
 	else
-		i += print_number((long int)request->size, (long int)pprm.max_size, buf + i, 0);
+		i += print_number((long int)request->size,
+				(long int)pprm.max_size, buf + i, 0);
 	i += print_time(request->time_mod, pprm.cur_time, buf + i);
 	i += print_name(request, buf + i);
 	i += print_attr_full(request, flags, buf + i, attr);
 	return (i);
 }
 
-char		get_type(mode_t mode)
-{
-	if (S_ISLNK(mode))
-		return ('l');
-	else if (S_ISREG(mode))
-		return ('-');
-	else if (S_ISDIR(mode))
-		return ('d');
-	else if (S_ISCHR(mode))
-		return ('c');
-	else if (S_ISBLK(mode))
-		return ('b');
-	else if (S_ISFIFO(mode))
-		return ('p');
-	else if (S_ISSOCK(mode))
-		return ('s');
-	else
-		return ('?');
-}
-
-int		print_mode_bits(mode_t mode, char *buf)
+int			print_mode_bits(mode_t mode, char *buf)
 {
 	int	i;
 
@@ -121,7 +104,7 @@ int		print_mode_bits(mode_t mode, char *buf)
 	return (9);
 }
 
-int		print_name(t_dir *request, char *buf)
+int			print_name(t_dir *request, char *buf)
 {
 	int i;
 	int	j;
