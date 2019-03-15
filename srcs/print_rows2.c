@@ -6,66 +6,87 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/01 16:25:36 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 16:51:06 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:38:54 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		cheak_usr(mode_t mode, char *str)
+int		print_label_attr(t_dir *request, char *buf, t_attr *attr)
 {
-	if ((S_IRWXU & mode) != S_IRWXU)
+	acl_t	tmp;
+
+	if (get_type(request->mode) != 'b' && get_type(request->mode) != 'c')
 	{
-		if ((S_IRUSR & mode) != S_IRUSR)
-			str[0] = '-';
-		if ((S_IWUSR & mode) != S_IWUSR)
-			str[1] = '-';
-		if ((S_IXUSR & mode) != S_IXUSR)
-			str[2] = '-';
+		attr->size_list = listxattr(request->path, attr->list, NAME_SATTR,
+						(get_type(request->mode) == 'l') ? XATTR_NOFOLLOW : 0);
+		tmp = acl_get_link_np(request->path, ACL_TYPE_EXTENDED);
+		if (attr->size_list)
+			buf[0] = '@';
+		else if (tmp)
+		{
+			buf[0] = '+';
+			acl_free(tmp);
+		}
+		else
+			buf[0] = ' ';
 	}
+	else
+		buf[0] = ' ';
+	buf[1] = ' ';
+	return (2);
 }
 
-void		cheak_grp(mode_t mode, char *str)
+int		print_number(long int num, long int max, char *buf, uint8_t j)
 {
-	if ((S_IRWXG & mode) != S_IRWXG)
+	long int	bit;
+	int			i;
+
+	i = 0;
+	bit = get_bit(num);
+	while (i + bit < max)
+		buf[i++] = ' ';
+	max = (j) ? max + 2 : max;
+	putnum(num, i + bit - 1, buf);
+	if (j)
+		buf[i++ + bit] = ',';
+	buf[i + bit] = ' ';
+	return ((int)max + 1);
+}
+
+void	putnum(long int n, int i, char *buf)
+{
+	if (n >= 10)
+		putnum(n / 10, i - 1, buf);
+	buf[i] = n % 10 + '0';
+}
+
+int		putuid(char *uid, ushort max, char *buf)
+{
+	int i;
+
+	i = 0;
+	while (uid[i])
 	{
-		if ((S_IRGRP & mode) != S_IRGRP)
-			str[3] = '-';
-		if ((S_IWGRP & mode) != S_IWGRP)
-			str[4] = '-';
-		if ((S_IXGRP & mode) != S_IXGRP)
-			str[5] = '-';
+		buf[i] = uid[i];
+		i++;
 	}
+	while (i < max + 2)
+		buf[i++] = ' ';
+	return (i);
 }
 
-void		cheak_oth(mode_t mode, char *str)
+int		putgid(char *gid, ushort max, char *buf)
 {
-	if ((S_IRWXO & mode) != S_IRWXO)
+	int i;
+
+	i = 0;
+	while (gid[i])
 	{
-		if ((S_IROTH & mode) != S_IROTH)
-			str[6] = '-';
-		if ((S_IWOTH & mode) != S_IWOTH)
-			str[7] = '-';
-		if ((S_IXOTH & mode) != S_IXOTH)
-			str[8] = '-';
+		buf[i] = gid[i];
+		i++;
 	}
-}
-
-void		print_label_attr(t_dir *request, ushort flags)
-{
-	ssize_t	size_list;
-
-	size_list = listxattr(request->path, NULL, 0, 0);
-	size_list ? ft_putstr("@ ") : ft_putstr("  ");
-}
-
-void		print_number(long int num, long int max)
-{
-	long int	i;
-
-	i = get_bit(num);
-	while (i++ < max)
-		ft_putchar(' ');
-	ft_putnbr(num);
-	ft_putchar(' ');
+	while (i < max + 2)
+		buf[i++] = ' ';
+	return (i);
 }

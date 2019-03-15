@@ -6,26 +6,20 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:44 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 20:20:46 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 16:16:21 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void	*check_open(char *path, u_int8_t f)
+DIR		*check_open(char *path, char *name)
 {
 	DIR	*folder;
 
 	if (!(folder = opendir(path)))
 	{
-		ft_putstr("ft_ls: ");
-		perror(path);
+		check_err(name, path);
 		return (NULL);
-	}
-	if (!f)
-	{
-		check_close(closedir(folder));
-		return (path);
 	}
 	return (folder);
 }
@@ -39,24 +33,6 @@ void	check_close(int nb)
 	}
 }
 
-mode_t	check_stat(char *path, uint8_t del)
-{
-	struct stat	buf;
-	mode_t		mode;
-
-	mode = 0;
-	if (lstat(path, &buf) == -1)
-	{
-		ft_putstr("ft_ls: ");
-		perror(path);
-	}
-	else
-		mode = buf.st_mode;
-	if (del)
-		ft_memdel((void **)&path);
-	return (mode);
-}
-
 uint8_t	double_arr_len(char **d_names)
 {
 	uint8_t	i;
@@ -67,4 +43,38 @@ uint8_t	double_arr_len(char **d_names)
 	while (d_names[i])
 		i++;
 	return (i);
+}
+
+void	free_all_list(t_dir *request)
+{
+	t_dir	*file;
+
+	if (!request)
+		return ;
+	while (request)
+	{
+		file = request;
+		request = request->next;
+		free_list(&file);
+	}
+}
+
+t_dir	*make_dir_list(t_dir **head, t_dir *dir)
+{
+	t_dir	*direct;
+
+	direct = *head;
+	while (direct->next && get_type(direct->next->mode) == 'd')
+		direct = direct->next;
+	if (!(direct->next))
+	{
+		dir = NULL;
+		*head = NULL;
+	}
+	else
+	{
+		dir = direct;
+		direct->next = NULL;
+	}
+	return (dir);
 }

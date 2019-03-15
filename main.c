@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aashara- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 13:00:30 by aashara-          #+#    #+#             */
-/*   Updated: 2019/01/22 13:00:32 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/12 15:40:55 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ int	main(int argc, char **argv)
 {
 	t_dir	*request;
 
-	request = opening(argc, argv);
+	if (!(request = opening(argc, argv)))
+		exit(0);
 	print(request);
 	return (0);
 }

@@ -6,109 +6,115 @@
 /*   By: aashara- <aashara-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/16 23:06:54 by aashara-          #+#    #+#             */
-/*   Updated: 2019/03/01 17:00:17 by aashara-         ###   ########.fr       */
+/*   Updated: 2019/03/15 14:23:46 by aashara-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void		print_rows(t_dir *request, ushort ws_cols, ushort flags)
+void		print_rows(t_dir *request, ushort ws_cols, ushort flags, uint8_t g)
 {
+	char		buf[BUFFOUT];
 	t_prt_rows	pprm;
+	int			i;
 
 	ws_cols = 0;
+	i = 0;
 	pprm = get_print_prm_r(request);
-	ft_putstr("total ");
-	ft_putnbr(pprm.total);
-	ft_putchar('\n');
+	if (g)
+	{
+		ft_putstr("total ");
+		ft_putnbr(pprm.total);
+		ft_putchar('\n');
+	}
 	while (request)
 	{
-		print_line_rows(request, flags, pprm);
+		if (i + SIZELINE >= BUFFOUT)
+		{
+			write(1, buf, i);
+			i = 0;
+		}
+		i += print_line_rows(request, flags, pprm, buf + i);
 		request = request->next;
 	}
+	write(1, buf, i);
 }
 
 t_prt_rows	get_print_prm_r(t_dir *request)
 {
-	ushort		len;
 	t_prt_rows	pprm;
-	u_int8_t	bit;
 
 	pprm.total = 0;
 	pprm.max_nlink = 1;
 	pprm.max_size = 1;
 	pprm.max_uid = 0;
 	pprm.max_gid = 0;
+	pprm.max_gid = 0;
+	pprm.max_minor = 0;
+	pprm.cur_time = time(NULL);
 	while (request)
 	{
-		if (!(request->mode))
-			exit(-1);
-		pprm.total += request->total;
-		if ((bit = get_bit(request->nlink)) > pprm.max_nlink)
-			pprm.max_nlink = bit;
-		if ((bit = get_bit(request->size)) > pprm.max_size)
-			pprm.max_size = bit;
-		if ((len = ft_strlen(getpwuid(request->uid)->pw_name)) > pprm.max_uid)
-			pprm.max_uid = len;
-		if ((len = ft_strlen(getgrgid(request->gid)->gr_name)) > pprm.max_gid)
-			pprm.max_gid = len;
+		get_data_max(&pprm, request);
 		request = request->next;
 	}
 	return (pprm);
 }
 
-void		print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm)
+int			print_line_rows(t_dir *request, ushort flags, t_prt_rows pprm,
+			char *buf)
 {
-	ft_putchar(get_type(request->mode));
-	print_mode_bits(request->mode);
-	print_label_attr(request, flags);
-	print_number((long int)request->nlink, (long int)pprm.max_nlink);
-	print_gu_ids(request, pprm, flags);
-	print_number((long int)request->size, (long int)pprm.max_size);
-	print_time(request->time_mod);
-	ft_putstr(request->name);
-	if (get_type(request->mode) == 'l')
-		print_link(request);
-	ft_putchar('\n');
-	if (get_type(request->mode) != 'l')
-		print_attr_full(request, flags);
-}
+	int		i;
+	t_attr	attr;
 
-char		get_type(mode_t mode)
-{
-	if (S_ISLNK(mode))
-		return ('l');
-	else if (S_ISREG(mode))
-		return ('-');
-	else if (S_ISDIR(mode))
-		return ('d');
-	else if (S_ISCHR(mode))
-		return ('c');
-	else if (S_ISBLK(mode))
-		return ('b');
-	else if (S_ISFIFO(mode))
-		return ('p');
-	else if (S_ISSOCK(mode))
-		return ('s');
+	i = 0;
+	buf[i++] = get_type(request->mode);
+	i += print_mode_bits(request->mode, buf + i);
+	i += print_label_attr(request, buf + i, &attr);
+	i += print_number((long int)request->nlink,
+			(long int)pprm.max_nlink, buf + i, 0);
+	i += print_gu_ids(request, pprm, flags, buf + i);
+	if (get_type(request->mode) == 'b' || get_type(request->mode) == 'c')
+	{
+		i += print_number(major(request->st_rdev), pprm.max_major, buf + i, 1);
+		i += print_number(minor(request->st_rdev), pprm.max_minor, buf + i, 0);
+	}
 	else
-		return ('?');
+		i += print_number((long int)request->size,
+				(long int)pprm.max_size, buf + i, 0);
+	i += print_time(request->time_mod, pprm.cur_time, buf + i);
+	i += print_name(request, buf + i);
+	i += print_attr_full(request, flags, buf + i, attr);
+	return (i);
 }
 
-void		print_mode_bits(mode_t mode)
+int			print_mode_bits(mode_t mode, char *buf)
 {
-	char	str[10];
-	uint8_t	i;
+	int	i;
 
 	i = 0;
 	while (i < 8)
 	{
-		str[i++] = 'r';
-		str[i++] = 'w';
-		str[i++] = 'x';
+		buf[i++] = 'r';
+		buf[i++] = 'w';
+		buf[i++] = 'x';
 	}
-	str[9] = '\0';
-	cheak_usr(mode, str);
-	cheak_grp(mode, str);
-	cheak_oth(mode, str);
-	ft_putstr(str);
+	cheak_usr(mode, buf);
+	cheak_grp(mode, buf);
+	cheak_oth(mode, buf);
+	return (9);
+}
+
+int			print_name(t_dir *request, char *buf)
+{
+	int i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (request->name[j])
+		buf[i++] = request->name[j++];
+	if (get_type(request->mode) == 'l')
+		i += print_link(request, buf + i);
+	buf[i++] = '\n';
+	return (i);
 }
