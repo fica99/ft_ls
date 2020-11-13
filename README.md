@@ -2,7 +2,7 @@
 
 My own implementation of the famous Unix command: ls, using the C programming language.
 
-![Example](https://i.ibb.co/7SDrQGd/Screen-Shot-2020-11-13-at-2-29-52-PM.png)
+![Example](https://i.ibb.co/6bBqj1s/Screen-Shot-2020-11-13-at-2-31-41-PM.png)
 
 ### Requirements
 As for software Requirements, you'll need:
