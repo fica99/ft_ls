@@ -2,6 +2,8 @@
 
 My own implementation of the famous Unix command: ls, using the C programming language.
 
+![Example](https://i.ibb.co/7SDrQGd/Screen-Shot-2020-11-13-at-2-29-52-PM.png)
+
 ### Requirements
 As for software Requirements, you'll need:
 - GNU make
@@ -21,19 +23,19 @@ It's pretty simple, instead of calling `ls`, call `./ft_ls` from the root direct
 
 #### Supported flags
 
-- Long listing display: -l
-- Display recursively: -R
-- Display all files: -a
-- Output is not sorted.  This option turns on the -a option : -f
-- Directories are listed as plain files (not searched recursively): -d
-- Reverse sort: -r
-- Sort by modification date: -t
-- Suppress owner: -g
-- Sort by creation date: -u
-- Sort by file size: -S
-- Colorized output: -G (Only works in long listing display)
-- Display extended attribute keys and sizes in long (-l) output: -@
+- Long listing display: `-l`
+- Display recursively: `-R`
+- Display all files: `-a`
+- Output is not sorted.  This option turns on the -a option : `-f`
+- Directories are listed as plain files (not searched recursively): `-d`
+- Reverse sort: `-r`
+- Sort by modification date: `-t`
+- Suppress owner: `-g`
+- Sort by creation date: `-u`
+- Sort by file size: `-S`
+- Colorized output: `-G`
+- Display extended attribute keys and sizes in long (`-l`) output: `-@`
 
 ### Notes
 
-- You can find the project instructions by [clicking here][https://cdn.intra.42.fr/pdf/pdf/1797/ft_ls.en.pdf]
+- You can find the project instructions by clicking on [subject](https://cdn.intra.42.fr/pdf/pdf/1797/ft_ls.en.pdf)
